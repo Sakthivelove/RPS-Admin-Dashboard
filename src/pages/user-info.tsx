@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import Sidebar from '../components/layout/SideBarNew';
 import GradientCard from '../components/GradientCard';
 import Table from '../components/Table';
-import { sidebarMenuItems } from '../constants/constants';
 import { userInfoTableColumns, userInfoTableData } from '../constants/constants';
 
 const UserInfo: React.FC = () => {
@@ -33,7 +31,7 @@ const UserInfo: React.FC = () => {
     }
 
     return (
-      <div className="overflow-auto">
+      <div className="overflow-auto h-full">
         <Table columns={userInfoTableColumns} data={userInfoTableData} />
       </div>
     );
@@ -41,7 +39,7 @@ const UserInfo: React.FC = () => {
 
   return (
     <div
-      className="flex h-screen text-white"
+      className="flex h-full text-white"
     >
       {/* Main Content */}
       <div className="flex-grow p-6 flex flex-col h-full">
@@ -95,7 +93,7 @@ const UserInfo: React.FC = () => {
         </div>
 
         {/* Tab Content */}
-        <div className="flex-grow p-4 mt-4 bg-[#1A1D26] rounded-lg">{renderTabContent()}</div>
+        <div className="flex-grow p-4 mt-4 bg-[#1A1D26] rounded-lg h-full">{renderTabContent()}</div>
       </div>
     </div>
   );
