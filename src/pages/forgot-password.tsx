@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import logo from "../../../public/RockMainLogo.png"; // Adjust the path as necessary
+import logo from "../../public/RockMainLogo.png"; // Adjust the path as necessary
 import { FaEye, FaEyeSlash, FaUser, FaLock, FaTelegram } from "react-icons/fa"; // Importing eye icons and user/lock icons
-import Button from "../Button";
+import Button from "../components/AdminButton";
+import { useNavigate } from 'react-router-dom';
 
 const ForgotPassword = () => {
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State for confirm password visibility
-
+  const navigate = useNavigate();
   // Toggle the password visibility
   const togglePassword = () => setShowPassword(!showPassword);
 
@@ -15,12 +16,9 @@ const ForgotPassword = () => {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center p-4 overflow-hidden"
-      style={{
-        backgroundImage: "url('../../../public/background.png')", // Updated path for the background image
-      }}
+      className="min-h-screen flex items-center justify-center p-4 overflow-hidden"
     >
-      <div className="bg-opacity-90 rounded-lg shadow-lg overflow-hidden relative">
+      <div className="bg-opacity-90 rounded-lg shadow-lg overflow-hidden relative w-full flex flex-col justify-center items-center">
 
         {/* Logo Image */}
         <img
@@ -37,7 +35,7 @@ const ForgotPassword = () => {
         </h1>
 
         <form
-          className="relative z-10 p-[0.07rem] rounded-lg"
+          className="relative z-10 p-[0.07rem] rounded-lg w-[50%]"
           style={{
             background: "linear-gradient(90deg, #45F882 0%, #FFBE18 100%)", // Gradient for border
           }}
@@ -121,7 +119,7 @@ const ForgotPassword = () => {
         </form>
 
         <div className="flex justify-center mt-6">
-          <Button image="green" text="reset" onClick={() => console.log("button clicked")} />
+          <Button image="green" text="reset" onClick={() => navigate('/login')} />
         </div>
       </div>
     </div>

@@ -1,13 +1,14 @@
 import React, { useState, FormEvent } from "react";
-import logo from "../../../public/RockMainLogo.png";
+import logo from "../../public/RockMainLogo.png";
 import { FaEye, FaEyeSlash, FaUser, FaLock } from "react-icons/fa";
-import Button from "../Button";
+import Button from "../components/AdminButton";
 import { Link, useNavigate } from "react-router-dom";
 
 const AdminLogin: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const navigate = useNavigate()
 
   const handleLoginSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -16,12 +17,9 @@ const AdminLogin: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center p-4 overflow-hidden"
-      style={{
-        backgroundImage: "url('../../../public/background.png')",
-      }}
+      className="min-h-screen flex items-center justify-center p-4 overflow-hidden"
     >
-      <div className="bg-opacity-90 rounded-lg shadow-lg overflow-hidden relative w-full sm:w-auto">
+      <div className="bg-opacity-90 rounded-lg shadow-lg overflow-hidden relative w-full flex flex-col justify-center items-center">
         <img
           src={logo}
           alt="Rock Main Logo"
@@ -34,7 +32,7 @@ const AdminLogin: React.FC = () => {
           Admin Login
         </h1>
         <div
-          className="p-[0.07rem] rounded-lg"
+          className="p-[0.07rem] rounded-lg md:w-[50%]"
           style={{
             background: "linear-gradient(90deg, #45F882 0%, #FFBE18 100%)",
           }}
@@ -95,7 +93,7 @@ const AdminLogin: React.FC = () => {
               </div>
               <div className="flex justify-end">
                 <Link
-                  to="/forgotpassword"
+                  to="/forgot-password"
                   className="text-lg text-[rgba(69, 248, 130, 1)] px-2"
                   style={{ color: "rgba(69, 248, 130, 1)" }}
                 >
@@ -107,7 +105,7 @@ const AdminLogin: React.FC = () => {
               <Button
                 image="green"
                 text="Login"
-                onClick={() => console.log("button clicked")}
+                onClick={() => navigate("/create-admin-tournament")}
               />
             </div>
           </form>

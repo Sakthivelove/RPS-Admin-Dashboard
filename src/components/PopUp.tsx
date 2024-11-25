@@ -1,5 +1,5 @@
 import React from "react";
-import selectIcon from "../../../public/tick.png";
+import selectIcon from "../../public/tick.png";
 
 interface PopupProps {
   isVisible?: boolean;
