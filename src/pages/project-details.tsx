@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Sidebar from "../components/layout/SideBarNew" 
 import GradientCard from '../components/GradientCard';  
 import Table from '../components/Table';  
 import LineChart from '../components/LineChart';  

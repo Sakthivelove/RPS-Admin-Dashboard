@@ -5,7 +5,6 @@ import ForgotPassword from "./pages/forgot-password";
 import CreateNewRockTournament from "./pages/create-new-rock-tournament";
 import CreateNewAdminTournament from "./pages/create-new-admin-tournament";
 import Signup from "./pages/signup";
-import CreateAdminTournament from "./pages/create-admin-tournament";
 import AdminList from "./pages/admin-list";
 import AdminScreen from "./pages/admin-screen";
 import AddAdmin from "./pages/add-admin";
@@ -25,6 +24,8 @@ import ActivityList from "./pages/activity-list";
 import UserList from "./pages/user-list";
 import Layout from "./components/layout/Layout";
 import TournamentInfo from "./pages/tournament-info";
+import CreateNewVIPTournament from "./pages/create-new-VIP-tournament";
+import AffiliateTournaments from "./pages/affiliate-tournaments";
 
 
 function App() {
@@ -37,12 +38,16 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/change-password" element={<ChangePassword />} />
           <Route
-            path="/create-admin-tournament"
-            element={<CreateAdminTournament />}
+            path="/affiliate-tournaments"
+            element={<AffiliateTournaments />}
           />
           <Route
             path="/create-new-rock-tournament"
             element={<CreateNewRockTournament />}
+          />
+          <Route
+            path="/create-new-vip-tournament"
+            element={<CreateNewVIPTournament />}
           />
           <Route
             path="/create-new-admin-tournament"
@@ -64,7 +69,7 @@ function App() {
           <Route path="/user-info" element={<UserInfo />} />
           <Route path="/activity-list" element={<ActivityList />} />
           <Route path="/user-list" element={<UserList />} />
-          <Route path="/tournament-info" element={<TournamentInfo/>}/>
+          <Route path="/tournament-info" element={<TournamentInfo />} />
         </Routes>
       </Layout>
     </Router>

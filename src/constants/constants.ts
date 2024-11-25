@@ -1,6 +1,6 @@
 export const sidebarMenuItems = [
-    { label: "Rock Tournaments", icon: "/star_1.png", path: "/rock-tournaments" },
-    { label: "VIP Tournaments", icon: "/vip_1.png", path: "/vip-tournaments" },
+    { label: "Rock Tournaments", icon: "/star_1.png", path: "/create-new-rock-tournament" },
+    { label: "VIP Tournaments", icon: "/vip_1.png", path: "/create-new-vip-tournament" },
     { label: "Affiliate Tournaments", icon: "/affiliate_1.png", path: "/affiliate-tournaments" },
     { label: "User's List", icon: "/users_list.png", path: "/user-list" },
     { label: "User Info", icon: "/user-info.png", path: "/user-info" },

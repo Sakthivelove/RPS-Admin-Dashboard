@@ -10,10 +10,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     const routesWithoutSidebar = [
         "/signup",
         "/login",
-        "/forgot-password",
-        "/create-admin-tournament",
-        "/create-new-rock-tournament",
-        "/create-new-admin-tournament",
+        "/forgot-password"
     ];
 
 
@@ -28,7 +25,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                     menuItem={sidebarMenuItems}
                     actionIcon={"/affiliate_2.png"}
                     actionText={"Dashboard"}
-                    actionPath={"/create-admin-tournament"}
+                    actionPath={"/affiliate-tournaments"}
                     breakIntervals={[3, 3, 3, 3, 2, 2, 5]}
                 />
             )}

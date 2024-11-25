@@ -15,6 +15,7 @@ interface ButtonProps {
   textAlign?: "left" | "center" | "right"; // Text alignment
   width?: string; // Tailwind width class (e.g., 'w-36', 'w-full')
   height?: string; // Tailwind height class (e.g., 'h-12', 'h-auto')
+  isDisabled?: boolean
 }
 
 const Button: React.FC<ButtonProps> = ({

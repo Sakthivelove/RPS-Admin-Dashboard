@@ -11,7 +11,7 @@ const AdminScreen: React.FC = () => {
     const navigate = useNavigate();
     return (
         <main
-            className="flex h-screen"
+            className="flex h-full"
             aria-label="Admin Dashboard"
         >
             {/* Main Content */}
