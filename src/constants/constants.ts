@@ -1,23 +1,23 @@
 export const sidebarMenuItems = [
-    { label: "Rock Tournaments", icon: "/star_1.png", path: "/create-new-rock-tournament" },
-    { label: "VIP Tournaments", icon: "/vip_1.png", path: "/create-new-vip-tournament" },
-    { label: "Affiliate Tournaments", icon: "/affiliate_1.png", path: "/affiliate-tournaments" },
-    { label: "User's List", icon: "/users_list.png", path: "/user-list" },
-    { label: "User Info", icon: "/user-info.png", path: "/user-info" },
-    { label: "User Status Update", icon: "/user-status-update.png", path: "user-status-update" }, // Not defined in the Router but retained
-    { label: "Admin List", icon: "/admin-list.png", path: "/admin-list" },
-    { label: "Admin Add", icon: "/admin-add.png", path: "/add-admin" },
-    { label: "Admin Edit", icon: "/admin-edit.png", path: "/edit-admin" },
-    { label: "Activity List", icon: "/activity-list.png", path: "/activity-list" },
-    { label: "Tournament List", icon: "/tournament-list.png", path: "/tournament-list" },
-    { label: "Tournament Info", icon: "/tournament-info.png", path: "/tournament-info" }, // Not defined in the Router but retained
-    { label: "Game History", icon: "/game-history.png", path: "/game-history" },
-    { label: "Game Info", icon: "/game-info.png", path: "/game-info" },
-    { label: "Stake History", icon: "/stake-history.png", path: "/stake-history" },
-    { label: "Stake Info", icon: "/stake-info.png", path: "/stake-info" },
-    { label: "Project Settings", icon: "/project-settings.png", path: "/project-details" },
-    { label: "Change Password", icon: "/change-password.png", path: "/change-password" },
-    { label: "Logout", icon: "/logout.png" }
+    { label: "Rock Tournaments", icon: "/icons/star_1.png", path: "/create-new-rock-tournament" },
+    { label: "VIP Tournaments", icon: "/icons/vip_1.png", path: "/create-new-vip-tournament" },
+    { label: "Affiliate Tournaments", icon: "/icons/affiliate_1.png", path: "/affiliate-tournaments" },
+    { label: "User's List", icon: "/icons/users_list.png", path: "/user-list" },
+    { label: "User Info", icon: "/icons/user-info.png", path: "/user-info" },
+    { label: "User Status Update", icon: "/icons/user-status-update.png", path: "user-status-update" }, // Not defined in the Router but retained
+    { label: "Admin List", icon: "/icons/admin-list.png", path: "/admin-list" },
+    { label: "Admin Add", icon: "/icons/admin-add.png", path: "/add-admin" },
+    { label: "Admin Edit", icon: "/icons/admin-edit.png", path: "/edit-admin" },
+    { label: "Activity List", icon: "/icons/activity-list.png", path: "/activity-list" },
+    { label: "Tournament List", icon: "/icons/tournament-list.png", path: "/tournament-list" },
+    { label: "Tournament Info", icon: "/icons/tournament-info.png", path: "/tournament-info" }, // Not defined in the Router but retained
+    { label: "Game History", icon: "/icons/game-history.png", path: "/game-history" },
+    { label: "Game Info", icon: "/icons/game-info.png", path: "/game-info" },
+    { label: "Stake History", icon: "/icons/stake-history.png", path: "/stake-history" },
+    { label: "Stake Info", icon: "/icons/stake-info.png", path: "/stake-info" },
+    { label: "Project Settings", icon: "/icons/project-settings.png", path: "/project-details" },
+    { label: "Change Password", icon: "/icons/change-password.png", path: "/change-password" },
+    { label: "Logout", icon: "/icons/logout.png" }
 ];
 
 
@@ -154,19 +154,19 @@ export const AdminScreenCardData = [
     {
         title: "Total Users",
         value: "1,500",
-        imageSrc: "./user-avathar.png",
+        imageSrc: "icons/user-avathar.png",
         imageAlt: "Users Icon",
     },
     {
         title: "Active Tournaments",
         value: "30",
-        imageSrc: "./league.png",
+        imageSrc: "icons/league.png",
         imageAlt: "Tournaments Icon",
     },
     {
         title: "Revenue",
         value: "$5,000",
-        imageSrc: "./trophy_1.png",
+        imageSrc: "icons/trophy_1.png",
         imageAlt: "Revenue Icon",
     },
 ];
@@ -441,6 +441,33 @@ export const CreateAdminTournamentTableData=[
 
     }
 ]
+
+export const TournamentColumns = [
+    'S.No',
+    'Tournament Name',
+    'Winner',
+    'Time',
+    'Price Pool',
+    'History',
+    'Earnings'
+];
+
+export const TournamentData = [
+    { 'S.No': 1, 'Tournament Name': 'Galaxy Showdown', 'Winner': 'xy****5', 'Time': '10:15', 'Price Pool': 0.0012345, 'History': 'view', 'Earnings': 500 },
+    { 'S.No': 2, 'Tournament Name': 'Neon Blitz', 'Winner': 'ab****9', 'Time': '14:30', 'Price Pool': 0.0008453, 'History': 'view', 'Earnings': 320 },
+    { 'S.No': 3, 'Tournament Name': 'Cyber Clash', 'Winner': 'kl****2', 'Time': '17:45', 'Price Pool': 0.0021458, 'History': 'view', 'Earnings': 620 },
+    { 'S.No': 4, 'Tournament Name': 'Quantum Strike', 'Winner': 'mn****7', 'Time': '19:00', 'Price Pool': 0.0009541, 'History': 'view', 'Earnings': 410 },
+    { 'S.No': 5, 'Tournament Name': 'Pixel Wars', 'Winner': 'op****4', 'Time': '20:25', 'Price Pool': 0.0017548, 'History': 'view', 'Earnings': 580 },
+    { 'S.No': 6, 'Tournament Name': 'Inferno Challenge', 'Winner': 'pq****1', 'Time': '09:50', 'Price Pool': 0.0006345, 'History': 'view', 'Earnings': 300 },
+    { 'S.No': 7, 'Tournament Name': 'Stellar Combat', 'Winner': 'rs****6', 'Time': '13:40', 'Price Pool': 0.0012345, 'History': 'view', 'Earnings': 490 },
+    { 'S.No': 8, 'Tournament Name': 'Turbo Takedown', 'Winner': 'tu****3', 'Time': '16:20', 'Price Pool': 0.0017543, 'History': 'view', 'Earnings': 560 },
+    { 'S.No': 9, 'Tournament Name': 'Turbo Takedown', 'Winner': 'tu****3', 'Time': '16:20', 'Price Pool': 0.0017543, 'History': 'view', 'Earnings': 560 },
+    { 'S.No': 10, 'Tournament Name': 'Turbo Takedown', 'Winner': 'tu****3', 'Time': '16:20', 'Price Pool': 0.0017543, 'History': 'view', 'Earnings': 560 },
+    { 'S.No': 11, 'Tournament Name': 'Turbo Takedown', 'Winner': 'tu****3', 'Time': '16:20', 'Price Pool': 0.0017543, 'History': 'view', 'Earnings': 560 },
+    { 'S.No': 12, 'Tournament Name': 'Turbo Takedown', 'Winner': 'tu****3', 'Time': '16:20', 'Price Pool': 0.0017543, 'History': 'view', 'Earnings': 560 },
+    { 'S.No': 13, 'Tournament Name': 'Turbo Takedown', 'Winner': 'tu****3', 'Time': '16:20', 'Price Pool': 0.0017543, 'History': 'view', 'Earnings': 560 },
+];
+
 
 
 

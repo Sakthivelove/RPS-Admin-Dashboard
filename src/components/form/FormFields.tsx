@@ -58,7 +58,7 @@ const DynamicFormFields: React.FC<DynamicFormFieldsProps> = ({ fields = DefaultF
     return (
         <div className="space-y-4 overflow-auto">
             {fields?.map((field, index) => (
-                <div className="relative" key={index}>
+                <div className="" key={index}>
                     {field.label && (
                         <label
                             htmlFor={field.placeholder}

@@ -16,19 +16,19 @@ const TournamentList: React.FC = () => {
         {
             title: 'Total Tournaments',
             value: '25',
-            imageSrc: '/trophy_1.png',
+            imageSrc: 'icons/trophy_1.png',
             imageAlt: 'Tournaments Icon',
         },
         {
             title: 'Total Prize Pool',
             value: '$50,000',
-            imageSrc: '/league.png',
+            imageSrc: 'icons/league.png',
             imageAlt: 'Prize Pool Icon',
         },
         {
             title: 'Top Winner',
             value: 'John Doe',
-            imageSrc: '/user-avathar.png',
+            imageSrc: 'icons/user-avathar.png',
             imageAlt: 'Winner Icon',
         },
     ];

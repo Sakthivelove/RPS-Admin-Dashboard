@@ -9,19 +9,19 @@ const StakeInfo: React.FC = () => {
     {
       title: 'Total Investments',
       value: '$500,000',
-      imageSrc: '/trophy_1.png',
+      imageSrc: 'icons/trophy_1.png',
       imageAlt: 'Investment Icon',
     },
     {
       title: 'Current Returns',
       value: '$75,000',
-      imageSrc: '/league.png',
+      imageSrc: 'icons/league.png',
       imageAlt: 'Returns Icon',
     },
     {
       title: 'Completed Projects',
       value: '20',
-      imageSrc: '/trophy_1.png',
+      imageSrc: 'icons/trophy_1.png',
       imageAlt: 'Projects Icon',
     },
   ];
@@ -48,17 +48,13 @@ const StakeInfo: React.FC = () => {
 
           {/* Table Section */}
           <div className="p-4 bg-[#1A1D26] rounded-lg">
-            {/* Title */}
-            <h3 className="text-[#45F882] font-rajdhani font-semibold text-3xl mb-4">
-              Stake Info
-            </h3>
-
-            {/* Table */}
             <div className="overflow-auto">
               <Table
                 columns={StakeColumns}
                 data={StakeData}
+                title='Stake Info'
                 headerTextColor='text-[#45F882]'
+                height='53vh'
                 customCellTextColor={(row, col) => {
                   if (col === 'Status') {
                     // If Status is "Success", set text color to green

@@ -7,9 +7,9 @@ const AdminUserList: React.FC = () => {
 
     // Sample data for Gradient Cards, Table, and LineChart
     const gradientCards = [
-        { title: "Total Players", value: "1200", imageSrc: "/user-avathar.png", imageAlt: "Card 1" },
-        { title: "Total Tournaments", value: "20", imageSrc: "/trophy_1.png", imageAlt: "Card 2" },
-        { title: "Active Tournaments", value: "5", imageSrc: "/league.png", imageAlt: "Card 3" }
+        { title: "Total Players", value: "1200", imageSrc: "icons/user-avathar.png", imageAlt: "Card 1" },
+        { title: "Total Tournaments", value: "20", imageSrc: "icons/trophy_1.png", imageAlt: "Card 2" },
+        { title: "Active Tournaments", value: "5", imageSrc: "icons/league.png", imageAlt: "Card 3" }
     ];
 
     // Recent Visitors Table Data

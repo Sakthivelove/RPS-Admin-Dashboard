@@ -35,7 +35,7 @@ const CreateNewAdminTournament: React.FC = () => {
         setIsModalOpen(false);
 
         // Navigate after closing the modal
-        navigate('/create-admin-tournament');
+        navigate('/affiliate-tournaments');
     };
 
     return (

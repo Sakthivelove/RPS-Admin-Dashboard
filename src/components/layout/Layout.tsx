@@ -10,7 +10,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     const routesWithoutSidebar = [
         "/signup",
         "/login",
-        "/forgot-password"
+        "/verify-2fa",
+        "/forgot-password",
+        "/reset-password",
+        "/404"
     ];
 
 
@@ -23,7 +26,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 <Sidebar
                     username="Admin" // Example username; replace dynamically if needed
                     menuItem={sidebarMenuItems}
-                    actionIcon={"/affiliate_2.png"}
+                    actionIcon={"icons/affiliate_2.png"}
                     actionText={"Dashboard"}
                     actionPath={"/affiliate-tournaments"}
                     breakIntervals={[3, 3, 3, 3, 2, 2, 5]}

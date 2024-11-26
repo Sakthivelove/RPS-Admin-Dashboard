@@ -5,10 +5,11 @@ import greenButtonImg from "/greenbutton.png";
 import yellowButtonImg from "/yellowbutton.png";
 
 // Defining types for the props
+
 interface ButtonProps {
   image: "green" | "yellow"; // Restrict to green or yellow image
   text: string; // The text to display inside the button
-  onClick: () => void; // The click handler function
+  onClick: (e: React.FormEvent) => void;  // Accepting FormEvent here
   textColor?: string; // Text color (default is #0B0E13)
   fontSize?: string; // Font size for the text
   fontWeight?: string; // Font weight for the text
@@ -28,18 +29,18 @@ const Button: React.FC<ButtonProps> = ({
   width = "w-36", // Default Tailwind width
   height = "h-12", // Default Tailwind height
   onClick,
+  isDisabled = false
 }) => {
-  // Determine the background image based on the 'image' prop
-  const backgroundImage =
-    image === "green" ? greenButtonImg : yellowButtonImg;
+  const backgroundImage = image === "green" ? greenButtonImg : yellowButtonImg;
 
   return (
     <button
-      onClick={onClick}
+      onClick={(e) => onClick(e)}  // Pass event to the onClick handler
       className={`flex justify-center items-center border-none cursor-pointer bg-cover bg-center ${width} ${height} ${fontSize} ${fontWeight} ${textAlign} ${textColor}`}
       style={{
         backgroundImage: `url(${backgroundImage})`,
       }}
+      disabled={isDisabled}  // Handle disabled state
     >
       {text}
     </button>

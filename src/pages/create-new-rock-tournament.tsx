@@ -39,14 +39,14 @@ const CreateNewRockTournament: React.FC = () => {
         setIsModalOpen(false);
 
         // Navigate after closing the modal
-        navigate('/create-admin-tournament');
+        navigate('/affiliate-tournaments');
     };
 
 
 
 
     return (
-        <div className="w-full min-h-[100vh] h-full bg-[#0B0D13] py-[20px] px-[10px] md:py-[75px] md:px-[60px]">
+        <div className="w-full h-screen bg-[#0B0D13] py-[20px] px-[10px] md:py-[75px] md:px-[60px] overflow-auto">
             <section className="">
                 {/* upload file section */}
                 <div className="">

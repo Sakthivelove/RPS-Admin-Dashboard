@@ -27,3 +27,8 @@
   display: none; /* Chrome, Safari, and Opera */
 }
 
+/* Global Styles */
+.modal, .modal-overlay {
+  z-index: 9999 !important;
+}
+

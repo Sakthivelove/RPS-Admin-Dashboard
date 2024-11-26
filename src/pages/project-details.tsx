@@ -15,9 +15,9 @@ const Dashboard: React.FC = () => {
 
     // Sample data for Gradient Cards, Table, and LineChart
     const gradientCards = [
-        { title: "Total Players", value: "1200", imageSrc: "/user-avathar.png", imageAlt: "Card 1" },
-        { title: "Total Tournaments", value: "20", imageSrc: "/trophy_1.png", imageAlt: "Card 2" },
-        { title: "Active Tournaments", value: "5", imageSrc: "/league.png", imageAlt: "Card 3" }
+        { title: "Total Players", value: "1200", imageSrc: "icons/user-avathar.png", imageAlt: "Card 1" },
+        { title: "Total Tournaments", value: "20", imageSrc: "icons/trophy_1.png", imageAlt: "Card 2" },
+        { title: "Active Tournaments", value: "5", imageSrc: "icons/league.png", imageAlt: "Card 3" }
     ];
 
 
@@ -195,12 +195,12 @@ const Dashboard: React.FC = () => {
                                 <h2 className="text-xl font-semibold text-[#45F882] font-Rajdhani">Top 8 Games</h2>
                             </div>
                             <div className="flex-1 overflow-auto">
-                                <Table columns={top8GamesColumns} data={top8Gamesdata} />
+                                <Table columns={top8GamesColumns} data={top8Gamesdata} height='50vh' />
                             </div>
                         </div>
 
                         {/* Line Chart Section */}
-                        <div className="relative flex-1 w-full md:w-1/2 h-full flex flex-col">
+                        <div className="flex-1 w-full md:w-1/2 h-full flex flex-col">
                             <div className="flex justify-end items-center gap-2 mb-4 h-[9%]">
                                 {["day", "week", "month", "year"].map((option) => (
                                     <button
@@ -226,14 +226,9 @@ const Dashboard: React.FC = () => {
                     <div className="mt-4 p-4 bg-[#1A1D26] rounded-lg">
                         {/* Combined Title and Table */}
                         <div className="flex flex-col">
-                            {/* Title */}
-                            <h3 className="text-[#45F882] font-rajdhani font-semibold text-3xl mb-4">
-                                Recent Visitors
-                            </h3>
-
                             {/* Table */}
                             <div className="overflow-auto">
-                                <Table columns={visitorColumns} data={visitorData} />
+                                <Table columns={visitorColumns} data={visitorData} title='Recent Visitors' height='50vh'/>
                             </div>
                         </div>
                     </div>

@@ -168,7 +168,7 @@ const profileCard = (sidebarActive: boolean, userName: string) => {
           {sidebarActive && (
             <div>
               <img
-                src="/edit.png"
+                src="icons/edit.png"
                 alt="Edit Icon"
                 className="h-[16px] w-[16px] cursor-pointer"
               />

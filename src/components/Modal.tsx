@@ -22,9 +22,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, content, onConfir
             ></div>
 
             {/* Modal container */}
-            <div className="relative p-[1px] bg-gradient-to-r from-[#45F882] to-[#FFBE18] rounded-lg max-w-[400px] w-full">
+            <div className="relative z-60 p-[1px] bg-gradient-to-r from-[#45F882] to-[#FFBE18] rounded-lg max-w-[400px] w-full">
                 {/* Inner content */}
-                <div className="relative bg-[#1A1D26] p-8 rounded-lg">
+                <div className="relative bg-[#1A1D26] p-8 rounded-lg z-70">
                     {/* Title */}
                     <div className="text-center text-2xl font-bold text-[#45F882] font-rajdhani">
                         {title}
@@ -63,5 +63,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, content, onConfir
         </div>
     );
 };
+
 
 export default Modal;

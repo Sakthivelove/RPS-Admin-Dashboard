@@ -48,19 +48,19 @@ const UserInfo: React.FC = () => {
           <GradientCard
             title="Total Users"
             value="1,024"
-            imageSrc="/user-avathar.png"
+            imageSrc="icons/user-avathar.png"
             imageAlt="Total Users"
           />
           <GradientCard
             title="Active Games"
             value="76"
-            imageSrc="/trophy_1.png"
+            imageSrc="icons/trophy_1.png"
             imageAlt="Active Games"
           />
           <GradientCard
             title="Revenue"
             value="$10,200"
-            imageSrc="/league.png"
+            imageSrc="icons/league.png"
             imageAlt="Revenue"
           />
         </div>

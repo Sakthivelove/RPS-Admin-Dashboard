@@ -9,19 +9,19 @@ const StakeHistory: React.FC = () => {
     {
       title: 'Total Stakes',
       value: '150',
-      imageSrc: '/trophy_1.png',
+      imageSrc: 'icons/trophy_1.png',
       imageAlt: 'Stakes Icon',
     },
     {
       title: 'Active Stakes',
       value: '75',
-      imageSrc: '/league.png',
+      imageSrc: 'icons/league.png',
       imageAlt: 'Active Icon',
     },
     {
       title: 'Matured Stakes',
       value: '50',
-      imageSrc: '/league.png',
+      imageSrc: 'icons/league.png',
       imageAlt: 'Matured Icon',
     },
   ];
@@ -50,17 +50,15 @@ const StakeHistory: React.FC = () => {
 
           {/* Table Section */}
           <div className="p-4 bg-[#1A1D26] rounded-lg">
-            {/* Title */}
-            <h3 className="text-[#45F882] font-rajdhani font-semibold text-3xl mb-4">
-              Stake History
-            </h3>
 
             {/* Table */}
             <div className="overflow-auto">
               <Table
                 columns={StakeColumns}
                 data={StakeData}
+                title='Stake History'
                 headerTextColor='text-[#45F882]'
+                height="calc(100vh - 320px)"
                 customCellTextColor={(row, col) => {
                   if (col === 'Status') {
                     // If Status is "Success", set text color to green

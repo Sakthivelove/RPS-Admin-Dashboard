@@ -1,7 +1,7 @@
 import React from 'react'
 import GradientCard from '../components/GradientCard';
 import Table from '../components/Table';
-import { tableColumns,tableData } from '../constants/constants';
+import { tableColumns, tableData } from '../constants/constants';
 
 const GameInfo: React.FC = () => {
 
@@ -10,19 +10,19 @@ const GameInfo: React.FC = () => {
     {
       title: 'Total Games',
       value: '100',
-      imageSrc: '/trophy_1.png',
+      imageSrc: 'icons/trophy_1.png',
       imageAlt: 'Games Icon',
     },
     {
       title: 'Top Winner',
       value: 'Jane Smith',
-      imageSrc: '/user-avathar.png',
+      imageSrc: 'icons/user-avathar.png',
       imageAlt: 'Winner Icon',
     },
     {
       title: 'Total Players',
       value: '500',
-      imageSrc: '/league.png',
+      imageSrc: 'icons/league.png',
       imageAlt: 'Players Icon',
     },
   ];
@@ -49,14 +49,9 @@ const GameInfo: React.FC = () => {
 
           {/* Table Section */}
           <div className="p-4 bg-[#1A1D26] rounded-lg h-full">
-            {/* Title */}
-            <h3 className="text-[#45F882] font-rajdhani font-semibold text-3xl mb-4">
-              Game Information
-            </h3>
-
             {/* Table */}
             <div className="overflow-auto">
-              <Table columns={tableColumns} data={tableData} />
+              <Table columns={tableColumns} data={tableData} title='Game Information' />
             </div>
           </div>
         </div>
