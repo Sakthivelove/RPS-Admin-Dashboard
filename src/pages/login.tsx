@@ -12,8 +12,11 @@ interface LoginDto {
 }
 
 interface LoginResponse {
+  status: boolean;
+  auth2: boolean;
   token: string;
   message: string;
+  AuthId: number;
 }
 
 const loginUser = async (data: LoginDto): Promise<LoginResponse> => {
@@ -35,9 +38,20 @@ const AdminLogin: React.FC = () => {
     mutationFn: loginUser,
     onSuccess: (data) => {
       // On successful login, store the token
-      localStorage.setItem('authToken', data.token);
-      // Navigate to 2FA verification page
-      navigate('/verify-2fa');
+      if (data.status) {
+        localStorage.setItem('authToken', data.token);
+        
+        // Check if 2FA is required
+        if (data.auth2) {
+          // If 2FA is required, navigate to 2FA page
+          navigate('/verify-2fa');
+        } else {
+          // If no 2FA required, navigate to the home page
+          navigate('/affiliate-dashboards');
+        }
+      } else {
+        console.error('Login failed: ', data.message);
+      }
     },
     onError: (error: Error) => {
       console.error('Login failed:', error.message);

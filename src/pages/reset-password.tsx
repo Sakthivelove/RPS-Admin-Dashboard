@@ -3,17 +3,37 @@ import { useNavigate } from "react-router-dom";
 import Button from "../components/AdminButton"; // Reusable Button component
 import { FaLock, FaEye, FaEyeSlash } from "react-icons/fa"; // Icons for password fields
 import logo from "../../public/RockMainLogo.png"; // Logo Image
-import axios from "axios"; // To make the API call
+import { useMutation } from "@tanstack/react-query";
+import { api } from "../api";
+
+// Updated mutation function
+const resetPassword = async (password: string) => {
+  const response = await api.post("/api/reset-password", { password });
+  return response.data;
+};
 
 const ResetPassword = () => {
   const [password, setPassword] = useState(""); // New password
   const [confirmPassword, setConfirmPassword] = useState(""); // Confirm password
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State to toggle confirm password visibility
-  const [loading, setLoading] = useState(false); // Loading state for the API call
   const [error, setError] = useState(""); // Error state for API errors
   const [success, setSuccess] = useState(""); // Success message after reset
   const navigate = useNavigate(); // Hook to navigate to different pages
+
+  // Use React Query Mutation to handle the API call
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: resetPassword, // The mutation function
+    onSuccess: () => {
+      setSuccess("Your password has been successfully reset.");
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    },
+    onError: (error: any) => {
+      setError("Failed to reset the password. Please try again.");
+    },
+  });
 
   // Toggle password visibility
   const togglePassword = () => setShowPassword(!showPassword);
@@ -36,26 +56,14 @@ const ResetPassword = () => {
       return;
     }
 
-    setLoading(true);
     setError(""); // Reset error state
     setSuccess(""); // Reset success message
 
     try {
-      // Make API call to reset password (replace with your actual API endpoint)
-      const response = await axios.post("/api/reset-password", { password });
-
-      if (response.status === 200) {
-        setSuccess("Your password has been successfully reset.");
-        
-        // Redirect to login page after success
-        setTimeout(() => {
-          navigate("/login");
-        }, 2000);
-      }
+      // Trigger password reset API call via React Query
+      await mutateAsync(password); // Pass the password to mutateAsync
     } catch (err) {
-      setError("Failed to reset the password. Please try again.");
-    } finally {
-      setLoading(false);
+      setError("An error occurred. Please try again.");
     }
   };
 
@@ -123,15 +131,16 @@ const ResetPassword = () => {
                   {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
-                        {/* Submit Button */}
-          <div className="flex justify-center mt-6">
-            <Button
-              image="green"
-              text={loading ? "Resetting..." : "Reset Password"}
-              onClick={handleSubmit}
-              isDisabled={loading}
-            />
-          </div>
+
+              {/* Submit Button */}
+              <div className="flex justify-center mt-6">
+                <Button
+                  image="green"
+                  text={isPending ? "Resetting..." : "Reset Password"}
+                  onClick={handleSubmit}
+                  isDisabled={isPending}
+                />
+              </div>
             </div>
           </div>
         </form>

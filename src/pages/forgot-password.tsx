@@ -3,17 +3,37 @@ import logo from "../../public/RockMainLogo.png"; // Adjust the path as necessar
 import { FaTelegram } from "react-icons/fa"; // Importing Telegram icon
 import Button from "../components/AdminButton";
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Importing axios for API requests
+import { useMutation } from '@tanstack/react-query';
+import { api } from "../api";
 
 const ForgotPassword = () => {
   const [telegramId, setTelegramId] = useState(""); // State for Telegram ID
-  const [loading, setLoading] = useState(false); // Loading state for API call
   const [error, setError] = useState(""); // State to capture error messages
   const [success, setSuccess] = useState(""); // State to capture success messages
   const navigate = useNavigate();
 
+  // Use React Query's useMutation for handling form submission
+  const mutation = useMutation({
+    mutationFn: (telegramId: string) => api.post('/api/forgot-password', { telegramId }), // API request using axios instance
+    onMutate: () => {
+      setError(""); // Clear previous errors before starting
+      setSuccess(""); // Clear previous success messages
+    },
+    onSuccess: (data) => {
+      setSuccess("Password reset instructions have been sent to your Telegram.");
+      setTelegramId(""); // Clear the input after success
+      setTimeout(() => {
+        navigate("/login"); // Redirect to login page after a delay
+      }, 3000);
+    },
+    onError: (err) => {
+      setError("Failed to send password reset instructions. Please try again later.");
+    },
+  }
+  );
+
   // Handle form submission to reset password
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     // Basic validation
@@ -22,34 +42,13 @@ const ForgotPassword = () => {
       return;
     }
 
-    setLoading(true);
-    setError(""); // Clear previous errors
-    setSuccess(""); // Clear previous success messages
-
-    try {
-      // Make an API call to the backend to reset the password using the Telegram ID
-      const response = await axios.post("/api/forgot-password", { telegramId });
-
-      // Handle the response based on the API's success or failure
-      if (response.status === 200) {
-        setSuccess("Password reset instructions have been sent to your Telegram.");
-        setTelegramId(""); // Clear the input after success
-        setTimeout(() => {
-          navigate("/login"); // Redirect to login page after a delay
-        }, 3000);
-      }
-    } catch (err) {
-      // Handle error response from the API
-      setError("Failed to send password reset instructions. Please try again later.");
-    } finally {
-      setLoading(false); // Reset loading state
-    }
+    mutation.mutate(telegramId); // Call the mutation function
   };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 overflow-hidden">
       <div className="bg-opacity-90 rounded-lg shadow-lg overflow-hidden relative w-full flex flex-col justify-center items-center">
-
         {/* Logo Image */}
         <img
           src={logo}
@@ -96,17 +95,16 @@ const ForgotPassword = () => {
                     border: "none",
                   }}
                 />
-                
               </div>
-              
-          <div className="flex justify-center mt-6">
-            <Button
-              image="green"
-              text={loading ? "Sending..." : "Send Reset Link"}
-              onClick={handleSubmit}
-              isDisabled={loading} // Disable button while loading
-            />
-          </div>
+
+              <div className="flex justify-center mt-6">
+                <Button
+                  image="green"
+                  text={mutation.isPending ? "Sending..." : "Send Reset Link"}
+                  onClick={handleSubmit}
+                  isDisabled={mutation.isPending} // Disable button while loading
+                />
+              </div>
             </div>
           </div>
 

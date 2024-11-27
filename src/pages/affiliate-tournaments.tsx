@@ -1,44 +1,77 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import SearchBar from '../components/SearchBar';
 import Table from '../components/Table';
+import { api } from '../api';
+
+// Define the Activity interface
+interface Activity {
+    id: number;
+    telegramId: string;
+    action: string;
+    ip: string;
+    status: string;
+    device: string;
+    reason: string | null; // Reason can be null or a string
+    createdAt: string; // Date string in ISO format
+    updatedAt: string; // Date string in ISO format
+}
+
+// Function to fetch activities
+const fetchActivities = async (): Promise<Activity[]> => {
+    const response = await api.get('/dev/activities', {
+        params: {
+            page: 1,
+            limit: 10,
+        },
+    });
+    return response.data.activities; // We expect an array of activities
+};
 
 const Dashboard: React.FC = () => {
-    const [activities, setActivities] = useState<any[]>([]);
-    const [filteredData, setFilteredData] = useState<any[]>([]);
+    const [searchTerm, setSearchTerm] = useState(''); // Track the search term
 
-    // Fetch activities from the API
-    useEffect(() => {
-        const fetchActivities = async () => {
-            try {
-                const response = await fetch('https://idrcdf1vfl.execute-api.ap-southeast-2.amazonaws.com/dev/activities?page=1&limit=10', {
-                    method: 'GET',
-                    headers: {
-                        'accept': '*/*'
-                    }
-                });
-                const data = await response.json();
-                setActivities(data.activities);
-                setFilteredData(data.activities); // Initial data for filtered view
-            } catch (error) {
-                console.error('Error fetching activities:', error);
-            }
-        };
-
-        fetchActivities();
-    }, []);
+    // Use TanStack Query's useQuery hook for data fetching
+    const { data: activities, error, isLoading } = useQuery<Activity[]>({
+        queryKey: ['activities'],
+        queryFn: fetchActivities,
+    });
 
     // Handle search functionality
     const handleSearch = (searchTerm: string) => {
-        const lowerCasedTerm = searchTerm.toLowerCase();
-        const newFilteredData = activities.filter((row) =>
-            Object.values(row).some(
-                (value) =>
-                    value &&
-                    value.toString().toLowerCase().includes(lowerCasedTerm)
-            )
-        );
-        setFilteredData(newFilteredData);
+        setSearchTerm(searchTerm.toLowerCase());
     };
+
+    // Filter data based on the search term
+    const filteredData = activities?.filter((activity) =>
+        Object.values(activity).some((value) =>
+            value?.toString().toLowerCase().includes(searchTerm)
+        )
+    ) || [];
+
+    // Loading State
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center h-full text-white bg-[#121212]">
+                <div className="flex items-center">
+                    <div className="spinner-border animate-spin w-8 h-8 border-4 border-t-4 border-[#45F882] rounded-full mr-4"></div>
+                    <span className="text-xl">Loading...</span>
+                </div>
+            </div>
+        );
+    }
+
+    // Error State
+    if (error) {
+        return (
+            <div className="flex justify-center items-center h-full text-white bg-[#121212]">
+                <div className="bg-red-500 p-6 rounded-md shadow-lg">
+                    <h2 className="text-xl font-bold text-white">Error fetching activities!</h2>
+                    <p className="mt-2 text-white">Something went wrong. Please try again later.</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="p-6 bg-[#121212] min-h-screen">
@@ -52,7 +85,7 @@ const Dashboard: React.FC = () => {
             </div>
 
             {/* Table Component */}
-            <div className="overflow-hidden max-h-screen"> {/* Limit the height of the parent */}
+            <div className="overflow-hidden max-h-screen">
                 <Table
                     columns={['S.No', 'Telegram ID', 'Action', 'IP', 'Status', 'Device', 'Reason', 'Date']}
                     data={filteredData.map((activity, index) => ({
@@ -63,7 +96,7 @@ const Dashboard: React.FC = () => {
                         'Status': activity.status,
                         'Device': activity.device,
                         'Reason': activity.reason || 'N/A',
-                        'Date': new Date(activity.createdAt).toLocaleString(), // Format the date
+                        'Date': new Date(activity.createdAt).toLocaleString(),
                     }))}
                     rowColor="bg-[#0F1C23]"
                     tableBgColor="bg-[#1A1D26]"
@@ -74,7 +107,7 @@ const Dashboard: React.FC = () => {
                     alternateColumnTextColors={(column) =>
                         column === 'Date' ? ['#45F882', '#FFD700'] : []
                     }
-                    height="calc(100vh - 220px)" // Ensure the table content fits within the viewport minus any header space
+                    height="calc(100vh - 220px)"
                 />
             </div>
         </div>

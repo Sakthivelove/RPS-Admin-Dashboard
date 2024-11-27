@@ -1,18 +1,7 @@
 import React from "react";
 import DynamicFormFields, { Field } from "./FormFields";
 import Button from "../AdminButton";
-
-interface ButtonProps {
-    image: "green" | "yellow"; // Restrict to green or yellow image
-    text: string; // The text to display inside the button
-    onClick: () => void; // The click handler function
-    textColor?: string; // Text color (default is #0B0E13)
-    fontSize?: string; // Font size for the text
-    fontWeight?: string; // Font weight for the text
-    textAlign?: "left" | "center" | "right"; // Text alignment
-    width?: string; // Tailwind width class (e.g., 'w-36', 'w-full')
-    height?: string; // Tailwind height class (e.g., 'h-12', 'h-auto')
-}
+import { ButtonProps } from "../AdminButton";
 
 
 interface ContainerProps {

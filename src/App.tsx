@@ -30,6 +30,7 @@ import queryClient from "./reactQuerClient";
 import Verify2FA from "./pages/verify2fa";
 import NotFound from "./pages/not-found";
 import ResetPassword from "./pages/reset-password";
+import Referrals from "./pages/referrals";
 
 
 function App() {
@@ -76,6 +77,7 @@ function App() {
             <Route path="/activity-list" element={<ActivityList />} />
             <Route path="/user-list" element={<UserList />} />
             <Route path="/tournament-info" element={<TournamentInfo />} />
+            <Route path="/referrals" element={<Referrals />} />
 
             {/* Catch-all route for non-existing paths */}
             <Route path="/404" element={<NotFound />} />

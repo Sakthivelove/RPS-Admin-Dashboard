@@ -1,7 +1,7 @@
 import React, { useState, FormEvent } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { FaLock } from 'react-icons/fa';
-import Button from '../components/AdminButton';  // Your custom Button component
+import Button from '../components/AdminButton'; 
 import { useNavigate } from 'react-router-dom';
 import { api } from '../api';
 import logo from "/RockMainLogo.png";
@@ -60,10 +60,10 @@ const Verify2FA: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 overflow-hidden">
       <div className="bg-opacity-90 rounded-lg shadow-lg overflow-hidden relative w-full flex flex-col justify-center items-center">
-        
+
         {/* Logo */}
         <img src={logo} alt="Rock Main Logo" className="mx-auto mb-4 h-24 w-auto" />
-        
+
         {/* Title */}
         <h1 className="text-4xl font-bold text-center text-white mb-8" style={{ color: 'rgba(69, 248, 130, 1)' }}>
           2FA Verification

@@ -15,6 +15,7 @@ export interface Field {
     inputPadding?: string; // Padding for input field (e.g., "p-3")
     iconColor?: string; // Icon color (default: gray-500)
     iconSize?: string; // Icon size (default: "w-5 h-5")
+    name?: string;
 }
 
 // Dynamic icon components for form fields

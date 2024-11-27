@@ -6,7 +6,7 @@ import yellowButtonImg from "/yellowbutton.png";
 
 // Defining types for the props
 
-interface ButtonProps {
+export interface ButtonProps {
   image: "green" | "yellow"; // Restrict to green or yellow image
   text: string; // The text to display inside the button
   onClick: (e: React.FormEvent) => void;  // Accepting FormEvent here
