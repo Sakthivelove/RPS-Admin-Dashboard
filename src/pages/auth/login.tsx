@@ -1,9 +1,9 @@
 import React, { useState, FormEvent } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { FaEye, FaEyeSlash, FaUser, FaLock } from 'react-icons/fa';
-import Button from '../components/AdminButton';
+import Button from '../../components/AdminButton';
 import { useNavigate } from 'react-router-dom';
-import { api } from '../api';
+import { api } from '../../api';
 import logo from "/RockMainLogo.png"; // Logo Image
 
 interface LoginDto {
@@ -14,7 +14,7 @@ interface LoginDto {
 interface LoginResponse {
   status: boolean;
   auth2: boolean;
-  token: string;
+  response: string;
   message: string;
   AuthId: number;
 }
@@ -39,15 +39,15 @@ const AdminLogin: React.FC = () => {
     onSuccess: (data) => {
       // On successful login, store the token
       if (data.status) {
-        localStorage.setItem('authToken', data.token);
-        
+        localStorage.setItem('token', data.response);
+
         // Check if 2FA is required
         if (data.auth2) {
           // If 2FA is required, navigate to 2FA page
           navigate('/verify-2fa');
         } else {
           // If no 2FA required, navigate to the home page
-          navigate('/affiliate-dashboards');
+          navigate('/affiliate-tournaments');
         }
       } else {
         console.error('Login failed: ', data.message);
@@ -72,10 +72,10 @@ const AdminLogin: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 overflow-hidden">
       <div className="bg-opacity-90 rounded-lg shadow-lg overflow-hidden relative w-full flex flex-col justify-center items-center">
-        
+
         {/* Logo */}
         <img src={logo} alt="Rock Main Logo" className="mx-auto mb-4 h-24 w-auto" />
-        
+
         {/* Title */}
         <h1 className="text-4xl font-bold text-center text-white mb-8" style={{ color: 'rgba(69, 248, 130, 1)' }}>
           Admin Login

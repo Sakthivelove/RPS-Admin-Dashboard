@@ -18,3 +18,18 @@ export const getReferrals = async (page: number, limit: number) => {
         throw new Error('Error fetching referrals');
     }
 };
+
+export interface ReferralCode {
+    id: string;
+    walletId: string;
+    referralCode: string;
+    referralCount: number;
+    reward: number;
+    createdOn: number;
+  }
+  
+  export const fetchReferralCode = async (id: string): Promise<ReferralCode> => {
+    const response = await api.get(`/users/referral/${id}`);
+    return response.data;
+  };
+  

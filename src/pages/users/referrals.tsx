@@ -1,8 +1,8 @@
 import React from 'react';
-import Table from '../components/Table';
-import { useReferrals } from '../hooks/useReferrals';
+import Table from '../../components/Table';
+import { useReferrals } from '../../hooks/useReferrals';
 
-const Referrals: React.FC = () => {
+const UserReferrals: React.FC = () => {
     const { data, error, isLoading } = useReferrals(1, 10);
     if (isLoading) {
         return <div>Loading...</div>;
@@ -37,4 +37,4 @@ const Referrals: React.FC = () => {
     );
 };
 
-export default Referrals;
+export default UserReferrals;

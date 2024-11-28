@@ -1,7 +1,7 @@
 import React from 'react';
 import GradientCard from '../components/GradientCard';
 import Table from '../components/Table';
-import { StakeColumns, StakeData } from '../constants/constants';
+import { StakeColumns, StakeData } from '../data/data';
 
 const StakeInfo: React.FC = () => {
   // Gradient Card Data

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import GradientCard from '../components/GradientCard';
 import Table from '../components/Table';
 import SearchBar from '../components/SearchBar';
-import { tableColumns, tableData } from '../constants/constants';
+import { tableColumns, tableData } from '../data/data';
 
 const GameHistory: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');

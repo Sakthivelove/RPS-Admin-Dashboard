@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import Sidebar from "./SideBarNew"; // Adjust import path accordingly
-import { sidebarMenuItems } from "../../constants/constants";
+import { sidebarMenuItems } from "../../data/data";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     const location = useLocation();

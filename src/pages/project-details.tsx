@@ -3,7 +3,7 @@ import GradientCard from '../components/GradientCard';
 import Table from '../components/Table';  
 import LineChart from '../components/LineChart';  
 import { FaInfoCircle, FaEdit, FaTrashAlt } from "react-icons/fa"; // Example: FontAwesome Icons
-import { top8GamesColumns,top8Gamesdata } from '../constants/constants';
+import { top8GamesColumns,top8Gamesdata } from '../data/data';
 
 const Dashboard: React.FC = () => {
     const [range, setRange] = useState<"day" | "week" | "month" | "year">("day");

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import logo from "../../public/RockMainLogo.png"; // Adjust the path as necessary
+import logo from "/RockMainLogo.png";
 import { FaTelegram } from "react-icons/fa"; // Importing Telegram icon
-import Button from "../components/AdminButton";
+import Button from "../../components/AdminButton";
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
-import { api } from "../api";
+import { api } from "../../api";
 
 const ForgotPassword = () => {
   const [telegramId, setTelegramId] = useState(""); // State for Telegram ID

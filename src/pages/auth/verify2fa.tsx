@@ -1,9 +1,9 @@
 import React, { useState, FormEvent } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { FaLock } from 'react-icons/fa';
-import Button from '../components/AdminButton'; 
+import Button from '../../components/AdminButton'; 
 import { useNavigate } from 'react-router-dom';
-import { api } from '../api';
+import { api } from '../../api';
 import logo from "/RockMainLogo.png";
 
 // Define the shape of the 2FA data and response types

@@ -1,4 +1,4 @@
-// /hooks/useUserTournaments.ts
+// src/hooks/useUserTournaments.ts
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../api';
 
@@ -32,15 +32,28 @@ interface UserTournamentsResponse {
 
 // Custom hook for fetching user tournaments
 const fetchUserTournaments = async (page: number, limit: number) => {
-    const response = await api.get<UserTournamentsResponse>(`users/usertournaments`, {
-        params: { page, limit },
-    });
-    return response.data;
+    try {
+        // Attempt the API request
+        const response = await api.get<UserTournamentsResponse>(`users/usertournaments`, {
+            params: { page, limit },
+        });
+
+        // Return the data if the request is successful
+        return response.data;
+    } catch (error) {
+        // Catch and handle errors
+        console.error('Error fetching user tournaments:', error);
+
+        // Optionally, throw the error again if you want the hook to handle it
+        throw new Error('Failed to fetch user tournaments');
+    }
 };
 
+
+// Use React Query's useQuery hook to fetch user tournaments
 export const useUserTournaments = (page: number, limit: number) => {
     return useQuery<UserTournamentsResponse, Error>({
-        queryKey: ['usertournaments'],
+        queryKey: ['usertournaments', page, limit],
         queryFn: () => fetchUserTournaments(page, limit)
     });
 };

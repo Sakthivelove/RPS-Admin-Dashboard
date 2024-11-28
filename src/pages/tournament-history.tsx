@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent } from 'react';
 import { FiSearch, FiFilter } from 'react-icons/fi';
-import { tournamentHistoryData } from '../constants/constants';
+import { tournamentHistoryData } from '../data/data';
 
 interface Tournament {
   id: number;

@@ -1,6 +1,6 @@
 import Container from "../components/form/FormContainer";
 import { Field } from "../components/form/FormFields";
-import { EditAdminFields } from "../constants/constants";
+import { EditAdminFields } from "../data/data";
 
 const EditAdmin: React.FC = () => {
     return (

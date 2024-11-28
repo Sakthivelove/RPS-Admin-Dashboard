@@ -1,23 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
-import { api } from '../api';
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { fetchUsers, UsersResponse } from '../services/userService';
 
-// Define the type for the user data
-interface User {
-    id: number;
-    telegramId: string;
-    password: string;
-    ResetToken: string;
-    ResetExpiry: string;
-}
-
-const fetchUsers = async () => {
-    const { data } = await api.get('users/affiliates?page=1&limit=10');
-    return data.users; // The structure may vary based on your API
-};
-
-export const useUsers = () => {
-    return useQuery<User[]>({
-        queryKey: ['users'],
-        queryFn: fetchUsers
+// UseQueryResult from TanStack Query has a generic type for data
+export const useUsers = (page: number = 1, limit: number = 10): UseQueryResult<UsersResponse, Error> => {
+    return useQuery({
+        queryKey: ['users', page, limit],
+        queryFn: () => fetchUsers(page, limit)
     });
 };

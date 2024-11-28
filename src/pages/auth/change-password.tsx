@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { api } from "../api";
-import Container from "../components/form/FormContainer";
-import { Field } from "../components/form/FormFields";
+import { api } from "../../api";
+import Container from "../../components/form/FormContainer";
+import { Field } from "../../components/form/FormFields";
 
 // Enum for button colors
 enum ButtonColors {

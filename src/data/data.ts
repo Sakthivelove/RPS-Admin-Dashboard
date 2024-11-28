@@ -17,8 +17,45 @@ export const sidebarMenuItems = [
     { label: "Stake Info", icon: "/icons/stake-info.png", path: "/stake-info" },
     { label: "Project Settings", icon: "/icons/project-settings.png", path: "/project-details" },
     { label: "Change Password", icon: "/icons/change-password.png", path: "/change-password" },
-    { label: "Logout", icon: "/icons/logout.png" }
+    { label: "Logout", icon: "/icons/logout.png" },
+
+    // New Entries for missing routes
+    { label: "Admin Screen", icon: "/icons/admin-screen.png", path: "/admin-screen" },
+    { label: "Tournament History", icon: "/icons/tournament-history.png", path: "/tournament-history" },
+    { label: "Referrals", icon: "/icons/referrals.png", path: "/referrals" },
+    { label: "User Task List", icon: "/icons/user-task-list.png", path: "/user-task-list" },
+    { label: "Transaction", icon: "/icons/transaction.png", path: "/transaction" },
+    { label: "User Tournaments", icon: "/icons/user-tournaments.png", path: "/user-tournaments" },
+
+    // New Routes for Settings
+    { label: "General Settings", icon: "/icons/settings.png", path: "/settings" },
+    { label: "Dashboard Settings", icon: "/icons/dashboard-settings.png", path: "/settings/dashboard" },
+    { label: "Change Password Settings", icon: "/icons/change-password-settings.png", path: "/settings/change-password" },
+    { label: "Module Settings", icon: "/icons/module-settings.png", path: "/settings/modulesettings" },
+    { label: "Project Settings", icon: "/icons/project-settings.png", path: "/settings/projectsettings" },
+
+    // New Routes for Activities
+    { label: "Activities", icon: "/icons/activities.png", path: "/activities" },
+
+    // New Routes for Users
+    { label: "Users", icon: "/icons/users.png", path: "/users" },
+    { label: "Affiliates", icon: "/icons/affiliates.png", path: "/users/affiliates" },
+    { label: "Referrals", icon: "/icons/referrals.png", path: "/users/referrals" },
+    { label: "Tasks", icon: "/icons/tasks.png", path: "/users/tasks" },
+    { label: "Transactions", icon: "/icons/transactions.png", path: "/users/transactions" },
+    { label: "User Tournaments", icon: "/icons/user-tournaments.png", path: "/users/usertournaments" },
+    { label: "Registered Upcoming Tournaments", icon: "/icons/upcoming-tournaments.png", path: "/users/registeredupcomingtournament" },
+    { label: "Win/Loss History", icon: "/icons/win-loss-history.png", path: "/users/winlosshistory" },
+    // { label: "User Details", icon: "/icons/user-details.png", path: "/users/:id" },
+    // { label: "User Task Details", icon: "/icons/user-task-details.png", path: "/users/task/:id" },
+    // { label: "User Referral Details", icon: "/icons/user-referral-details.png", path: "/users/referral/:id" },
+    // { label: "User Transaction Details", icon: "/icons/user-transaction-details.png", path: "/users/transaction/:id" },
+    // { label: "User Tournament Details", icon: "/icons/user-tournament-details.png", path: "/users/usertournament/:id" },
+
+    // Catch-all route for non-existing paths
+    // { label: "404", icon: "/icons/404.png", path: "/404" }
 ];
+
 
 
 // Table Columns and Data

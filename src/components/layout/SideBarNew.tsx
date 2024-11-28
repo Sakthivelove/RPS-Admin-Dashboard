@@ -32,7 +32,7 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({ sidebarActive, menuIt
   const navigate = useNavigate();
   const location = useLocation(); // Get current URL path
   const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isLogoutModalOpen, setLogoutModalOpen] = useState(false)
 
   let itemsToRender: JSX.Element[] = [];
   let itemCount = 0;
@@ -48,19 +48,25 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({ sidebarActive, menuIt
 
   // Handle Logout Click
   const handleLogoutClick = () => {
-    setModalOpen(true);
+    setLogoutModalOpen(true);
   };
 
-  // Handle Confirm Logout
+  // Confirm logout
   const handleConfirmLogout = () => {
-    setModalOpen(false);
-    console.log("User logged out");
+    setLogoutModalOpen(false);
+
+    // Perform logout actions
+    console.log("Logging out user...");
+    localStorage.removeItem("token"); // Example: Remove auth token from local storage
+    sessionStorage.clear(); // Clear session storage if needed
+
+    // Redirect to login
     navigate("/login");
   };
 
   // Handle Close Modal
-  const handleCloseModal = () => {
-    setModalOpen(false);
+  const handleCloseLogoutModal = () => {
+    setLogoutModalOpen(false);
   };
 
   return (
@@ -119,14 +125,14 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({ sidebarActive, menuIt
 
       {/* Modal for Logout Confirmation */}
       <Modal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
+        isOpen={isLogoutModalOpen}
+        onClose={handleCloseLogoutModal}
         title="Confirm Logout"
         content="Are you sure you want to log out?"
         onConfirm={handleConfirmLogout}
         buttons={[
           { text: "Yes", onClick: handleConfirmLogout, image: "green" },
-          { text: "No", onClick: handleCloseModal, image: "yellow" },
+          { text: "No", onClick: handleCloseLogoutModal, image: "yellow" },
         ]}
       />
     </div>

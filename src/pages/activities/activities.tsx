@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import SearchBar from '../components/SearchBar';
-import Table from '../components/Table';
-import { api } from '../api';
+import SearchBar from '../../components/SearchBar';
+import Table from '../../components/Table';
+import { api } from '../../api';
 
 // Define the Activity interface
 interface Activity {
@@ -74,41 +74,38 @@ const Dashboard: React.FC = () => {
     }
 
     return (
-        <div className="p-6 bg-[#121212] min-h-screen">
-            <h1 className="text-4xl font-bold text-[#45F882] mb-6">
-                Dashboard - Activity Log
-            </h1>
-
-            {/* Search Bar Component */}
-            <div className="mb-6">
-                <SearchBar placeholder="Search activities..." onSearch={handleSearch} />
-            </div>
-
-            {/* Table Component */}
-            <div className="overflow-hidden max-h-screen">
-                <Table
-                    columns={['S.No', 'Telegram ID', 'Action', 'IP', 'Status', 'Device', 'Reason', 'Date']}
-                    data={filteredData.map((activity, index) => ({
-                        'S.No': index + 1,
-                        'Telegram ID': activity.telegramId,
-                        'Action': activity.action,
-                        'IP': activity.ip,
-                        'Status': activity.status,
-                        'Device': activity.device,
-                        'Reason': activity.reason || 'N/A',
-                        'Date': new Date(activity.createdAt).toLocaleString(),
-                    }))}
-                    rowColor="bg-[#0F1C23]"
-                    tableBgColor="bg-[#1A1D26]"
-                    headerTextColor="text-[#45F882]"
-                    customCellTextColor={(row, col) =>
-                        col === 'Status' ? (row['Status'] === 'success' ? '#4CAF50' : '#FF5722') : 'white'
-                    }
-                    alternateColumnTextColors={(column) =>
-                        column === 'Date' ? ['#45F882', '#FFD700'] : []
-                    }
-                    height="calc(100vh - 220px)"
-                />
+        <div className="absolute left-[22%] w-[78%] p-6  h-screen">
+            <div className='m-[2%]'>
+                <h1 className="text-4xl font-bold text-[#45F882] mb-6">
+                    Dashboard - Activity Log
+                </h1>
+                {/* Search Bar Component */}
+                <div className="mb-6">
+                    <SearchBar placeholder="Search activities..." onSearch={handleSearch} />
+                </div>
+                {/* Table Component */}
+                <div className="overflow-hidden max-h-screen">
+                    <Table
+                        columns={['S.No', 'Telegram ID', 'Action', 'IP', 'Status', 'Device', 'Reason', 'Date']}
+                        data={filteredData.map((activity, index) => ({
+                            'S.No': index + 1,
+                            'Telegram ID': activity.telegramId,
+                            'Action': activity.action,
+                            'IP': activity.ip,
+                            'Status': activity.status,
+                            'Device': activity.device,
+                            'Reason': activity.reason || 'N/A',
+                            'Date': new Date(activity.createdAt).toLocaleString(),
+                        }))}
+                        rowColor="bg-[#0F1C23]"
+                        tableBgColor="bg-[#1A1D26]"
+                        headerTextColor="text-[#45F882]"
+                        customCellTextColor={(row, col) =>
+                            col === 'Status' ? (row['Status'] === 'success' ? '#4CAF50' : '#FF5722') : 'white'
+                        }
+                        height="calc(100vh - 220px)"
+                    />
+                </div>
             </div>
         </div>
     );

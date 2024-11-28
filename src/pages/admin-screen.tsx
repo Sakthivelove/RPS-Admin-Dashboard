@@ -3,7 +3,7 @@ import GradientCard from "../components/GradientCard";
 import BarChartComponent from "../components/BarChart";
 import Table from "../components/Table";
 import Button from "../components/AdminButton";
-import { AdminScreenColumns, AdminScreenData, AdminScreenCardData } from "../constants/constants";
+import { AdminScreenColumns, AdminScreenData, AdminScreenCardData } from "../data/data";
 import { useNavigate } from "react-router-dom";
 
 

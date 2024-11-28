@@ -3,7 +3,7 @@ import SearchBar from './SearchBar';
 
 interface TableProps {
   columns: string[]; // Column names
-  data: any[]; // Table rows (dynamic data)
+  data: any[] | undefined; // Table rows (dynamic data)
   rowColor?: string; // Color for rows (default: #0F1C23)
   tableBgColor?: string; // Table background color (default: #1A1D26)
   title?: string; // Optional title for the table
@@ -70,7 +70,7 @@ const Table: React.FC<TableProps> = ({
             </tr>
           </thead>
           <tbody>
-            {data.map((row, rowIndex) => (
+            {data?.map((row, rowIndex) => (
               <tr
                 key={rowIndex}
                 className={`${rowIndex % 2 === 0 ? `${rowColor}` : 'bg-transparent'

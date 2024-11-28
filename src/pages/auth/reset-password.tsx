@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "../components/AdminButton"; // Reusable Button component
+import Button from "../../components/AdminButton"; // Reusable Button component
 import { FaLock, FaEye, FaEyeSlash } from "react-icons/fa"; // Icons for password fields
-import logo from "../../public/RockMainLogo.png"; // Logo Image
+import logo from "/RockMainLogo.png";
 import { useMutation } from "@tanstack/react-query";
-import { api } from "../api";
+import { api } from "../../api";
 
 // Updated mutation function
 const resetPassword = async (password: string) => {

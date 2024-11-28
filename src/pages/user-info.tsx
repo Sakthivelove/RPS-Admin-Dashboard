@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import GradientCard from '../components/GradientCard';
 import Table from '../components/Table';
-import { userInfoTableColumns, userInfoTableData } from '../constants/constants';
+import { userInfoTableColumns, userInfoTableData } from '../data/data';
 
 const UserInfo: React.FC = () => {
   // State for active tab

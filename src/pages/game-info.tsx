@@ -1,7 +1,7 @@
 import React from 'react'
 import GradientCard from '../components/GradientCard';
 import Table from '../components/Table';
-import { tableColumns, tableData } from '../constants/constants';
+import { tableColumns, tableData } from '../data/data';
 
 const GameInfo: React.FC = () => {
 
