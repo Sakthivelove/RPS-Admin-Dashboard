@@ -26,10 +26,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                     <Sidebar
                         username="Admin" // Example username; replace dynamically if needed
                         menuItem={sidebarMenuItems}
-                        actionIcon={"icons/affiliate_2.png"}
+                        actionIcon={"/icons/affiliate_2.png"}
                         actionText={"Dashboard"}
                         actionPath={"/affiliate-tournaments"}
-                        breakIntervals={[3, 3, 3, 3, 2, 2, 5]}
+                        breakIntervals={[3, 1, 4, 4, 2, 2, 3,8,5]}
                     />
                 )}
             <div className="flex-grow">{children}</div>

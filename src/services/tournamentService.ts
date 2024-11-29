@@ -12,17 +12,34 @@ export const fetchRegisteredUpcomingTournaments = async (
 };
 
 export interface UserTournamentDetails {
-    tournamentId: string;
-    tournamentName: string;
-    entryPaid: boolean;
-    winner: string;
-    status: string;
-    date: string; // ISO string
-  }
-  
-  export const fetchUserTournamentDetails = async (id: string): Promise<UserTournamentDetails> => {
-    const response = await api.get(`/users/usertournament/${id}`);
-    return response.data;
-  };
+  id: string;
+  walletId: string;
+  tournamentId: string;
+  type: string | null;
+  entryPaid: boolean;
+  nominalPaid: boolean;
+  transactionId: string;
+  entryFee: number;
+  nominalTournament: boolean;
+  nominalFee: number;
+  defaultMove: string;
+  registeredAt: number; // Unix timestamp
+  lastStage: number;
+  status: string;
+  dateTime: number; // Unix timestamp
+  tournamentName: string;
+  winner: string;
+}
+
+export interface UserTournamentDetailsResponse {
+  usertournament: UserTournamentDetails[];
+  total: number;
+}
+
+export const fetchUserTournamentDetails = async (id: string): Promise<UserTournamentDetailsResponse> => {
+  const response = await api.get(`/users/usertournament/${id}`);
+  return response.data;  // Assuming the response contains { usertournament: [...], total: ... }
+};
+
   
 

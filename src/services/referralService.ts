@@ -1,6 +1,7 @@
 import { api } from "../api";
 
 export interface Referral {
+    id:string;
     referralCode: string;
     walletId: string;
     referralCount: number;

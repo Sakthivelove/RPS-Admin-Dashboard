@@ -6,10 +6,10 @@ import { useSidebar } from '../../SidebarContext';
 const UserAffiliates: React.FC = () => {
   const { data, error, isLoading } = useUserAffiliates();  // Using the custom hook to fetch user data
   const { sidebarActive } = useSidebar()
-  // Loading State
+
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-full text-white =">
+      <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen p-8 text-white flex justify-center items-center`}>
         <div className="flex items-center">
           <div className="spinner-border animate-spin w-8 h-8 border-4 border-t-4 border-[#45F882] rounded-full mr-4"></div>
           <span className="text-xl">Loading...</span>
@@ -18,13 +18,13 @@ const UserAffiliates: React.FC = () => {
     );
   }
 
-  // Error State
+
   if (error) {
     return (
-      <div className="flex justify-center items-center h-full text-white =">
+      <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen p-8 text-white flex justify-center items-center`}>
         <div className="bg-red-500 p-6 rounded-md shadow-lg">
-          <h2 className="text-xl font-bold text-white">Error fetching user-list!</h2>
-          <p className="mt-2 text-white">Something went wrong. Please try again later.</p>
+          <h2 className="text-xl font-bold text-white">Error fetching Tournaments!</h2>
+          <p className="mt-2 text-white">Error: {error.message}</p>
         </div>
       </div>
     );
@@ -47,7 +47,7 @@ const UserAffiliates: React.FC = () => {
         <Table
           columns={userListColumns}
           data={userListData || []}
-          title="User List"
+          title="User Affiliates"
           headerTextColor="text-[#45F882]"
         />
       </div>

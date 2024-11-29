@@ -32,3 +32,7 @@
   z-index: 9999 !important;
 }
 
+.sidebar-active { width: 77%; }
+.sidebar-inactive { width: 94%; }
+
+

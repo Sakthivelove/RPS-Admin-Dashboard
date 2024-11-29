@@ -3,11 +3,16 @@ import { api } from "../api"; // Assuming the api instance is imported from the 
 // Define a type for the win/loss history data
 export interface WinLossHistory {
   id: string;
-  tournamentName: string;
-  game: string;
-  result: 'win' | 'loss';
-  date: string;
-  // Add other properties as per the API response
+  playerName: string;
+  gamesPlayed: number;
+  wins: number;
+  losses: number;
+  winRate?: string; // Computed field: Win Rate (%)
+  lossRate?: string; // Computed field: Loss Rate (%)
+  lastGameDate: string; // Timestamp or formatted date string
+  tournamentName?: string; // Additional field
+  game?: string; // Additional field
+  result?: 'win' | 'loss'; // Additional field
 }
 
 // Define a type for the response object

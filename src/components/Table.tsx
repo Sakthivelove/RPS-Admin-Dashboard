@@ -14,8 +14,8 @@ interface TableProps {
   alternateColumnTextColors?: (column: string) => string[]; // Optional logic for alternate column text colors
   height?: string; // Optional height for the table
   searchPlaceholder?: string; // Optional prop to customize the search bar placeholder
-  scrollX?: string;  // Add this prop
-  scrollY?: string;  // Add this prop
+  scrollX?: string;
+  scrollY?: string;
 }
 
 const Table: React.FC<TableProps> = ({
@@ -54,7 +54,7 @@ const Table: React.FC<TableProps> = ({
       {/* Scrollable table content */}
       <div className={`overflow-x-${scrollX} overflow-y-${scrollY} flex-grow`} style={{ height }}>
         <div className="min-w-full">
-          <table className={`min-w-full table-auto ${tableBgColor}`}>
+          <table className={`min-w-full table-auto ${tableBgColor} table-layout-auto`}>
             <thead className="sticky top-0 bg-[#1A1D26]">
               <tr>
                 {columns.map((col, idx) => (
@@ -65,7 +65,7 @@ const Table: React.FC<TableProps> = ({
                       : idx === columns.length - 1
                         ? 'text-center'
                         : 'text-left'
-                      } ${headerTextColor}`}
+                      } ${headerTextColor} break-words whitespace-normal`}
                   >
                     {col}
                   </th>
@@ -98,7 +98,7 @@ const Table: React.FC<TableProps> = ({
                           : colIndex === columns.length - 1
                             ? 'text-center'
                             : 'text-left'
-                          }`}
+                          } break-words whitespace-normal`} // Added classes for wrapping
                         style={{
                           color: textColor, // Set the dynamic text color
                         }}
@@ -129,5 +129,6 @@ const Table: React.FC<TableProps> = ({
     </div>
   );
 };
+
 
 export default Table;

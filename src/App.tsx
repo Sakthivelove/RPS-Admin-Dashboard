@@ -86,8 +86,6 @@ function App() {
               <Route path="/user-list" element={<UserList />} />
               <Route path="/tournament-info" element={<TournamentInfo />} />
               <Route path="/referrals" element={<Referrals />} />
-              <Route path="/user-task-list" element={<UserTaskList />} />
-              <Route path="/transaction" element={<TransactionTable />} />
               <Route path="/user-tournaments" element={<UserTournamentTable />} />
 
               {/* Authentication and Other Routes */}

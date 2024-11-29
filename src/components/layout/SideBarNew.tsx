@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Modal from "../Modal";
-
 import { useSidebar } from "../../SidebarContext";
 
 interface MenuItem {
@@ -20,6 +19,8 @@ interface SidebarProps {
   actionIcon?: string; // Optional property for the icon
   profileImageSrc?: string;
   breakIntervals?: number[];
+  collapsedWidth?: string;
+  expandedWidth?: string;
 }
 
 
@@ -32,9 +33,9 @@ interface SidebarMenuListProps {
 
 const SidebarMenuList: React.FC<SidebarMenuListProps> = ({ sidebarActive, menuItems, breakIntervals }) => {
   const navigate = useNavigate();
-  const location = useLocation(); // Get current URL path
+  const location = useLocation();
   const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
-  const [isLogoutModalOpen, setLogoutModalOpen] = useState(false)
+  const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
 
   let itemsToRender: JSX.Element[] = [];
   let itemCount = 0;
@@ -71,6 +72,12 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({ sidebarActive, menuIt
     setLogoutModalOpen(false);
   };
 
+  // Fallback for image loading errors
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    // Replace with an inline SVG if the image fails to load
+    e.currentTarget.src = "data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20viewBox%3D'0%200%2048%2048'%3E%3Cpath%20d%3D'M24%200C10.745%200%200%2010.745%200%2024%200s24%2010.745%2024%2024%20-10.745%2024%20-24%2024%20Z'%20fill%3D'%23FFD700'%2F%3E%3C/svg%3E"; // Replace with your fallback SVG
+  };
+
   return (
     <div className="my-[2rem] overflow-y-auto">
       <div className={window.innerHeight < 400 ? "h-[10rem]" : "h-full"}>
@@ -90,18 +97,24 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({ sidebarActive, menuIt
               }
             };
 
+            // Add break interval logic
+            if (sidebarActive && breakIntervals && itemCount === breakIntervals[intervalIndex]) {
+              itemsToRender.push(<hr key={`hr-${index}`} className="my-4" />);
+              itemCount = 0;
+              intervalIndex = (intervalIndex + 1) % breakIntervals.length;
+            }
+
             itemsToRender.push(
               <li
                 key={index}
-                className={`flex items-center gap-[1rem] mb-[1rem] cursor-pointer ${
-                  selectedMenu === item.label ? "text-[#45F882]" : "text-white"
-                }`}
+                className={`flex items-center gap-[1rem] mb-[1rem] cursor-pointer ${selectedMenu === item.label ? "text-[#45F882]" : "text-white"}`}
                 onClick={handleItemClick}
               >
                 <img
                   src={item.icon}
                   alt={item.label}
                   className={`${iconSize} ${sidebarActive ? "" : "mx-auto"}`}
+                  onError={handleImageError} // Attach error handler for icon fallback
                 />
                 {sidebarActive && (
                   <h1 className="capitalize poppins-regular text-[1rem]">
@@ -110,12 +123,6 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({ sidebarActive, menuIt
                 )}
               </li>
             );
-
-            if (sidebarActive && itemCount === breakIntervals?.[intervalIndex]) {
-              itemsToRender.push(<hr key={`hr-${index}`} className="my-4" />);
-              itemCount = 0;
-              intervalIndex = (intervalIndex + 1) % breakIntervals.length;
-            }
 
             return null;
           })}
@@ -140,10 +147,6 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({ sidebarActive, menuIt
     </div>
   );
 };
-
-
-
-
 
 
 
@@ -176,7 +179,7 @@ const profileCard = (sidebarActive: boolean, userName: string) => {
           {sidebarActive && (
             <div>
               <img
-                src="icons/edit.png"
+                src="/icons/edit.png"
                 alt="Edit Icon"
                 className="h-[16px] w-[16px] cursor-pointer"
               />
@@ -196,6 +199,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   actionText,
   actionPath,
   breakIntervals,
+  collapsedWidth = 'w-[5%]',
+  expandedWidth = 'w-[22%]',
 }) => {
   const { sidebarActive, toggleSidebar, setSidebarActive } = useSidebar(); // Access the context
   const navigate = useNavigate();
@@ -220,7 +225,10 @@ const Sidebar: React.FC<SidebarProps> = ({
   }, [setSidebarActive]);
 
   return (
-    <div className={`absolute top-0 left-0 min-h-screen ${sidebarActive ? "w-[22%]" : "w-[5%]"} bg-[#0E1B22] opacity-[90%] flex-shrink-0`}>
+    <div
+      className={`absolute top-0 left-0 min-h-screen ${sidebarActive ? expandedWidth : collapsedWidth
+        } bg-[#0E1B22] opacity-90 flex-shrink-0`}
+    >
       <div className="absolute top-0 w-full h-full px-[0.5rem] xl:px-[1rem] py-[0.857rem] flex flex-col">
         <div className="flex w-full justify-center">
           {profileCard(sidebarActive, username)}
