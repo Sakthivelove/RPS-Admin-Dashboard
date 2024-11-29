@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import GradientCard from '../components/GradientCard';  
-import Table from '../components/Table';  
-import LineChart from '../components/LineChart';  
+import GradientCard from '../components/GradientCard';
+import Table from '../components/Table';
+import LineChart from '../components/LineChart';
 import { FaInfoCircle, FaEdit, FaTrashAlt } from "react-icons/fa"; // Example: FontAwesome Icons
-import { top8GamesColumns,top8Gamesdata } from '../data/data';
-
+import { top8GamesColumns, top8Gamesdata } from '../data/data';
+import { useSidebar } from '../SidebarContext';
 const Dashboard: React.FC = () => {
     const [range, setRange] = useState<"day" | "week" | "month" | "year">("day");
-
+    const { sidebarActive } = useSidebar()
 
     const username = "Admin";
     const createTournamentText = "Dashboard";
@@ -173,9 +173,8 @@ const Dashboard: React.FC = () => {
 
 
     return (
-        <div
-            className="flex h-screen"
-        >
+        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen flex overflow-auto`}>
+
             {/* Right Section */}
             <div className="flex-grow overflow-hidden">
                 {/* Scrolling Container */}
@@ -228,7 +227,7 @@ const Dashboard: React.FC = () => {
                         <div className="flex flex-col">
                             {/* Table */}
                             <div className="overflow-auto">
-                                <Table columns={visitorColumns} data={visitorData} title='Recent Visitors' height='50vh'/>
+                                <Table columns={visitorColumns} data={visitorData} title='Recent Visitors' height='50vh' />
                             </div>
                         </div>
                     </div>

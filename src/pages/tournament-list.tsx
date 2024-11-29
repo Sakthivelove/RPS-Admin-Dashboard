@@ -3,10 +3,11 @@ import GradientCard from '../components/GradientCard';
 import Table from '../components/Table';
 import SearchBar from '../components/SearchBar';
 import { FaEye, FaEdit, FaTrash } from 'react-icons/fa'; // Icons from react-icons
+import { useSidebar } from '../SidebarContext';
 
 const TournamentList: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
-
+    const {sidebarActive} = useSidebar()
     const handleSearch = (term: string) => {
         setSearchTerm(term);
     };
@@ -78,9 +79,9 @@ const TournamentList: React.FC = () => {
     );
 
     return (
-        <div className="flex h-screen overflow-hidden">
+        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]': 'w-[94%]'} h-screen overflow-auto`}>
             {/* Main Content */}
-            <div className="flex-grow flex flex-col p-6 overflow-hidden">
+            <div className="flex-grow flex flex-col h-full p-6 overflow-hidden">
                 {/* Render Gradient Cards */}
                 <div className="flex space-x-6 mb-6">
                     {gradientCards.map((card, index) => (

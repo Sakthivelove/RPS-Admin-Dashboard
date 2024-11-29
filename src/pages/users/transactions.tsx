@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { useTransactions } from '../../hooks/useTransactions';
 import Table from '../../components/Table';
+import { useSidebar } from '../../SidebarContext';
 
 const UserTransactions: React.FC = () => {
     const [page, setPage] = useState(1);
     const limit = 10;
+
+    const {sidebarActive} = useSidebar()
 
     const { data, isLoading, isError } = useTransactions({ page, limit });
 
@@ -60,8 +63,8 @@ const UserTransactions: React.FC = () => {
     if (isError) return <div>Error loading transactions.</div>;
 
     return (
-        <div className='absolute left-[22%] w-[78%] h-screen m-[2%] flex flex-col'>
-                <div className=''>
+        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]': 'w-[94%]'} h-screen text-white overflow-auto`}>
+                <div className='m-[2%]'>
                     <Table
                         columns={columns}
                         data={tableData}

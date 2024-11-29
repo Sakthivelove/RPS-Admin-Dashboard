@@ -2,8 +2,9 @@ import React from 'react';
 import GradientCard from '../components/GradientCard';
 import Table from '../components/Table';
 import { StakeColumns, StakeData } from '../data/data';
-
+import { useSidebar } from '../SidebarContext';
 const StakeHistory: React.FC = () => {
+  const {sidebarActive} = useSidebar()
   // Gradient Card Data
   const gradientCards = [
     {
@@ -29,7 +30,7 @@ const StakeHistory: React.FC = () => {
 
 
   return (
-    <div className="flex h-screen text-white">
+    <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]': 'w-[94%]'} h-screen flex overflow-auto`}>
 
       {/* Right Section */}
       <div className="flex-grow overflow-hidden">

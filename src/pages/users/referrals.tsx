@@ -1,9 +1,11 @@
 import React from 'react';
 import Table from '../../components/Table';
 import { useReferrals } from '../../hooks/useReferrals';
+import { useSidebar } from '../../SidebarContext';
 
 const UserReferrals: React.FC = () => {
     const { data, error, isLoading } = useReferrals(1, 10);
+    const {sidebarActive} = useSidebar()
     if (isLoading) {
         return <div>Loading...</div>;
     }
@@ -24,7 +26,7 @@ const UserReferrals: React.FC = () => {
     })) || [];
 
     return (
-        <div className="flex h-screen">
+        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]': 'w-[94%]'} h-screen flex overflow-auto`}>
             <div className="flex-1 p-6 bg-opacity-80">
                 <Table
                     columns={columns}

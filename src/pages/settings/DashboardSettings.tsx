@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useSidebar } from "../../SidebarContext";
 
 interface DashboardSettingsData {
   [key: string]: boolean;
@@ -7,7 +8,7 @@ interface DashboardSettingsData {
 
 const DashboardSettings: React.FC = () => {
   const [settings, setSettings] = useState<DashboardSettingsData | null>(null);
-
+  const {sidebarActive} = useSidebar() 
   useEffect(() => {
     axios
       .get<DashboardSettingsData>("/dev/settings/dashboard")
@@ -22,7 +23,7 @@ const DashboardSettings: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]': 'w-[94%]'} h-screen text-white overflow-auto`}>
       <h1>Dashboard Settings</h1>
       {settings ? (
         <form>

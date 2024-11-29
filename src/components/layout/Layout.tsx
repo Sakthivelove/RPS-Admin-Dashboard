@@ -21,17 +21,17 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
 
     return (
-        <div className="bg-cover bg-no-repeat bg-center min-h-screen flex" style={{ backgroundImage: "url(/adminlist.png)" }}>
-            {showSidebar && (
-                <Sidebar
-                    username="Admin" // Example username; replace dynamically if needed
-                    menuItem={sidebarMenuItems}
-                    actionIcon={"icons/affiliate_2.png"}
-                    actionText={"Dashboard"}
-                    actionPath={"/affiliate-tournaments"}
-                    breakIntervals={[3, 3, 3, 3, 2, 2, 5]}
-                />
-            )}
+        <div className="bg-cover bg-no-repeat bg-center min-h-screen flex w-screen" style={{ backgroundImage: "url(/adminlist.png)" }}>
+                {showSidebar && (
+                    <Sidebar
+                        username="Admin" // Example username; replace dynamically if needed
+                        menuItem={sidebarMenuItems}
+                        actionIcon={"icons/affiliate_2.png"}
+                        actionText={"Dashboard"}
+                        actionPath={"/affiliate-tournaments"}
+                        breakIntervals={[3, 3, 3, 3, 2, 2, 5]}
+                    />
+                )}
             <div className="flex-grow">{children}</div>
         </div>
     );

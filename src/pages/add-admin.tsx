@@ -1,6 +1,6 @@
 import Container from "../components/form/FormContainer";
 import { Field } from "../components/form/FormFields";
-
+import { useSidebar } from "../SidebarContext";
 
 enum ButtonColors {
     Yellow = 'yellow',
@@ -19,14 +19,13 @@ const addAdminFormFields: Field[] = [
 // AddAdmin component
 const AddAdmin: React.FC = () => {
 
+    const { sidebarActive } = useSidebar()
+
     const handleCancelClick = () => alert('Cancel Clicked');
     const handleCreateClick = () => alert('Create Clicked');
 
     return (
-        <div
-            className="flex h-screen"
-        >
-
+        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen flex overflow-auto`}>
             {/* Container on the right */}
             <div className="flex-1 flex justify-center items-center p-4 bg-[#1A1D26CC] m-[2%]">
                 {/* Container component for the form */}

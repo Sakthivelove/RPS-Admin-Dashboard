@@ -26,7 +26,7 @@ interface SidebarProviderProps {
 
 // SidebarProvider component that provides the context to its children
 export const SidebarProvider: React.FC<SidebarProviderProps> = ({ children }) => {
-  const [sidebarActive, setSidebarActive] = useState<boolean>(false);
+  const [sidebarActive, setSidebarActive] = useState<boolean>(true);
 
   const toggleSidebar = () => {
     setSidebarActive((prev) => !prev);

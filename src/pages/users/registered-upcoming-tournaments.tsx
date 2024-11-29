@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import Table from '../../components/Table';
 import { useRegisteredTournaments } from '../../hooks/useRegisteredTournaments';
-
+import { useSidebar } from '../../SidebarContext';
 const UpcomingTournaments: React.FC = () => {
     const [page, setPage] = useState(1);
     const limit = 10;
+    const { sidebarActive } = useSidebar()
 
     const { data, isLoading, isError, error, refetch } = useRegisteredTournaments(page, limit);
 
@@ -44,56 +45,57 @@ const UpcomingTournaments: React.FC = () => {
         'Winner': tournament.winner || 'N/A',
     })) || [];
 
-
     return (
-        <div className="p-4 w-full h-screen">
-            {isLoading && <div className="text-center text-white">Loading...</div>}
-            {isError && (
-                <div className="text-center text-red-500">
-                    Error: {(error as Error).message}
-                </div>
-            )}
-            <div className='absolute left-[250px] w-[78%]'>
-                {!isLoading && !isError && (
-
-                    <Table
-                        columns={columns}
-                        data={tableData}
-                        rowColor="bg-gray-800"
-                        tableBgColor="bg-gray-900"
-                        title="Registered Upcoming Tournaments"
-                        headerTextColor="text-gray-300"
-                        showSearchBar={true}
-                        onSearch={(searchTerm) => {
-                            const filteredData = tableData?.filter((row) =>
-                                Object.values(row)
-                                    .join(' ')
-                                    .toLowerCase()
-                                    .includes(searchTerm.toLowerCase())
-                            );
-                        }}
-                        searchPlaceholder="Search tournaments..."
-                        height="500px"
-                    />
-
-                )}
-                <div className="flex justify-between mt-4">
-                    <button
-                        disabled={page === 1}
-                        onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-                        className="px-4 py-2 bg-gray-700 text-white rounded disabled:opacity-50"
-                    >
-                        Previous
-                    </button>
-                    <button
-                        onClick={() => setPage((prev) => prev + 1)}
-                        className="px-4 py-2 bg-gray-700 text-white rounded"
-                    >
-                        Next
-                    </button>
-                </div>
-            </div>
-        </div>
+        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen`}>
+                    <div className='m-[2%] overflow-hidden'>
+                        {isLoading && <div className="text-center text-white">Loading...</div>}
+                        {isError && (
+                            <div className="text-center text-red-500">
+                                Error: {(error as Error).message}
+                            </div>
+                        )}
+                            {!isLoading && !isError && (
+                                <Table
+                                    columns={columns}
+                                    data={tableData}
+                                    rowColor="bg-gray-800"
+                                    tableBgColor="bg-gray-900"
+                                    title="Registered Upcoming Tournaments"
+                                    headerTextColor="text-gray-300"
+                                    showSearchBar={true}
+                                    onSearch={(searchTerm) => {
+                                        const filteredData = tableData?.filter((row) =>
+                                            Object.values(row)
+                                                .join(' ')
+                                                .toLowerCase()
+                                                .includes(searchTerm.toLowerCase())
+                                        );
+                                    }}
+                                    searchPlaceholder="Search tournaments..."
+                                    height="500px"
+                                    // Apply custom styles for scroll
+                                    scrollY="scroll"
+                                    scrollX="scroll"
+                                />
+                            )}
+                            {/* Pagination controls */}
+                            <div className="flex justify-between mt-4">
+                                <button
+                                    disabled={page === 1}
+                                    onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                                    className="px-4 py-2 bg-gray-700 text-white rounded disabled:opacity-50"
+                                >
+                                    Previous
+                                </button>
+                                <button
+                                    onClick={() => setPage((prev) => prev + 1)}
+                                    className="px-4 py-2 bg-gray-700 text-white rounded"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                    </div>
+                    </div>
     );
 };
 

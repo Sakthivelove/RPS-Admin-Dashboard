@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useSidebar } from "../../SidebarContext";
 
 interface Settings {
   [key: string]: string | number | boolean;
@@ -7,7 +8,7 @@ interface Settings {
 
 const GeneralSettings: React.FC = () => {
   const [settings, setSettings] = useState<Settings | null>(null);
-
+  const {sidebarActive} = useSidebar()
   useEffect(() => {
     axios
       .get<Settings>("/dev/settings")
@@ -16,7 +17,7 @@ const GeneralSettings: React.FC = () => {
   }, []);
 
   return (
-    <div>
+    <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]': 'w-[94%]'} h-screen text-white overflow-auto`}>
       <h1>General Settings</h1>
       {settings ? (
         <pre>{JSON.stringify(settings, null, 2)}</pre>

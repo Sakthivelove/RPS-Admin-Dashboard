@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Table from '../components/Table';
 import { FaEye, FaEdit, FaTrash } from 'react-icons/fa';
-
+import { useSidebar } from '../SidebarContext';
 const TournamentInfoColumns = [
   'S.No',
   'Tournament Name',
@@ -244,7 +244,7 @@ const TournamentInfoData = [
 
 const TournamentInfo: React.FC = () => {
   const [filteredData, setFilteredData] = useState(TournamentInfoData);
-
+  const {sidebarActive} = useSidebar()
   const handleSearch = (searchTerm: string) => {
     const lowercasedTerm = searchTerm.toLowerCase();
     setFilteredData(
@@ -257,7 +257,7 @@ const TournamentInfo: React.FC = () => {
   };
 
   return (
-    <div className='h-screen p-6'>
+    <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]': 'w-[94%]'} h-screen overflow-auto`}>
       <div className="bg-[#0E1B2280] h-full flex flex-col rounded-lg overflow-hidden">
         <div className="flex flex-col h-full p-3">
           {/* Search Bar and Table Section */}

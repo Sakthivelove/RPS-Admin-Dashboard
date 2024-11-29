@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useUsers } from '../../hooks/useUsers';
 import { User } from '../../services/userService';
+import { useSidebar } from '../../SidebarContext';
 
 const Users: React.FC = () => {
   const [page, setPage] = useState<number>(1);
-
+  const {sidebarActive} = useSidebar()
   const { data, isLoading, isError, isFetching, error } = useUsers(page);
 
   const handleNextPage = () => {
@@ -15,11 +16,15 @@ const Users: React.FC = () => {
     setPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error: {(error as Error).message}</div>;
+  if (isLoading) return( 
+  <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]': 'w-[94%]'} h-screen text-white overflow-auto`}>Loading...</div>
+);
+  if (isError) return( 
+  <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]': 'w-[94%]'} h-screen text-white overflow-auto`}>Error: {(error as Error).message}</div>
+);
 
   return (
-    <div>
+    <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]': 'w-[94%]'} h-screen text-white overflow-auto`}>
       <h1>Users</h1>
       <ul>
         {data?.users?.map((user: User) => (

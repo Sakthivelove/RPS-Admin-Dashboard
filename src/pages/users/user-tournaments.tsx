@@ -2,10 +2,11 @@
 import React from 'react';
 import { useUserTournaments } from '../../hooks/useUserTournaments';
 import Table from '../../components/Table';
+import { useSidebar } from '../../SidebarContext';
 
 const UserTournaments = () => {
     const { data, error, isLoading } = useUserTournaments(1, 10);
-
+    const {sidebarActive} = useSidebar()
     // Handle loading and error states
     if (isLoading) return <div>Loading...</div>;
     if (error instanceof Error) return <div>Error: {error.message}</div>;
@@ -36,15 +37,14 @@ const UserTournaments = () => {
     })) || [];
 
     return (
-        <div className='absolute left-[22%] w-[78%]'>
-            <h2>User Tournament Data</h2>
-            <Table
-                columns={columns}
-                data={tableData}
-                title="User Tournament Data"
-                showSearchBar={true}
-                searchPlaceholder="Search tournaments..."
-            />
+        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]': 'w-[94%]'} h-screen pl-[1%] pr-[2%] py-[2%]`}>           
+                    <Table
+                        columns={columns}
+                        data={tableData}
+                        title="User Tournament Data"
+                        showSearchBar={true}
+                        searchPlaceholder="Search tournaments..."
+                    />        
         </div>
     );
 };

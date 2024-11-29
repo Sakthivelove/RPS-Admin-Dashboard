@@ -5,11 +5,14 @@ import Table from "../components/Table";
 import Button from "../components/AdminButton";
 import { AdminScreenColumns, AdminScreenData, AdminScreenCardData } from "../data/data";
 import { useNavigate } from "react-router-dom";
+import { useSidebar } from "../SidebarContext";
 
 
 const AdminScreen: React.FC = () => {
     const navigate = useNavigate();
+    const {sidebarActive} = useSidebar()
     return (
+        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]': 'w-[94%]'} h-screen text-white overflow-auto`}>
         <main
             className="flex h-full"
             aria-label="Admin Dashboard"
@@ -65,6 +68,7 @@ const AdminScreen: React.FC = () => {
                 </section>
             </section>
         </main>
+        </div>
     );
 };
 

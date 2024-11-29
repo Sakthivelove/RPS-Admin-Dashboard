@@ -46,14 +46,14 @@ export const sidebarMenuItems = [
     { label: "User Tournaments", icon: "/icons/user-tournaments.png", path: "/users/usertournaments" },
     { label: "Registered Upcoming Tournaments", icon: "/icons/upcoming-tournaments.png", path: "/users/registeredupcomingtournament" },
     { label: "Win/Loss History", icon: "/icons/win-loss-history.png", path: "/users/winlosshistory" },
-    // { label: "User Details", icon: "/icons/user-details.png", path: "/users/:id" },
-    // { label: "User Task Details", icon: "/icons/user-task-details.png", path: "/users/task/:id" },
-    // { label: "User Referral Details", icon: "/icons/user-referral-details.png", path: "/users/referral/:id" },
-    // { label: "User Transaction Details", icon: "/icons/user-transaction-details.png", path: "/users/transaction/:id" },
-    // { label: "User Tournament Details", icon: "/icons/user-tournament-details.png", path: "/users/usertournament/:id" },
+    { label: "User Details", icon: "/icons/user-details.png", path: "/users/:id" },
+    { label: "User Task Details", icon: "/icons/user-task-details.png", path: "/users/task/:id" },
+    { label: "User Referral Details", icon: "/icons/user-referral-details.png", path: "/users/referral/:id" },
+    { label: "User Transaction Details", icon: "/icons/user-transaction-details.png", path: "/users/transaction/:id" },
+    { label: "User Tournament Details", icon: "/icons/user-tournament-details.png", path: "/users/usertournament/:id" },
 
     // Catch-all route for non-existing paths
-    // { label: "404", icon: "/icons/404.png", path: "/404" }
+    { label: "404", icon: "/icons/404.png", path: "/404" }
 ];
 
 

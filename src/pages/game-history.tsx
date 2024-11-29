@@ -3,10 +3,10 @@ import GradientCard from '../components/GradientCard';
 import Table from '../components/Table';
 import SearchBar from '../components/SearchBar';
 import { tableColumns, tableData } from '../data/data';
-
+import { useSidebar } from '../SidebarContext';
 const GameHistory: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
-
+    const {sidebarActive} = useSidebar()
     const handleSearch = (term: string) => {
         setSearchTerm(term);
     };
@@ -44,7 +44,7 @@ const GameHistory: React.FC = () => {
     );
 
     return (
-        <div className="flex h-screen overflow-hidden">
+        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]': 'w-[94%]'} h-screen flex overflow-auto`}>
             {/* Main Content */}
             <div className="flex-grow flex flex-col p-6 overflow-hidden">
                 {/* Gradient Cards */}

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Modal from "../Modal";
 
+import { useSidebar } from "../../SidebarContext";
+
 interface MenuItem {
   icon: string;
   label: string;
@@ -187,92 +189,88 @@ const profileCard = (sidebarActive: boolean, userName: string) => {
 };
 
 
-
 const Sidebar: React.FC<SidebarProps> = ({
   username,
   menuItem,
   actionIcon,
   actionText,
   actionPath,
-  breakIntervals
-  // profileImageSrc,
+  breakIntervals,
 }) => {
-  const [sidebarActive, setSidebarActive] = useState<boolean>(false);
+  const { sidebarActive, toggleSidebar, setSidebarActive } = useSidebar(); // Access the context
   const navigate = useNavigate();
 
+  // Handle window resizing and set sidebar state based on the window width
   useEffect(() => {
-    if (window.innerWidth >= 768) {
-      setSidebarActive(true);
-    } else {
-      setSidebarActive(false);
-    }
-
     const screenWidthListener = () => {
-      if (window.innerWidth < 768) {
-        setSidebarActive(false);
+      if (window.innerWidth >= 768) {
+        setSidebarActive(true);  // Ensure sidebar is active on large screens
+      } else {
+        setSidebarActive(false); // Hide sidebar on smaller screens
       }
     };
+
+    screenWidthListener(); // Initial check on mount
 
     window.addEventListener('resize', screenWidthListener);
 
     return () => {
       window.removeEventListener('resize', screenWidthListener);
     };
-  }, []);
+  }, [setSidebarActive]);
 
   return (
-    <div className={sidebarActive ? "relative w-[22%] bg-[#0E1B22] opacity-[90%] min-h-screen" : "relative w-[20%] md:w-[10%] lg:w-[5%] bg-[#0E1B22] opacity-[90%] min-h-full"}>
+    <div className={`absolute top-0 left-0 min-h-screen ${sidebarActive ? "w-[22%]" : "w-[5%]"} bg-[#0E1B22] opacity-[90%] flex-shrink-0`}>
       <div className="absolute top-0 w-full h-full px-[0.5rem] xl:px-[1rem] py-[0.857rem] flex flex-col">
         <div className="flex w-full justify-center">
           {profileCard(sidebarActive, username)}
         </div>
 
-        {
-          sidebarActive ? (
-            <div className="w-full my-[1rem]">
-              <button
-                className="capitalize bg-[#45F882] rounded-[5px] w-full px-[0.5rem] py-[10px] flex items-center gap-[0.5rem] poppins-bold"
-                onClick={() => navigate(actionPath)}
-              >
-                <img
-                  src={actionIcon} // Your icon source here
-                  alt="icon"
-                  className="w-5 h-5" // Adjust size as needed
-                />
-                {actionText}
-              </button>
-            </div>
-          ) : (
-            <div className="w-full flex justify-center">
-              <button
-                className="bg-[#45F882] rounded-[5px] w-fit p-[0.5rem] my-[1rem] flex items-center gap-[0.5rem]"
-                onClick={() => navigate(actionPath)}
-              >
-                <img
-                  src={actionIcon} // Your icon source here
-                  alt="icon"
-                  className="w-5 h-5" // Adjust size as needed
-                />
-                <span className="sr-only">{actionText}</span> {/* For accessibility */}
-              </button>
-            </div>
-          )
-        }
-
-
+        {sidebarActive ? (
+          <div className="w-full my-[1rem]">
+            <button
+              className="capitalize bg-[#45F882] rounded-[5px] w-full px-[0.5rem] py-[10px] flex items-center gap-[0.5rem] poppins-bold"
+              onClick={() => navigate(actionPath)}
+            >
+              <img
+                src={actionIcon}
+                alt="icon"
+                className="w-5 h-5"
+              />
+              {actionText}
+            </button>
+          </div>
+        ) : (
+          <div className="w-full flex justify-center">
+            <button
+              className="bg-[#45F882] rounded-[5px] w-fit p-[0.5rem] my-[1rem] flex items-center gap-[0.5rem]"
+              onClick={() => navigate(actionPath)}
+            >
+              <img
+                src={actionIcon}
+                alt="icon"
+                className="w-5 h-5"
+              />
+              <span className="sr-only">{actionText}</span> {/* For accessibility */}
+            </button>
+          </div>
+        )}
 
         {/* Scrollable Menu List */}
-        <div className="overflow-y-auto flex-grow no-scrollbar"> {/* Added custom scrollbar class */}
+        <div className="overflow-y-auto flex-grow no-scrollbar">
           <SidebarMenuList sidebarActive={sidebarActive} menuItems={menuItem} breakIntervals={breakIntervals} />
         </div>
       </div>
 
-      <div onClick={() => setSidebarActive(!sidebarActive)} className="hidden md:block absolute top-[4.5rem] rounded-full p-[0.5rem] bg-[#1A1D26] -right-5 cursor-pointer">
+      {/* Button to toggle sidebar */}
+      <div
+        onClick={toggleSidebar} // Use the toggleSidebar function from context
+        className="hidden md:block absolute top-[4.5rem] rounded-full p-[0.5rem] bg-[#1A1D26] -right-5 cursor-pointer"
+      >
         <img src="/affiliatePanel/icons/arrow_left.png" alt="" className={sidebarActive ? "" : "rotate-180"} />
       </div>
     </div>
   );
 };
 
-
-export default Sidebar
+export default Sidebar;

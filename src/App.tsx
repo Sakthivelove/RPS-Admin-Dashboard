@@ -53,7 +53,7 @@ import UserDetails from "./pages/users/user-details";
 import UserTaskDetails from "./pages/users/user-task-details";
 import UserReferralDetails from "./pages/users/user-referral-details";
 import UserTransactionDetails from "./pages/users/user-transaction-details";
-import UserTournamentDetails from "./pages/users/UserTournamentDetails";
+import UserTournamentDetails from "./pages/users/user-tournament-details";
 
 
 function App() {

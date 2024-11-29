@@ -2,9 +2,10 @@ import React from 'react';
 import SearchBar from '../components/SearchBar'; // Import SearchBar component
 import Table from '../components/Table'; // Import Table component
 import { FaInfoCircle, FaTrashAlt } from 'react-icons/fa';
+import { useSidebar } from '../SidebarContext';
 
 const TournamentHistory: React.FC = () => {
-
+  const {sidebarActive} =useSidebar()
 // Table Columns and Data
 const tournamentHistoryColumns = [
   'S.No',
@@ -178,9 +179,7 @@ const tournamentHistoryData = [
   };
 
   return (
-    <div
-      className="flex h-screen bg-cover bg-center text-white"
-    >
+    <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]': 'w-[94%]'} h-screen text-white flex overflow-auto`}>
 
       {/* Main Content */}
       <div className="flex-grow p-6">

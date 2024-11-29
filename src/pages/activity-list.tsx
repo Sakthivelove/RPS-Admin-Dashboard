@@ -1,12 +1,13 @@
 import React from 'react';
 import GradientCard from '../components/GradientCard';
 import TournamentPage from './tournament-history';
+import { useSidebar } from '../SidebarContext';
 
 const ActivityList: React.FC = () => {
+  const { sidebarActive } = useSidebar()
   return (
-    <div
-      className="flex h-screen text-white overflow-hidden p-4"
-    >
+    <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen overflow-auto`}>
+
       {/* Main Content */}
       <div className="flex-grow bg-[#0E1B2280] rounded-lg p-6 overflow-hidden">
         {/* Gradient Cards */}
@@ -33,7 +34,7 @@ const ActivityList: React.FC = () => {
 
         {/* Tournament Page Content */}
         <div className="rounded-lg p-4 overflow-auto h-full">
-          <TournamentPage backgroundColor='transparent'/>
+          <TournamentPage backgroundColor='transparent' />
         </div>
       </div>
     </div>

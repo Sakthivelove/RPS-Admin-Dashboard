@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEdit, faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import GradientCard from "../components/GradientCard";
-
+import { useSidebar } from "../SidebarContext";
 // Sample data for the table
 const tableData = [
     { id: 1, username: "user1", password: "******" },
@@ -36,9 +36,9 @@ const cardData = [
 
 const AdminList = () => {
     const navigate = useNavigate(); // Initialize useNavigate
-
+    const {sidebarActive} = useSidebar()
     return (
-        <div className="flex flex-col w-full h-full">
+        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]': 'w-[94%]'} h-screen overflow-auto`}>
             {/* Top Row: Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-6">
                 {cardData.map((card, index) => (
