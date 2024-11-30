@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import Sidebar from "./SideBarNew";
-import { sidebarMenuItems } from "../../data/data";
+import { sidebarMenuItems } from "../../data/sideBarMenuItems";
 import { useNavigate } from "react-router-dom";
 import Modal from "../Modal";
 

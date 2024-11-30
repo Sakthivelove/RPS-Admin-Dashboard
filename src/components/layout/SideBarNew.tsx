@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSidebar } from "../../SidebarContext";
 
+
 interface MenuItem {
-  icon: string;
+  icon: ReactNode | string;
   label: string;
   path?: string; // Optional property for navigation
   action?: () => void; // Optional callback for specific actions
@@ -66,11 +67,6 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({
     }
   };
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    e.currentTarget.src =
-      "data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20viewBox%3D'0%200%2048%2048'%3E%3Cpath%20d%3D'M24%200C10.745%200%200%2010.745%200%2024%200s24%2010.745%2024%2024%20-10.745%2024%20-24%2024%20Z'%20fill%3D'%23FFD700'%2F%3E%3C/svg%3E";
-  };
-
   return (
     <div className="my-[2rem] overflow-y-auto">
       <div className={window.innerHeight < 400 ? "h-[10rem]" : "h-full"}>
@@ -92,12 +88,15 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({
                   }`}
                 onClick={() => handleItemClick(item)}
               >
-                <img
-                  src={item.icon}
-                  alt={item.label}
-                  className={`${iconSize} ${sidebarActive ? "" : "mx-auto"}`}
-                  onError={handleImageError}
-                />
+                {typeof item.icon === "string" ? (
+                  <img
+                    src={item.icon}
+                    alt={item.label}
+                    className={`${iconSize} ${sidebarActive ? "" : "mx-auto"}`}
+                  />
+                ) : (
+                  item.icon
+                )}
                 {sidebarActive && (
                   <h1 className="capitalize poppins-regular text-[1rem]">
                     {item.label}
@@ -108,7 +107,6 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({
 
             return null;
           })}
-
           {/* Render items */}
           {itemsToRender}
         </ul>
@@ -116,6 +114,7 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({
     </div>
   );
 };
+
 
 
 const profileCard = (sidebarActive: boolean, userName: string) => {

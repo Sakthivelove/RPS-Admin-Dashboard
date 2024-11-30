@@ -1,34 +1,12 @@
 import React from 'react';
-import Table from "../../components/Table";
+import Table from '../../components/Table';
 import { useUserAffiliates } from '../../hooks/useAffiliates';
 import { useSidebar } from '../../SidebarContext';
+import StatusMessage from '../../components/StatusMessage';
 
 const UserAffiliates: React.FC = () => {
-  const { data, error, isLoading } = useUserAffiliates();  // Using the custom hook to fetch user data
-  const { sidebarActive } = useSidebar()
-
-  if (isLoading) {
-    return (
-      <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen p-8 text-white flex justify-center items-center`}>
-        <div className="flex items-center">
-          <div className="spinner-border animate-spin w-8 h-8 border-4 border-t-4 border-[#45F882] rounded-full mr-4"></div>
-          <span className="text-xl">Loading...</span>
-        </div>
-      </div>
-    );
-  }
-
-
-  if (error) {
-    return (
-      <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen p-8 text-white flex justify-center items-center`}>
-        <div className="bg-red-500 p-6 rounded-md shadow-lg">
-          <h2 className="text-xl font-bold text-white">Error fetching Tournaments!</h2>
-          <p className="mt-2 text-white">Error: {error.message}</p>
-        </div>
-      </div>
-    );
-  }
+  const { data, error, isLoading } = useUserAffiliates(); // Fetch user data
+  const { sidebarActive } = useSidebar(); // Sidebar state
 
   // Define columns for the table
   const userListColumns = ['S.No', 'Telegram ID', 'ID', 'Reset Expiry'];
@@ -36,20 +14,39 @@ const UserAffiliates: React.FC = () => {
   // Transform API data into the format expected by the table
   const userListData = data?.map((user, index) => ({
     'S.No': index + 1,
-    'Telegram ID': user.telegramId,  // Display the Telegram ID
-    ID: `U00${user.id}`,             // Format user ID as needed (e.g., "U001", "U002")
+    'Telegram ID': user.telegramId, // Display the Telegram ID
+    ID: `U00${user.id}`, // Format user ID as needed
     'Reset Expiry': user.ResetExpiry, // Show the Reset Expiry date
   }));
 
   return (
-    <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen overflow-auto`}>
-      <div className="flex-1 h-full p-6 bg-opacity-80">
-        <Table
-          columns={userListColumns}
-          data={userListData || []}
-          title="User Affiliates"
-          headerTextColor="text-[#45F882]"
+    <div
+      className={`absolute right-0 ${
+        sidebarActive ? 'w-[77%]' : 'w-[94%]'
+      } h-screen overflow-auto`}
+    >
+      {/* Wrapper to handle positioning and sizing */}
+      <div className="flex-1 h-full p-6 bg-opacity-80 relative">
+        {/* Use StatusMessage for loading and error states with custom positioning */}
+        <StatusMessage
+          isLoading={isLoading}
+          error={error}
+          loadingMessage="Fetching User Affiliates..."
+          errorMessage="Error fetching User Affiliates!"
+          className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50"
         />
+
+        {/* Render the table only if there is no loading or error */}
+        {!isLoading && !error && (
+          <div className="flex-1 h-full p-6 bg-opacity-80">
+            <Table
+              columns={userListColumns}
+              data={userListData || []}
+              title="User Affiliates"
+              headerTextColor="text-[#45F882]"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
