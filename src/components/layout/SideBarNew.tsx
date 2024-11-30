@@ -234,7 +234,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         )}
 
         {/* Scrollable Menu List */}
-        <div className="overflow-y-auto flex-grow no-scrollbar">
+        <div className="overflow-y-auto flex-grow scrollbar-thin">
           <SidebarMenuList sidebarActive={sidebarActive} menuItems={menuItem} breakIntervals={breakIntervals} onLogoutClick={onLogoutClick} />
         </div>
       </div>

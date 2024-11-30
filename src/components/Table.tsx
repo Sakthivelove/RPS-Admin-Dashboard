@@ -35,7 +35,7 @@ const Table: React.FC<TableProps> = ({
   scrollY = 'auto',  // Default value for scrollY
 }) => {
   return (
-    <div className={`${tableBgColor} h-full p-4 rounded-lg flex flex-col`}>
+    <div className={`${tableBgColor} h-full rounded-lg flex p-4 flex-col`}>
       {/* Title and SearchBar outside the scrollable content */}
       <div>
         {title && (
@@ -52,7 +52,7 @@ const Table: React.FC<TableProps> = ({
       </div>
 
       {/* Scrollable table content */}
-      <div className={`overflow-x-${scrollX} overflow-y-${scrollY} flex-grow`} style={{ height }}>
+      <div className={`overflow-x-${scrollX} overflow-y-${scrollY} flex-grow scrollbar-thin`} style={{ height }}>
         <div className="min-w-full">
           <table className={`min-w-full table-auto ${tableBgColor} table-layout-auto`}>
             <thead className="sticky top-0 bg-[#1A1D26]">

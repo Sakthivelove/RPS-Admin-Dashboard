@@ -34,7 +34,7 @@ const Container: React.FC<ContainerProps> = ({
             <div className={`w-full p-[2px] rounded-3xl bg-gradient-to-r from-[#45F882] to-[#FFBE18] ${containerWidth}`}>
                 {/* Inner container for form with space around content */}
                 <div
-                    className={`bg-[#1A1D26] p-8 rounded-3xl ${containerHeight} overflow-auto no-scrollbar`}
+                    className={`bg-[#1A1D26] p-8 rounded-3xl ${containerHeight} overflow-auto`}
                 >
                     {/* Logo and Title (conditionally rendered) */}
                     <div className="flex items-center justify-center space-x-3">

@@ -90,7 +90,7 @@ const TournamentPage: React.FC<TournamentPageProps> = ({ backgroundColor="#0c101
             </div>
 
             {/* Tournament Table Section */}
-            <div className="overflow-y-auto max-h-80 no-scrollbar w-full rounded-lg">
+            <div className="overflow-y-auto max-h-80 w-full rounded-lg">
               <table className="w-full text-left border-collapse font-rajdhani rounded-lg">
                 <thead>
                   <tr>

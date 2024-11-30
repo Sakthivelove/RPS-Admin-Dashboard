@@ -261,7 +261,7 @@ const TournamentInfo: React.FC = () => {
       <div className="bg-[#0E1B2280] h-full flex flex-col rounded-lg overflow-hidden">
         <div className="flex flex-col h-full p-3">
           {/* Search Bar and Table Section */}
-          <div className="flex-1 overflow-auto rounded-lg no-scrollbar h-full">
+          <div className="flex-1 overflow-auto rounded-lg h-full">
             <Table
               title="Tournament Table"
               columns={TournamentInfoColumns}
