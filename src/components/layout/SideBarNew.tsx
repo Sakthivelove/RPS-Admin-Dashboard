@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import Modal from "../Modal";
 import { useSidebar } from "../../SidebarContext";
 
 interface MenuItem {
@@ -21,21 +20,27 @@ interface SidebarProps {
   breakIntervals?: number[];
   collapsedWidth?: string;
   expandedWidth?: string;
+  onLogoutClick?: () => void; // Added onLogoutClick prop, which is an optional function
 }
+
 
 
 interface SidebarMenuListProps {
   sidebarActive: boolean;
   menuItems: MenuItem[];
   breakIntervals?: number[];
+  onLogoutClick?: () => void;
 }
 
-
-const SidebarMenuList: React.FC<SidebarMenuListProps> = ({ sidebarActive, menuItems, breakIntervals }) => {
+const SidebarMenuList: React.FC<SidebarMenuListProps> = ({
+  sidebarActive,
+  menuItems,
+  breakIntervals,
+  onLogoutClick,
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
-  const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
 
   let itemsToRender: JSX.Element[] = [];
   let itemCount = 0;
@@ -49,33 +54,21 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({ sidebarActive, menuIt
     setSelectedMenu(activeMenuItem?.label || null);
   }, [location.pathname, menuItems]);
 
-  // Handle Logout Click
-  const handleLogoutClick = () => {
-    setLogoutModalOpen(true);
+  const handleItemClick = (item: MenuItem) => {
+    setSelectedMenu(item.label);
+    if (item.path) {
+      navigate(item.path);
+    } else if (item.action) {
+      item.action();
+    }
+    if (item.label === "Logout" && onLogoutClick) {
+      onLogoutClick();
+    }
   };
 
-  // Confirm logout
-  const handleConfirmLogout = () => {
-    setLogoutModalOpen(false);
-
-    // Perform logout actions
-    console.log("Logging out user...");
-    localStorage.removeItem("token"); // Example: Remove auth token from local storage
-    sessionStorage.clear(); // Clear session storage if needed
-
-    // Redirect to login
-    navigate("/login");
-  };
-
-  // Handle Close Modal
-  const handleCloseLogoutModal = () => {
-    setLogoutModalOpen(false);
-  };
-
-  // Fallback for image loading errors
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    // Replace with an inline SVG if the image fails to load
-    e.currentTarget.src = "data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20viewBox%3D'0%200%2048%2048'%3E%3Cpath%20d%3D'M24%200C10.745%200%200%2010.745%200%2024%200s24%2010.745%2024%2024%20-10.745%2024%20-24%2024%20Z'%20fill%3D'%23FFD700'%2F%3E%3C/svg%3E"; // Replace with your fallback SVG
+    e.currentTarget.src =
+      "data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20viewBox%3D'0%200%2048%2048'%3E%3Cpath%20d%3D'M24%200C10.745%200%200%2010.745%200%2024%200s24%2010.745%2024%2024%20-10.745%2024%20-24%2024%20Z'%20fill%3D'%23FFD700'%2F%3E%3C/svg%3E";
   };
 
   return (
@@ -84,18 +77,6 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({ sidebarActive, menuIt
         <ul>
           {menuItems.map((item, index) => {
             itemCount++;
-
-            const handleItemClick = () => {
-              setSelectedMenu(item.label);
-              if (item.path) {
-                navigate(item.path);
-              } else if (item.action) {
-                item.action();
-              }
-              if (item.label === "Logout") {
-                handleLogoutClick();
-              }
-            };
 
             // Add break interval logic
             if (sidebarActive && breakIntervals && itemCount === breakIntervals[intervalIndex]) {
@@ -107,14 +88,15 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({ sidebarActive, menuIt
             itemsToRender.push(
               <li
                 key={index}
-                className={`flex items-center gap-[1rem] mb-[1rem] cursor-pointer ${selectedMenu === item.label ? "text-[#45F882]" : "text-white"}`}
-                onClick={handleItemClick}
+                className={`flex items-center gap-[1rem] mb-[1rem] cursor-pointer ${selectedMenu === item.label ? "text-[#45F882]" : "text-white"
+                  }`}
+                onClick={() => handleItemClick(item)}
               >
                 <img
                   src={item.icon}
                   alt={item.label}
                   className={`${iconSize} ${sidebarActive ? "" : "mx-auto"}`}
-                  onError={handleImageError} // Attach error handler for icon fallback
+                  onError={handleImageError}
                 />
                 {sidebarActive && (
                   <h1 className="capitalize poppins-regular text-[1rem]">
@@ -131,23 +113,9 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({ sidebarActive, menuIt
           {itemsToRender}
         </ul>
       </div>
-
-      {/* Modal for Logout Confirmation */}
-      <Modal
-        isOpen={isLogoutModalOpen}
-        onClose={handleCloseLogoutModal}
-        title="Confirm Logout"
-        content="Are you sure you want to log out?"
-        onConfirm={handleConfirmLogout}
-        buttons={[
-          { text: "Yes", onClick: handleConfirmLogout, image: "green" },
-          { text: "No", onClick: handleCloseLogoutModal, image: "yellow" },
-        ]}
-      />
     </div>
   );
 };
-
 
 
 const profileCard = (sidebarActive: boolean, userName: string) => {
@@ -201,6 +169,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   breakIntervals,
   collapsedWidth = 'w-[5%]',
   expandedWidth = 'w-[22%]',
+  onLogoutClick // Accept the onLogoutClick as a prop
 }) => {
   const { sidebarActive, toggleSidebar, setSidebarActive } = useSidebar(); // Access the context
   const navigate = useNavigate();
@@ -266,7 +235,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
         {/* Scrollable Menu List */}
         <div className="overflow-y-auto flex-grow no-scrollbar">
-          <SidebarMenuList sidebarActive={sidebarActive} menuItems={menuItem} breakIntervals={breakIntervals} />
+          <SidebarMenuList sidebarActive={sidebarActive} menuItems={menuItem} breakIntervals={breakIntervals} onLogoutClick={onLogoutClick} />
         </div>
       </div>
 
@@ -280,5 +249,6 @@ const Sidebar: React.FC<SidebarProps> = ({
     </div>
   );
 };
+
 
 export default Sidebar;
