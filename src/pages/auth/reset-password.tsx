@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "../../components/AdminButton"; // Reusable Button component
+import Button from "../../components/common/AdminButton"; // Reusable Button component
 import { FaLock, FaEye, FaEyeSlash } from "react-icons/fa"; // Icons for password fields
 import logo from "/RockMainLogo.png";
 import { useMutation } from "@tanstack/react-query";
-import { api } from "../../api";
+import { api } from "../../api/api";
+import StatusMessage from "../../components/StatusMessage"; // Import the StatusMessage component
 
 // Updated mutation function
 const resetPassword = async (password: string) => {
@@ -77,8 +78,15 @@ const ResetPassword = () => {
           Reset Password
         </h1>
 
-        {/* Error and success messages */}
-        {error && <div className="text-red-500 mb-4">{error}</div>}
+        {/* Integrating StatusMessage for loading and error handling */}
+        <StatusMessage 
+          isLoading={isPending} 
+          error={error ? { message: error } : null} 
+          loadingMessage="Resetting your password..." 
+          errorMessage={error || 'Failed to reset password'} 
+        />
+
+        {/* Success message */}
         {success && <div className="text-green-500 mb-4">{success}</div>}
 
         <form onSubmit={handleSubmit} className="relative z-10 p-[0.07rem] rounded-lg w-[50%]" style={{ background: "linear-gradient(90deg, #45F882 0%, #FFBE18 100%)" }}>

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import Table from '../../components/Table';
+import Table from '../../components/common/Table';
 import { useUserTasks } from '../../hooks/useUserTasks';
-import { useSidebar } from '../../SidebarContext';
-import { useNavigate } from 'react-router-dom'; // React Router v6
+import { useSidebar } from '../../context/SidebarContext';
+import { useNavigate } from 'react-router-dom'; // React Router hook
 import { FaEye, FaEdit, FaTrash } from 'react-icons/fa';
+import StatusMessage from '../../components/StatusMessage'; // Import StatusMessage
 
 const UserTasks: React.FC = () => {
   const [page, setPage] = useState(1);
@@ -16,26 +17,16 @@ const UserTasks: React.FC = () => {
   // Fetch tasks using the custom hook
   const { data, isLoading, error } = useUserTasks({ page, limit, search });
 
-  if (isLoading) {
+  // Use StatusMessage for loading and error states
+  if (isLoading || error) {
     return (
-      <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen p-8 text-white flex justify-center items-center`}>
-        <div className="flex items-center">
-          <div className="spinner-border animate-spin w-8 h-8 border-4 border-t-4 border-[#45F882] rounded-full mr-4"></div>
-          <span className="text-xl">Loading...</span>
-        </div>
-      </div>
-    );
-  }
-
-
-  if (error) {
-    return (
-      <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen p-8 text-white flex justify-center items-center`}>
-        <div className="bg-red-500 p-6 rounded-md shadow-lg">
-          <h2 className="text-xl font-bold text-white">Error fetching Tournaments!</h2>
-          <p className="mt-2 text-white">Error: {error.message}</p>
-        </div>
-      </div>
+      <StatusMessage
+        isLoading={isLoading}
+        error={error}
+        loadingMessage="Loading tasks..."
+        errorMessage={error?.message || 'Error fetching tasks'}
+        className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen`}
+      />
     );
   }
 

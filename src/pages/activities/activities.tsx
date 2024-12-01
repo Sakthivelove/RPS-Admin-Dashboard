@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import SearchBar from '../../components/SearchBar';
-import Table from '../../components/Table';
-import { api } from '../../api';
-import { useSidebar } from '../../SidebarContext';
+import Table from '../../components/common/Table';
+import { api } from '../../api/api';
+import { useSidebar } from '../../context/SidebarContext';
 import StatusMessage from '../../components/StatusMessage';
 
 // Define the Activity interface

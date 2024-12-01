@@ -1,7 +1,7 @@
 import React from "react";
 import DynamicFormFields, { Field } from "./FormFields";
-import Button from "../AdminButton";
-import { ButtonProps } from "../AdminButton";
+import Button from "../common/AdminButton";
+import { ButtonProps } from "../common/AdminButton";
 
 
 interface ContainerProps {

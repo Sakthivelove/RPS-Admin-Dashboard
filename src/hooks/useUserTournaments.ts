@@ -1,6 +1,6 @@
 // src/hooks/useUserTournaments.ts
 import { useQuery } from '@tanstack/react-query';
-import { api } from '../api';
+import { api } from '../api/api';
 
 // Define the type for the UserTournament data
 interface UserTournament {

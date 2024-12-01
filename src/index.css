@@ -62,25 +62,21 @@ body::-webkit-scrollbar-track {
 }
 
 /* Alternatively, you can exclude specific content sections by targeting them directly */
-#main-content,
-.no-scrollbar {
+#main-content {
   scrollbar-width: auto;
   /* Reset for specific sections */
 }
 
-#main-content::-webkit-scrollbar,
-.no-scrollbar::-webkit-scrollbar {
+#main-content::-webkit-scrollbar {
   width: auto;
   height: auto;
 }
 
-#main-content::-webkit-scrollbar-thumb,
-.no-scrollbar::-webkit-scrollbar-thumb {
+#main-content::-webkit-scrollbar-thumb {
   background-color: initial;
 }
 
-#main-content::-webkit-scrollbar-track,
-.no-scrollbar::-webkit-scrollbar-track {
+#main-content::-webkit-scrollbar-track {
   background-color: initial;
 }
 
@@ -150,3 +146,20 @@ body::-webkit-scrollbar-track {
   background: #555;
   /* Thumb hover color */
 }
+
+.no-scrollbar {
+  /* Hides scrollbar for all browsers */
+  overflow: hidden;
+}
+
+.no-scrollbar {
+  /* Hide scrollbar but allow scrolling */
+  overflow: scroll;
+  scrollbar-width: none; /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Edge */
+}
+
+

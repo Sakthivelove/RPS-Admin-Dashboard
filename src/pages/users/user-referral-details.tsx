@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useUserReferralDetails } from '../../hooks/useUserReferralDetails';
-import { useSidebar } from '../../SidebarContext';
+import { useSidebar } from '../../context/SidebarContext';
 
 const UserReferralDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>(); // Get the referral ID from the URL params

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSidebar } from "../../SidebarContext";
+import { useSidebar } from "../../context/SidebarContext";
 import axios from "axios";
 
 interface ModuleSettingsData {

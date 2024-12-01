@@ -1,5 +1,5 @@
 import React from 'react';
-import Table from "../components/Table";
+import Table from "../components/common/Table";
 import { useUsers } from '../hooks/useUsers'; 
 
 const UserList: React.FC = () => {

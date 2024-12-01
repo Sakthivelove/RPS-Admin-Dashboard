@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { api } from '../api';
-import { UserTournamentDetails } from '../services/tournamentService';
+import { api } from '../api/api';
+import { UserTournamentDetails } from '../services/user/tournamentService';
 
 const fetchUserTournamentDetails = async (id: string): Promise<UserTournamentDetails> => {
     const response = await api.get(`/users/usertournament/${id}`);

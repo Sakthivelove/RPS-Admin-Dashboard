@@ -1,6 +1,6 @@
 
 import { useQuery } from '@tanstack/react-query';
-import { getReferrals, Referral } from '../services/referralService';
+import { getReferrals, Referral } from '../services/user/referralService';
 
 interface ReferralsResponse {
     referrals: Referral[];

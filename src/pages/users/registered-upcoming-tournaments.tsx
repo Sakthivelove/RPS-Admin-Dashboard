@@ -1,19 +1,19 @@
 import React, { useState, useMemo } from 'react';
-import Table from '../../components/Table';
+import Table from '../../components/common/Table';
 import { useRegisteredTournaments } from '../../hooks/useRegisteredTournaments';
-import { useSidebar } from '../../SidebarContext';
-import { useNavigate } from 'react-router-dom';  // Import useNavigate for navigation
+import { useSidebar } from '../../context/SidebarContext';
+import { useNavigate } from 'react-router-dom';
+import StatusMessage from '../../components/StatusMessage';
 
 const UpcomingTournaments: React.FC = () => {
     const [page, setPage] = useState(1);
     const limit = 10;
     const { sidebarActive } = useSidebar();
-    const navigate = useNavigate();  // Initialize navigate function
+    const navigate = useNavigate();
 
     const { data, isLoading, isError, error, refetch } = useRegisteredTournaments(page, limit);
 
     console.log("upcoming", data);
-
 
     const columns = [
         'ID',
@@ -31,7 +31,7 @@ const UpcomingTournaments: React.FC = () => {
         'Date Time',
         'Tournament Name',
         'Winner',
-        'Actions'  // Add Actions column
+        'Actions'
     ];
 
     const tableData = useMemo(() =>
@@ -54,7 +54,7 @@ const UpcomingTournaments: React.FC = () => {
             'Actions': (
                 <div className="flex gap-2">
                     <button
-                        onClick={() => handleView(tournament.id)} // Navigate to the tournament detail page
+                        onClick={() => handleView(tournament.id)}
                         className="text-blue-500 hover:text-blue-700"
                     >
                         View
@@ -104,25 +104,16 @@ const UpcomingTournaments: React.FC = () => {
         // Implement your logic for deleting a tournament (e.g., show a confirmation modal and delete via API)
     };
 
-    if (isLoading) {
+    // Replace existing error and loading sections with StatusMessage
+    if (isLoading || isError) {
         return (
-            <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen p-8 text-white flex justify-center items-center`}>
-                <div className="flex items-center">
-                    <div className="spinner-border animate-spin w-8 h-8 border-4 border-t-4 border-[#45F882] rounded-full mr-4"></div>
-                    <span className="text-xl">Loading...</span>
-                </div>
-            </div>
-        );
-    }
-
-    if (error) {
-        return (
-            <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen p-8 text-white flex justify-center items-center`}>
-                <div className="bg-red-500 p-6 rounded-md shadow-lg">
-                    <h2 className="text-xl font-bold text-white">Error fetching Upcoming Tournaments!</h2>
-                    <p className="mt-2 text-white">Error: {error.message}</p>
-                </div>
-            </div>
+            <StatusMessage
+                isLoading={isLoading}
+                error={isError ? error : null}
+                loadingMessage="Fetching Upcoming Tournaments..."
+                errorMessage="Error fetching Upcoming Tournaments!"
+                className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen`}
+            />
         );
     }
 

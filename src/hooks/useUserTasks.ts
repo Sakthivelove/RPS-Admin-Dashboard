@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { fetchTasks } from '../services/taskService';
+import { fetchTasks } from '../services/user/taskService';
 
 interface UseUserTasksParams {
     page: number;

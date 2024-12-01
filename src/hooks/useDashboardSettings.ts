@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchDashboardSettings } from '../services/dashboardSettings';
+import { fetchDashboardSettings } from '../services/settings/dashboardSettings';
 
 interface DashboardSettingsData {
   [key: string]: boolean;

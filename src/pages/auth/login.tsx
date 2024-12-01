@@ -1,10 +1,11 @@
 import React, { useState, FormEvent } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { FaEye, FaEyeSlash, FaUser, FaLock } from 'react-icons/fa';
-import Button from '../../components/AdminButton';
+import Button from '../../components/common/AdminButton';
 import { useNavigate } from 'react-router-dom';
-import { api } from '../../api';
+import { api } from '../../api/api';
 import logo from "/RockMainLogo.png"; // Logo Image
+import StatusMessage from '../../components/StatusMessage';
 
 interface LoginDto {
   telegramId: string;
@@ -141,12 +142,22 @@ const AdminLogin: React.FC = () => {
               </button>
             </div>
 
+            {/* StatusMessage Component for loading and error */}
+            <StatusMessage
+              isLoading={mutation.isPending}
+              error={mutation.isError ? new Error(mutation.error?.message || '') : null}
+              loadingMessage="Logging in..."
+              errorMessage="Login failed. Please check your credentials."
+              className="mb-4"
+            />
+
             {/* Login Button */}
             <div className="flex justify-center mt-6">
               <Button
                 image="green"
-                text="Login"
+                text={mutation.isPending ? 'Logging in...' : 'Login'}
                 onClick={handleLoginSubmit}
+                isDisabled={mutation.isPending}
               />
             </div>
           </form>

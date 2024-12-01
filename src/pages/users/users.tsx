@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useUsers } from '../../hooks/useUsers';
-import { User } from '../../services/userService';
-import { useSidebar } from '../../SidebarContext';
+import { User } from '../../services/user/userService';
+import { useSidebar } from '../../context/SidebarContext';
 
 const Users: React.FC = () => {
   const [page, setPage] = useState<number>(1);

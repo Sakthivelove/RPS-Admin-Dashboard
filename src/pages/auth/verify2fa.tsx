@@ -1,10 +1,11 @@
 import React, { useState, FormEvent } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { FaLock } from 'react-icons/fa';
-import Button from '../../components/AdminButton'; 
+import Button from '../../components/common/AdminButton'; 
 import { useNavigate } from 'react-router-dom';
-import { api } from '../../api';
+import { api } from '../../api/api';
 import logo from "/RockMainLogo.png";
+import StatusMessage from '../../components/StatusMessage';  // Import StatusMessage component
 
 // Define the shape of the 2FA data and response types
 interface Verify2FADto {
@@ -96,10 +97,13 @@ const Verify2FA: React.FC = () => {
               </div>
             </div>
 
-            {/* Error message if OTP is incorrect */}
-            {errorMessage && (
-              <p className="text-red-500 text-center mt-2">{errorMessage}</p>
-            )}
+            {/* Integrating StatusMessage for loading and error handling */}
+            <StatusMessage 
+              isLoading={mutation.status === 'pending'} 
+              error={errorMessage ? { message: errorMessage } : null} 
+              loadingMessage="Verifying OTP..."
+              errorMessage={errorMessage || 'Failed to verify OTP'} 
+            />
 
             {/* Verify Button */}
             <div className="flex justify-center mt-6">

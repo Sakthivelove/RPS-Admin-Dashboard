@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { api } from '../api';
-import { UserTransactionDetails } from '../services/transactionService'; // import the type for the user transaction
+import { api } from '../api/api';
+import { UserTransactionDetails } from '../services/user/transactionService'; // import the type for the user transaction
 
 const fetchUserTransactionDetails = async (id: string): Promise<UserTransactionDetails> => {
     const response = await api.get(`/users/transaction/${id}`);

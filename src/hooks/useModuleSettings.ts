@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchModuleSettings, updateModuleSettings } from '../services/moduleSettings';
+import { fetchModuleSettings, updateModuleSettings } from '../services/settings/moduleSettings';
 
 interface ModuleSettingsData {
     admin2FA: boolean;

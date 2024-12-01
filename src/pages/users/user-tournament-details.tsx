@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useUserTournamentDetails } from '../../hooks/useUserTournamentDetails';
-import { useSidebar } from '../../SidebarContext';
+import { useSidebar } from '../../context/SidebarContext';
 
 const UserTournamentDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();  // Get the tournament ID from URL params

@@ -1,35 +1,25 @@
-// src/components/UserTournamentTable.tsx
 import React from 'react';
 import { useUserTournaments } from '../../hooks/useUserTournaments';
-import Table from '../../components/Table';
-import { useSidebar } from '../../SidebarContext';
+import Table from '../../components/common/Table';
+import { useSidebar } from '../../context/SidebarContext';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import StatusMessage from '../../components/StatusMessage'; // Import StatusMessage
 
 const UserTournaments = () => {
     const { data, error, isLoading } = useUserTournaments(1, 10);  // Pagination (page 1, 10 items per page)
     const { sidebarActive } = useSidebar();
     const navigate = useNavigate();  // Initialize the navigate function
 
-    if (isLoading) {
+    // Replace the loading and error handling sections with the StatusMessage component
+    if (isLoading || error) {
         return (
-            <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen p-8 text-white flex justify-center items-center`}>
-                <div className="flex items-center">
-                    <div className="spinner-border animate-spin w-8 h-8 border-4 border-t-4 border-[#45F882] rounded-full mr-4"></div>
-                    <span className="text-xl">Loading...</span>
-                </div>
-            </div>
-        );
-    }
-
-
-    if (error) {
-        return (
-            <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen p-8 text-white flex justify-center items-center`}>
-                <div className="bg-red-500 p-6 rounded-md shadow-lg">
-                    <h2 className="text-xl font-bold text-white">Error fetching Tournaments!</h2>
-                    <p className="mt-2 text-white">Error: {error.message}</p>
-                </div>
-            </div>
+            <StatusMessage
+                isLoading={isLoading}
+                error={error}
+                loadingMessage="Loading tournaments..."
+                errorMessage={error?.message || 'Error fetching tournaments'}
+                className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen`}
+            />
         );
     }
 

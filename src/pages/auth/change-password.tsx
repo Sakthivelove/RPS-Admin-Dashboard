@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { api } from "../../api";
+import { api } from "../../api/api";
 import Container from "../../components/form/FormContainer";
 import { Field } from "../../components/form/FormFields";
-import { useSidebar } from "../../SidebarContext";
+import { useSidebar } from "../../context/SidebarContext";
+import StatusMessage from "../../components/StatusMessage";  // Import StatusMessage
+
 // Enum for button colors
 enum ButtonColors {
     Yellow = "yellow",
@@ -33,7 +35,7 @@ const ChangePassword: React.FC = () => {
         confirmPassword: "",
     });
 
-    const {sidebarActive} = useSidebar()
+    const { sidebarActive } = useSidebar();
 
     const { mutate, isPending, isError, isSuccess, error } = useMutation({
         mutationFn: changePassword,
@@ -65,7 +67,7 @@ const ChangePassword: React.FC = () => {
     };
 
     return (
-        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]': 'w-[94%]'} h-screen flex overflow-auto`}>
+        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen flex overflow-auto`}>
             {/* Main container */}
             <div className="flex-1 flex flex-col justify-center items-center p-4 bg-[#0E1B2280] m-4 rounded-lg shadow-lg">
                 {/* Title */}
@@ -92,9 +94,14 @@ const ChangePassword: React.FC = () => {
                     ]}
                 />
 
-                {/* Error or success messages */}
-                {isError && <p className="text-red-500 mt-4">Failed to change password.</p>}
-                {isSuccess && <p className="text-green-500 mt-4">Password changed successfully!</p>}
+                {/* StatusMessage for loading or error */}
+                <StatusMessage
+                    isLoading={isPending}
+                    error={error ? { message: error.message } : null}
+                    loadingMessage="Changing password..."
+                    errorMessage="Failed to change password."
+                    className="mt-4"
+                />
             </div>
         </div>
     );

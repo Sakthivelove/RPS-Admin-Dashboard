@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useUserTaskDetails } from '../../hooks/useUserTaskDetails';
-import { useSidebar } from '../../SidebarContext';
+import { useSidebar } from '../../context/SidebarContext';
 
 const UserTaskDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>(); // Getting the task ID from the URL params

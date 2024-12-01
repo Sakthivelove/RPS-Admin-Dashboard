@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchTransactions, FetchTransactionsParams } from '../services/transactionService';
+import { fetchTransactions, FetchTransactionsParams } from '../services/user/transactionService';
 
 export const useTransactions = ({ page, limit }: FetchTransactionsParams) => {
     return useQuery({

@@ -2,7 +2,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useUserTransactionDetails } from '../../hooks/useUserTransactionDetails';
-import { useSidebar } from '../../SidebarContext';
+import { useSidebar } from '../../context/SidebarContext';
 
 const UserTransactionDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();  // Get the transaction ID from URL params

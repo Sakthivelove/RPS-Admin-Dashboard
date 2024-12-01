@@ -1,8 +1,9 @@
 import React from 'react';
-import Table from '../../components/Table';
+import Table from '../../components/common/Table';
 import { useReferrals } from '../../hooks/useReferrals';
-import { useSidebar } from '../../SidebarContext';
+import { useSidebar } from '../../context/SidebarContext';
 import { useNavigate } from 'react-router-dom';  // Import useNavigate for navigation
+import StatusMessage from '../../components/StatusMessage'; // Import StatusMessage
 
 const UserReferrals: React.FC = () => {
     const { data, error, isLoading } = useReferrals(1, 10);
@@ -11,29 +12,17 @@ const UserReferrals: React.FC = () => {
     const { sidebarActive } = useSidebar();
     const navigate = useNavigate(); // Initialize navigate hook
 
-    if (isLoading) {
-        return (
-            <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen p-8 text-white flex justify-center items-center`}>
-                <div className="flex items-center">
-                    <div className="spinner-border animate-spin w-8 h-8 border-4 border-t-4 border-[#45F882] rounded-full mr-4"></div>
-                    <span className="text-xl">Loading...</span>
-                </div>
-            </div>
-        );
-    }
-
-
-    if (error) {
-        return (
-            <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen p-8 text-white flex justify-center items-center`}>
-                <div className="bg-red-500 p-6 rounded-md shadow-lg">
-                    <h2 className="text-xl font-bold text-white">Error fetching Tournaments!</h2>
-                    <p className="mt-2 text-white">Error: {error.message}</p>
-                </div>
-            </div>
-        );
-    }
-
+if (error || isLoading) {
+    return (
+        <StatusMessage
+        isLoading={isLoading}
+        error={error}
+        loadingMessage="Loading referrals..."
+        errorMessage={error ? `Error: ${error.message}` : 'Something went wrong.'}
+        className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen`}
+    />
+    )
+}
     const columns = ['S.No', 'Id', 'Referral Code', 'Wallet ID', 'Referral Count', 'Reward', 'Created On', 'Actions'];  // Add 'Actions' to columns
 
     const formattedData = data?.referrals.map((referral, index) => ({

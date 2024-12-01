@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { api } from '../api';
-import { ReferralCode } from '../services/referralService';
+import { api } from '../api/api';
+import { ReferralCode } from '../services/user/referralService';
 
 const fetchUserReferralDetails = async (id: string): Promise<ReferralCode> => {
     const response = await api.get(`/users/referral/${id}`);

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import GradientCard from '../components/GradientCard';
-import Table from '../components/Table';
-import LineChart from '../components/LineChart';
+import Table from '../components/common/Table';
+import LineChart from '../components/charts/LineChart';
 import { FaInfoCircle, FaEdit, FaTrashAlt } from "react-icons/fa"; // Example: FontAwesome Icons
-import { top8GamesColumns, top8Gamesdata } from '../data/data';
-import { useSidebar } from '../SidebarContext';
+import { top8GamesColumns, top8Gamesdata } from '../data/mockData';
+import { useSidebar } from '../context/SidebarContext';
 const Dashboard: React.FC = () => {
     const [range, setRange] = useState<"day" | "week" | "month" | "year">("day");
     const { sidebarActive } = useSidebar()

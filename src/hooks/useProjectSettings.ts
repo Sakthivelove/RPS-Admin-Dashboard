@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { updateProjectSettings } from '../services/projectSettings';
+import { updateProjectSettings } from '../services/settings/projectSettings';
 
 interface ProjectSettingsInput {
   projectName: string;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useUserDetails } from '../../hooks/useUserDetails';
-import { useSidebar } from '../../SidebarContext';
+import { useSidebar } from '../../context/SidebarContext';
 
 const UserDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();

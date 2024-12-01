@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchGeneralSettings } from '../services/generalSettings';
+import { fetchGeneralSettings } from '../services/settings/generalSettings';
 
 interface Settings {
   [key: string]: string | number | boolean;

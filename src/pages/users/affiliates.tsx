@@ -1,7 +1,7 @@
 import React from 'react';
-import Table from '../../components/Table';
+import Table from '../../components/common/Table';
 import { useUserAffiliates } from '../../hooks/useAffiliates';
-import { useSidebar } from '../../SidebarContext';
+import { useSidebar } from '../../context/SidebarContext';
 import StatusMessage from '../../components/StatusMessage';
 
 const UserAffiliates: React.FC = () => {

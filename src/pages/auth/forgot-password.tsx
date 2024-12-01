@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import logo from "/RockMainLogo.png";
 import { FaTelegram } from "react-icons/fa"; // Importing Telegram icon
-import Button from "../../components/AdminButton";
+import Button from "../../components/common/AdminButton";
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
-import { api } from "../../api";
+import { api } from "../../api/api";
+import StatusMessage from "../../components/StatusMessage"; // Import StatusMessage component
 
 const ForgotPassword = () => {
   const [telegramId, setTelegramId] = useState(""); // State for Telegram ID
@@ -29,8 +30,7 @@ const ForgotPassword = () => {
     onError: (err) => {
       setError("Failed to send password reset instructions. Please try again later.");
     },
-  }
-  );
+  });
 
   // Handle form submission to reset password
   const handleSubmit = (e: React.FormEvent) => {
@@ -44,7 +44,6 @@ const ForgotPassword = () => {
 
     mutation.mutate(telegramId); // Call the mutation function
   };
-
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 overflow-hidden">
@@ -63,8 +62,14 @@ const ForgotPassword = () => {
           Forgot Password
         </h1>
 
-        {/* Display error or success messages */}
-        {error && <div className="text-red-500 mb-4">{error}</div>}
+        {/* StatusMessage for loading, error or success */}
+        <StatusMessage
+          isLoading={mutation.isPending}
+          error={error ? { message: error } : null}
+          loadingMessage="Sending password reset instructions..."
+          errorMessage={error}
+          className="mb-4"
+        />
         {success && <div className="text-green-500 mb-4">{success}</div>}
 
         {/* Form to reset password */}
@@ -107,7 +112,6 @@ const ForgotPassword = () => {
               </div>
             </div>
           </div>
-
         </form>
       </div>
     </div>
