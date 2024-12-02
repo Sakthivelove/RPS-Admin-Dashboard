@@ -15,7 +15,7 @@ const ForgotPassword = () => {
 
   // Use React Query's useMutation for handling form submission
   const mutation = useMutation({
-    mutationFn: (telegramId: string) => api.post('/api/forgot-password', { telegramId }), // API request using axios instance
+    mutationFn: (telegramId: string) => api.post('/auth/forgotpassword', { telegramId }), // API request using axios instance
     onMutate: () => {
       setError(""); // Clear previous errors before starting
       setSuccess(""); // Clear previous success messages
