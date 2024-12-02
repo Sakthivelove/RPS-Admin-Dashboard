@@ -1,7 +1,7 @@
 import React, { useState, FormEvent } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { FaLock } from 'react-icons/fa';
-import Button from '../../components/common/AdminButton'; 
+import Button from '../../components/common/AdminButton';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../../api/api';
 import logo from "/RockMainLogo.png";
@@ -58,6 +58,19 @@ const Verify2FA: React.FC = () => {
     mutation.mutate({ token: token || '', OTP: Number(OTP) });
   };
 
+  if (mutation.error || mutation.isPending) {
+    return (
+      /* Integrating StatusMessage for loading and error handling */
+      <StatusMessage
+        isLoading={mutation.status === 'pending'}
+        error={errorMessage ? { message: errorMessage } : null}
+        loadingMessage="Verifying OTP..."
+        errorMessage={errorMessage || 'Failed to verify OTP'}
+        className='h-screen'
+      />
+    )
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 overflow-hidden">
       <div className="bg-opacity-90 rounded-lg shadow-lg overflow-hidden relative w-full flex flex-col justify-center items-center">
@@ -97,20 +110,12 @@ const Verify2FA: React.FC = () => {
               </div>
             </div>
 
-            {/* Integrating StatusMessage for loading and error handling */}
-            <StatusMessage 
-              isLoading={mutation.status === 'pending'} 
-              error={errorMessage ? { message: errorMessage } : null} 
-              loadingMessage="Verifying OTP..."
-              errorMessage={errorMessage || 'Failed to verify OTP'} 
-            />
-
             {/* Verify Button */}
             <div className="flex justify-center mt-6">
               <Button
                 image="green"
-                text={mutation.status === 'pending' ? 'Verifying...' : 'Verify OTP'}
-                isDisabled={mutation.status === 'pending'}
+                text={mutation.isPending ? 'Verifying...' : 'Verify OTP'}
+                isDisabled={mutation.isPending}
                 onClick={handleVerifySubmit}
               />
             </div>

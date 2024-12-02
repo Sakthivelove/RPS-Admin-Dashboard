@@ -70,6 +70,19 @@ const AdminLogin: React.FC = () => {
     mutation.mutate({ telegramId, password });
   };
 
+  if (mutation.error || mutation.isPending) {
+    return (
+      /* StatusMessage Component for loading and error */
+      <StatusMessage
+        isLoading={mutation.isPending}
+        error={mutation.isError ? new Error(mutation.error?.message || '') : null}
+        loadingMessage="Logging in..."
+        errorMessage="Login failed. Please check your credentials."
+        className="h-screen"
+      />
+    )
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 overflow-hidden">
       <div className="bg-opacity-90 rounded-lg shadow-lg overflow-hidden relative w-full flex flex-col justify-center items-center">
@@ -141,15 +154,6 @@ const AdminLogin: React.FC = () => {
                 Forgot Password?
               </button>
             </div>
-
-            {/* StatusMessage Component for loading and error */}
-            <StatusMessage
-              isLoading={mutation.isPending}
-              error={mutation.isError ? new Error(mutation.error?.message || '') : null}
-              loadingMessage="Logging in..."
-              errorMessage="Login failed. Please check your credentials."
-              className="mb-4"
-            />
 
             {/* Login Button */}
             <div className="flex justify-center mt-6">

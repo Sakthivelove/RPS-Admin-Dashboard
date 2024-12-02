@@ -45,6 +45,19 @@ const ForgotPassword = () => {
     mutation.mutate(telegramId); // Call the mutation function
   };
 
+  if (mutation.error || mutation.isPending) {
+    return (
+      /* StatusMessage for loading, error or success */
+      <StatusMessage
+        isLoading={mutation.isPending}
+        error={error ? { message: error } : null}
+        loadingMessage="Sending password reset instructions..."
+        errorMessage={error}
+        className="h-screen"
+      />
+    )
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 overflow-hidden">
       <div className="bg-opacity-90 rounded-lg shadow-lg overflow-hidden relative w-full flex flex-col justify-center items-center">
@@ -62,14 +75,6 @@ const ForgotPassword = () => {
           Forgot Password
         </h1>
 
-        {/* StatusMessage for loading, error or success */}
-        <StatusMessage
-          isLoading={mutation.isPending}
-          error={error ? { message: error } : null}
-          loadingMessage="Sending password reset instructions..."
-          errorMessage={error}
-          className="mb-4"
-        />
         {success && <div className="text-green-500 mb-4">{success}</div>}
 
         {/* Form to reset password */}

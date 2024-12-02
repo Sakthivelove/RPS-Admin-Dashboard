@@ -66,6 +66,20 @@ const ChangePassword: React.FC = () => {
         mutate({ currentPassword, newPassword });
     };
 
+    if (error || isPending) {
+        return (
+            /* StatusMessage for loading or error */
+            <StatusMessage
+                isLoading={isPending}
+                error={error ? { message: error.message } : null}
+                loadingMessage="Changing password..."
+                errorMessage="Failed to change password."
+                className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen`}
+            />
+        )
+    }
+
+
     return (
         <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen flex overflow-auto`}>
             {/* Main container */}
@@ -92,15 +106,6 @@ const ChangePassword: React.FC = () => {
                             isDisabled: isPending,
                         },
                     ]}
-                />
-
-                {/* StatusMessage for loading or error */}
-                <StatusMessage
-                    isLoading={isPending}
-                    error={error ? { message: error.message } : null}
-                    loadingMessage="Changing password..."
-                    errorMessage="Failed to change password."
-                    className="mt-4"
                 />
             </div>
         </div>

@@ -68,6 +68,20 @@ const ResetPassword = () => {
     }
   };
 
+  if (error || isPending) {
+    return (
+
+      /* Integrating StatusMessage for loading and error handling */
+      <StatusMessage
+        isLoading={isPending}
+        error={error ? { message: error } : null}
+        loadingMessage="Resetting your password..."
+        errorMessage={error || 'Failed to reset password'}
+        className="h-screen"
+      />
+    )
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 overflow-hidden">
       <div className="bg-opacity-90 rounded-lg shadow-lg overflow-hidden relative w-full flex flex-col justify-center items-center">
@@ -77,14 +91,6 @@ const ResetPassword = () => {
         <h1 className="text-4xl font-bold text-center text-white mb-8" style={{ color: "rgba(69, 248, 130, 1)" }}>
           Reset Password
         </h1>
-
-        {/* Integrating StatusMessage for loading and error handling */}
-        <StatusMessage 
-          isLoading={isPending} 
-          error={error ? { message: error } : null} 
-          loadingMessage="Resetting your password..." 
-          errorMessage={error || 'Failed to reset password'} 
-        />
 
         {/* Success message */}
         {success && <div className="text-green-500 mb-4">{success}</div>}
