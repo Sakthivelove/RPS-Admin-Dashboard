@@ -29,7 +29,7 @@ const GeneralSettings: React.FC = () => {
         sidebarActive ? "w-[77%]" : "w-[94%]"
       } h-screen text-white overflow-auto p-6 flex justify-center items-center`}
     >
-      <div className="bg-gray-800 p-6 w-1/2">
+      <div className="bg-gray-800 p-6 w-auto">
         <h1 className="text-2xl font-bold mb-6">General Settings</h1>
         <div className="space-y-4">
           {settings ? (
