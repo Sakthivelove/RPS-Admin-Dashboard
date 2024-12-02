@@ -4,10 +4,12 @@ import Sidebar from "../components/layout/SideBar";
 import { sidebarMenuItems } from "../data/sideBarMenuItems";
 import { useNavigate } from "react-router-dom";
 import Modal from "../components/common/Modal";
+import { useAuth } from "../context/AuthContext";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     const location = useLocation();
     const navigate = useNavigate();
+    const { setUser } = useAuth();  
     const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
 
     // Handle Logout Click
@@ -21,10 +23,17 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
         // Perform logout actions
         console.log("Logging out user...");
-        localStorage.removeItem("token"); // Example: Remove auth token from local storage
-        sessionStorage.clear(); // Clear session storage if needed
 
-        // Redirect to login
+        // Clear user data from context
+        setUser(null);  // Clear user data in context
+
+        // Remove auth token from local storage
+        localStorage.removeItem("token"); 
+
+        // Clear session storage if needed
+        sessionStorage.clear();
+
+        // Redirect to login page
         navigate("/login");
     };
 

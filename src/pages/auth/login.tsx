@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { api } from '../../api/api';
 import logo from "/RockMainLogo.png"; // Logo Image
 import StatusMessage from '../../components/StatusMessage';
+import { useAuth } from '../../context/AuthContext';
 
 interface LoginDto {
   telegramId: string;
@@ -34,12 +35,18 @@ const AdminLogin: React.FC = () => {
   const [telegramId, setTelegramId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const navigate = useNavigate();
+  const { setUser } = useAuth();  // Access setUser from context
 
   const mutation = useMutation<LoginResponse, Error, LoginDto>({
     mutationFn: loginUser,
     onSuccess: (data) => {
       // On successful login, store the token
       if (data.status) {
+        const user = {
+          id: data.AuthId,
+          token: data.response,
+        };
+        setUser(user); // Set user data in context
         localStorage.setItem('token', data.response);
 
         // Check if 2FA is required
@@ -70,17 +77,19 @@ const AdminLogin: React.FC = () => {
     mutation.mutate({ telegramId, password });
   };
 
-  if (mutation.error || mutation.isPending) {
+
+
+
+  if (mutation.isPending || mutation.data?.status === false) {
     return (
-      /* StatusMessage Component for loading and error */
       <StatusMessage
         isLoading={mutation.isPending}
-        error={mutation.isError ? new Error(mutation.error?.message || '') : null}
+        error={mutation.data?.status === false ? new Error(mutation.error?.message || 'Login failed. Please check your credentials.') : null}
         loadingMessage="Logging in..."
         errorMessage="Login failed. Please check your credentials."
         className="h-screen"
       />
-    )
+    );
   }
 
   return (

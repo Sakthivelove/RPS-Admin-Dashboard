@@ -1,5 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext"; // Import AuthProvider
+import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRoute
 import AdminLogin from "./pages/auth/login";
 import ForgotPassword from "./pages/auth/forgot-password";
 import CreateNewRockTournament from "./pages/tournaments/create-new-rock-tournament";
@@ -52,83 +54,91 @@ import UserTaskDetails from "./pages/users/user-task-details";
 import UserReferralDetails from "./pages/users/user-referral-details";
 import UserTransactionDetails from "./pages/users/user-transaction-details";
 import UserTournamentDetails from "./pages/users/user-tournament-details";
+import RootRedirect from "./components/RootRedirect";
 
 
-function App() {
+const App: React.FC = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <Router>
-        <SidebarProvider>
-          <Layout>
-            <Routes>
-              {/* Existing Routes */}
-              <Route path="/affiliate-tournaments" element={<AffiliateTournaments />} />
-              <Route path="/create-new-rock-tournament" element={<CreateNewRockTournament />} />
-              <Route path="/create-new-vip-tournament" element={<CreateNewVIPTournament />} />
-              <Route path="/create-new-admin-tournament" element={<CreateNewAdminTournament />} />
-              <Route path="/project-details" element={<Dashboard />} />
-              <Route path="/admin-list" element={<AdminList />} />
-              <Route path="/admin-screen" element={<AdminScreen />} />
-              <Route path="/add-admin" element={<AddAdmin />} />
-              <Route path="/edit-admin" element={<EditAdmin />} />
-              <Route path="/tournament" element={<Tournament />} />
-              <Route path="/admin-user-list" element={<AdminUserList />} />
-              <Route path="/tournament-list" element={<TournamentList />} />
-              <Route path="/game-history" element={<GameHistory />} />
-              <Route path="/game-info" element={<GameInfo />} />
-              <Route path="/stake-info" element={<StakeInfo />} />
-              <Route path="/stake-history" element={<StakeHistory />} />
-              <Route path="/tournament-history" element={<TournamentHistory />} />
-              <Route path="/user-info" element={<UserInfo />} />
-              <Route path="/activity-list" element={<ActivityList />} />
-              <Route path="/user-list" element={<UserList />} />
-              <Route path="/tournament-info" element={<TournamentInfo />} />
-              <Route path="/referrals" element={<Referrals />} />
-              <Route path="/user-tournaments" element={<UserTournamentTable />} />
+    <AuthProvider> {/* Provide authentication context */}
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <SidebarProvider>
+            <Layout>
+              <Routes>
 
-              {/* Authentication and Other Routes */}
-              <Route path="/login" element={<AdminLogin />} />
-              <Route path="/verify-2fa" element={<Verify2FA />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
-              <Route path="/change-password" element={<ChangePassword />} />
+                {/* Root route that redirects based on authentication */}
+                <Route path="/" element={<RootRedirect />} />
 
-              {/* New Routes for Settings */}
-              <Route path="/settings" element={<GeneralSettings />} />
-              <Route path="/settings/dashboard" element={<DashboardSettings />} />
-              <Route path="/settings/change-password" element={<ChangePasswordSettings />} />
-              <Route path="/settings/modulesettings" element={<ModuleSettings />} />
-              <Route path="/settings/projectsettings" element={<ProjectSettings />} />
+                {/* Public Routes */}
+                <Route path="/login" element={<AdminLogin />} />
+                <Route path="/verify-2fa" element={<Verify2FA />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
+                <Route path="/change-password" element={<ChangePassword />} />
 
-              {/* New Routes for Activities */}
-              <Route path="/activities" element={<Activities />} />
+                {/* Protected Routes */}
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/affiliate-tournaments" element={<AffiliateTournaments />} />
+                  <Route path="/create-new-rock-tournament" element={<CreateNewRockTournament />} />
+                  <Route path="/create-new-vip-tournament" element={<CreateNewVIPTournament />} />
+                  <Route path="/create-new-admin-tournament" element={<CreateNewAdminTournament />} />
+                  <Route path="/project-details" element={<Dashboard />} />
+                  <Route path="/admin-list" element={<AdminList />} />
+                  <Route path="/admin-screen" element={<AdminScreen />} />
+                  <Route path="/add-admin" element={<AddAdmin />} />
+                  <Route path="/edit-admin" element={<EditAdmin />} />
+                  <Route path="/tournament" element={<Tournament />} />
+                  <Route path="/admin-user-list" element={<AdminUserList />} />
+                  <Route path="/tournament-list" element={<TournamentList />} />
+                  <Route path="/game-history" element={<GameHistory />} />
+                  <Route path="/game-info" element={<GameInfo />} />
+                  <Route path="/stake-info" element={<StakeInfo />} />
+                  <Route path="/stake-history" element={<StakeHistory />} />
+                  <Route path="/tournament-history" element={<TournamentHistory />} />
+                  <Route path="/user-info" element={<UserInfo />} />
+                  <Route path="/activity-list" element={<ActivityList />} />
+                  <Route path="/user-list" element={<UserList />} />
+                  <Route path="/tournament-info" element={<TournamentInfo />} />
+                  <Route path="/referrals" element={<Referrals />} />
+                  <Route path="/user-tournaments" element={<UserTournamentTable />} />
 
-              {/* New Routes for Users */}
-              <Route path="/users" element={<Users />} />
-              <Route path="/users/affiliates" element={<UserAffiliates />} />
-              <Route path="/users/referrals" element={<UserReferrals />} />
-              <Route path="/users/tasks" element={<UserTasks />} />
-              <Route path="/users/transactions" element={<UserTransactions />} />
-              <Route path="/users/usertournaments" element={<UserTournaments />} />
-              <Route path="/users/registeredupcomingtournament" element={<UpcomingTournaments />} />
-              <Route path="/users/winlosshistory" element={<WinLossHistory />} />
-              <Route path="/users/:id" element={<UserDetails />} />
-              <Route path="/users/task/:id" element={<UserTaskDetails />} />
-              <Route path="/users/referral/:id" element={<UserReferralDetails />} />
-              <Route path="/users/transaction/:id" element={<UserTransactionDetails />} />
-              <Route path="/users/usertournament/:id" element={<UserTournamentDetails />} />
 
-              {/* Catch-all route for non-existing paths */}
-              <Route path="/404" element={<NotFound />} />
-              <Route path="*" element={<Navigate to="/404" />} /> {/* Redirect invalid paths to 404 page */}
-            </Routes>
-          </Layout>
-        </SidebarProvider>
-      </Router>
-    </QueryClientProvider>
+                  {/* New Routes for Settings */}
+                  <Route path="/settings" element={<GeneralSettings />} />
+                  <Route path="/settings/dashboard" element={<DashboardSettings />} />
+                  <Route path="/settings/change-password" element={<ChangePasswordSettings />} />
+                  <Route path="/settings/modulesettings" element={<ModuleSettings />} />
+                  <Route path="/settings/projectsettings" element={<ProjectSettings />} />
+
+                  {/* New Routes for Activities */}
+                  <Route path="/activities" element={<Activities />} />
+
+                  {/* New Routes for Users */}
+                  <Route path="/users" element={<Users />} />
+                  <Route path="/users/affiliates" element={<UserAffiliates />} />
+                  <Route path="/users/referrals" element={<UserReferrals />} />
+                  <Route path="/users/tasks" element={<UserTasks />} />
+                  <Route path="/users/transactions" element={<UserTransactions />} />
+                  <Route path="/users/usertournaments" element={<UserTournaments />} />
+                  <Route path="/users/registeredupcomingtournament" element={<UpcomingTournaments />} />
+                  <Route path="/users/winlosshistory" element={<WinLossHistory />} />
+                  <Route path="/users/:id" element={<UserDetails />} />
+                  <Route path="/users/task/:id" element={<UserTaskDetails />} />
+                  <Route path="/users/referral/:id" element={<UserReferralDetails />} />
+                  <Route path="/users/transaction/:id" element={<UserTransactionDetails />} />
+                  <Route path="/users/usertournament/:id" element={<UserTournamentDetails />} />
+
+                  {/* Catch-all route for non-existing paths */}
+                  <Route path="/404" element={<NotFound />} />
+                  <Route path="*" element={<Navigate to="/404" />} /> {/* Redirect invalid paths to 404 page */}
+                </Route>
+              </Routes>
+            </Layout>
+          </SidebarProvider>
+        </Router>
+      </QueryClientProvider>
+    </AuthProvider>
   );
-}
-
-
+};
 
 export default App;
