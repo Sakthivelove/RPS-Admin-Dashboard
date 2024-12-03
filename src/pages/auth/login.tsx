@@ -80,11 +80,11 @@ const AdminLogin: React.FC = () => {
 
 
 
-  if (mutation.isPending || mutation.data?.status === false) {
+  if (mutation.isPending || mutation.error) {
     return (
       <StatusMessage
         isLoading={mutation.isPending}
-        error={mutation.data?.status === false ? new Error(mutation.error?.message || 'Login failed. Please check your credentials.') : null}
+        error={mutation.error ? new Error(mutation.error?.message || 'Login failed. Please check your credentials.') : null}
         loadingMessage="Logging in..."
         errorMessage="Login failed. Please check your credentials."
         className="h-screen"
