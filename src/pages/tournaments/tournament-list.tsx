@@ -7,32 +7,10 @@ import { useSidebar } from '../../context/SidebarContext';
 
 const TournamentList: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
-    const {sidebarActive} = useSidebar()
+    const { sidebarActive } = useSidebar()
     const handleSearch = (term: string) => {
         setSearchTerm(term);
     };
-
-    // Sample Data for Gradient Cards
-    const gradientCards = [
-        {
-            title: 'Total Tournaments',
-            value: '25',
-            imageSrc: 'icons/trophy_1.png',
-            imageAlt: 'Tournaments Icon',
-        },
-        {
-            title: 'Total Prize Pool',
-            value: '$50,000',
-            imageSrc: 'icons/league.png',
-            imageAlt: 'Prize Pool Icon',
-        },
-        {
-            title: 'Top Winner',
-            value: 'John Doe',
-            imageSrc: 'icons/user-avathar.png',
-            imageAlt: 'Winner Icon',
-        },
-    ];
 
     // Table Columns and Data
     const tableColumns = ['S.No', 'Tournament Name', 'Prize Pool', 'Tournament Fee', 'Winner', 'Game History', 'Actions'];
@@ -79,45 +57,16 @@ const TournamentList: React.FC = () => {
     );
 
     return (
-        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]': 'w-[94%]'} h-screen overflow-auto`}>
-            {/* Main Content */}
-            <div className="flex-grow flex flex-col h-full p-6 overflow-hidden">
-                {/* Render Gradient Cards */}
-                <div className="flex space-x-6 mb-6">
-                    {gradientCards.map((card, index) => (
-                        <GradientCard
-                            key={index}
-                            title={card.title}
-                            value={card.value}
-                            imageSrc={card.imageSrc}
-                            imageAlt={card.imageAlt}
-                        />
-                    ))}
-                </div>;
-
-                {/* Tournament List Section */}
-                <div className="flex flex-col bg-[#1A1D26] rounded-lg h-full">
-                    {/* Title and Search Bar */}
-                    <div className="px-6 pt-6">
-                        <h3 className="text-[#45F882] font-rajdhani font-semibold text-3xl mb-4">
-                            Tournament List
-                        </h3>
-                        <SearchBar
-                            placeholder="Search tournaments..."
-                            onSearch={handleSearch}
-                        />
-                    </div>
-
-                    {/* Table Section */}
-                    <div className="flex-grow overflow-y-auto px-6 pb-6">
-                        <Table
-                            columns={tableColumns}
-                            data={filteredData}
-                            // rowColor="#0F1C23"
-                            tableBgColor="#1A1D26"
-                        />
-                    </div>
-                </div>
+        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen`}>
+            <div className='m-4'>
+                <Table
+                    columns={tableColumns}
+                    data={filteredData}
+                    title='Tournament List'
+                    showSearchBar={true}
+                    onSearch={handleSearch}
+                    height='68vh'
+                />
             </div>
         </div>
     );

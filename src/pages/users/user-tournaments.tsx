@@ -1,13 +1,11 @@
 import React from 'react';
 import { useUserTournaments } from '../../hooks/useUserTournaments';
 import Table from '../../components/common/Table';
-import { useSidebar } from '../../context/SidebarContext';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import StatusMessage from '../../components/StatusMessage'; // Import StatusMessage
 
 const UserTournaments = () => {
     const { data, error, isLoading } = useUserTournaments(1, 10);  // Pagination (page 1, 10 items per page)
-    const { sidebarActive } = useSidebar();
     const navigate = useNavigate();  // Initialize the navigate function
 
     // Replace the loading and error handling sections with the StatusMessage component
@@ -18,7 +16,7 @@ const UserTournaments = () => {
                 error={error}
                 loadingMessage="Loading tournaments..."
                 errorMessage={error?.message || 'Error fetching tournaments'}
-                className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen`}
+                className="h-screen flex justify-center items-center"
             />
         );
     }
@@ -108,16 +106,14 @@ const UserTournaments = () => {
     };
 
     return (
-        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen p-8 text-white`}>
-            <Table
-                columns={columns}
-                data={tableData}
-                title="User Tournament Data"
-                showSearchBar={true}
-                searchPlaceholder="Search tournaments..."
-                headerTextColor='text-[#45F882]'
-            />
-        </div>
+        <Table
+            columns={columns}
+            data={tableData}
+            showSearchBar={true}
+            searchPlaceholder="Search tournaments..."
+            headerTextColor='text-[#45F882]'
+            height='450px'
+        />
     );
 };
 

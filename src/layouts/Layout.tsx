@@ -64,8 +64,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                     menuItem={sidebarMenuItems}
                     actionIcon={"/icons/affiliate_2.png"}
                     actionText={"Dashboard"}
-                    actionPath={"/affiliate-tournaments"}
-                    breakIntervals={[3, 1, 4, 4, 2, 2, 3, 8, 5]}
+                    actionPath={"/dashboard"}
+                    // breakIntervals={[3, 1, 4, 4, 2, 2, 3, 8, 5]}
                 />
             )}
             <div className="flex-grow">{children}</div>

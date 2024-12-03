@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Table from '../../components/common/Table';
 import { useUserTasks } from '../../hooks/useUserTasks';
-import { useSidebar } from '../../context/SidebarContext';
 import { useNavigate } from 'react-router-dom'; // React Router hook
 import { FaEye, FaEdit, FaTrash } from 'react-icons/fa';
 import StatusMessage from '../../components/StatusMessage'; // Import StatusMessage
@@ -12,7 +11,6 @@ const UserTasks: React.FC = () => {
   const limit = 10;
   const navigate = useNavigate(); // React Router hook to navigate
 
-  const { sidebarActive } = useSidebar();
 
   // Fetch tasks using the custom hook
   const { data, isLoading, error } = useUserTasks({ page, limit, search });
@@ -25,7 +23,7 @@ const UserTasks: React.FC = () => {
         error={error}
         loadingMessage="Loading tasks..."
         errorMessage={error?.message || 'Error fetching tasks'}
-        className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen`}
+        className="h-screen flex justify-center items-center"
       />
     );
   }
@@ -71,10 +69,8 @@ const UserTasks: React.FC = () => {
   }));
 
   return (
-    <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen text-white overflow-auto`}>
-      <div className="relative z-10 overflow-auto h-full p-[2%]">
+      <div>
         <Table
-          title="User Tasks"
           columns={columns}
           data={tableData || []}
           showSearchBar
@@ -82,10 +78,10 @@ const UserTasks: React.FC = () => {
           tableBgColor="bg-[#1A1D26]"
           headerTextColor="text-[#45F882]"
           searchPlaceholder="Search tasks..."
-          height="500px"
+          height="450px"
         />
         {/* Pagination Controls */}
-        <div className="flex justify-between items-center mt-4">
+        {/* <div className="flex justify-between items-center mt-4">
           <button
             disabled={page === 1 || isLoading}
             onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
@@ -101,9 +97,8 @@ const UserTasks: React.FC = () => {
           >
             Next
           </button>
-        </div>
+        </div> */}
       </div>
-    </div>
   );
 };
 

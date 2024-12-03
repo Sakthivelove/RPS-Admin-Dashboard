@@ -8,7 +8,6 @@ const UserTransactions: React.FC = () => {
     const [page, setPage] = useState(1);
     const limit = 10;
 
-    const { sidebarActive } = useSidebar();
 
     const { data, isLoading, isError, error } = useTransactions({ page, limit });
 
@@ -61,7 +60,7 @@ const UserTransactions: React.FC = () => {
     };
 
     return (
-        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen text-white overflow-auto`}>
+        <div>
             {/* Use StatusMessage for loading and error states */}
             <StatusMessage
                 isLoading={isLoading}
@@ -73,7 +72,7 @@ const UserTransactions: React.FC = () => {
 
             {/* Only render the table if there is no loading or error */}
             {!isLoading && !error && data && (
-                <div className="m-[2%]">
+    
                     <Table
                         columns={columns}
                         data={tableData}
@@ -82,26 +81,25 @@ const UserTransactions: React.FC = () => {
                         headerTextColor="text-[#45F882]"
                         showSearchBar={true}
                         onSearch={handleSearch}
-                        height="auto"
+                        height="450px"
                         searchPlaceholder="Search transactions..."
-                        title="Transaction History"
                     />
-                    <div className="flex justify-between mt-4">
-                        <button
-                            className="p-2 bg-gray-300"
-                            disabled={page === 1}
-                            onClick={() => setPage((prev) => prev - 1)}
-                        >
-                            Previous
-                        </button>
-                        <button
-                            className="p-2 bg-gray-300"
-                            onClick={() => setPage((prev) => prev + 1)}
-                        >
-                            Next
-                        </button>
-                    </div>
-                </div>
+                    // <div className="flex justify-between mt-4">
+                    //     <button
+                    //         className="p-2 bg-gray-300"
+                    //         disabled={page === 1}
+                    //         onClick={() => setPage((prev) => prev - 1)}
+                    //     >
+                    //         Previous
+                    //     </button>
+                    //     <button
+                    //         className="p-2 bg-gray-300"
+                    //         onClick={() => setPage((prev) => prev + 1)}
+                    //     >
+                    //         Next
+                    //     </button>
+                    // </div>
+        
             )}
         </div>
     );

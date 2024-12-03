@@ -1,7 +1,6 @@
 import React from 'react';
 import Table from '../../components/common/Table';
 import { useReferrals } from '../../hooks/useReferrals';
-import { useSidebar } from '../../context/SidebarContext';
 import { useNavigate } from 'react-router-dom';  // Import useNavigate for navigation
 import StatusMessage from '../../components/StatusMessage'; // Import StatusMessage
 
@@ -9,20 +8,19 @@ const UserReferrals: React.FC = () => {
     const { data, error, isLoading } = useReferrals(1, 10);
     console.log("referrals", data);
 
-    const { sidebarActive } = useSidebar();
     const navigate = useNavigate(); // Initialize navigate hook
 
-if (error || isLoading) {
-    return (
-        <StatusMessage
-        isLoading={isLoading}
-        error={error}
-        loadingMessage="Loading referrals..."
-        errorMessage={error ? `Error: ${error.message}` : 'Something went wrong.'}
-        className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen`}
-    />
-    )
-}
+    if (error || isLoading) {
+        return (
+            <StatusMessage
+                isLoading={isLoading}
+                error={error}
+                loadingMessage="Loading referrals..."
+                errorMessage={error ? `Error: ${error.message}` : 'Something went wrong.'}
+                className="h-screen flex justify-center items-center"
+            />
+        )
+    }
     const columns = ['S.No', 'Id', 'Referral Code', 'Wallet ID', 'Referral Count', 'Reward', 'Created On', 'Actions'];  // Add 'Actions' to columns
 
     const formattedData = data?.referrals.map((referral, index) => ({
@@ -58,16 +56,16 @@ if (error || isLoading) {
     })) || [];
 
     return (
-        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen `}>
-            <div className="relative z-10 overflow-auto h-full p-[2%]">
-                <Table
-                    columns={columns}
-                    data={formattedData}
-                    title="Referral List"
-                    headerTextColor="text-[#45F882]"
-                />
-            </div>
-        </div>
+
+            <Table
+                columns={columns}
+                data={formattedData}
+                showSearchBar={true}
+                headerTextColor="text-[#45F882]"
+                className='items-stretch overflow-auto'
+                height='450px'
+            />
+
     );
 };
 

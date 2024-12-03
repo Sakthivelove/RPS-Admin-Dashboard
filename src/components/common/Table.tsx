@@ -16,6 +16,7 @@ interface TableProps {
   searchPlaceholder?: string; // Optional prop to customize the search bar placeholder
   scrollX?: string;
   scrollY?: string;
+  className?: string;
 }
 
 const Table: React.FC<TableProps> = ({
@@ -31,8 +32,9 @@ const Table: React.FC<TableProps> = ({
   alternateColumnTextColors,
   height = 'auto',
   searchPlaceholder = 'Search...',
-  scrollX = 'auto',  // Default value for scrollX
-  scrollY = 'auto',  // Default value for scrollY
+  scrollX = 'auto', 
+  scrollY = 'auto', 
+  className
 }) => {
   return (
     <div className={`${tableBgColor} h-full rounded-lg flex p-4 flex-col`}>
@@ -52,7 +54,7 @@ const Table: React.FC<TableProps> = ({
       </div>
 
       {/* Scrollable table content */}
-      <div className={`overflow-x-${scrollX} overflow-y-${scrollY} flex-grow scrollbar-thin`} style={{ height }}>
+      <div className={`overflow-x-${scrollX} overflow-y-${scrollY} flex-grow scrollbar-thin ${className}`} style={{ height }}>
         <div className="min-w-full">
           <table className={`min-w-full table-auto ${tableBgColor} table-layout-auto`}>
             <thead className="sticky top-0 bg-[#1A1D26]">

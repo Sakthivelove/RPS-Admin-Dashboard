@@ -77,10 +77,11 @@ const WinLossRatio: React.FC = () => {
                     showSearchBar={true}
                     onSearch={handleSearch}
                     searchPlaceholder="Search players..."
+                    height='66vh'
                 />
 
                 {/* Pagination Controls */}
-                <div className="flex justify-between items-center mt-4">
+                {/* <div className="flex justify-between items-center mt-4">
                     <button
                         disabled={page === 1 || isLoading}
                         onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
@@ -95,7 +96,7 @@ const WinLossRatio: React.FC = () => {
                     >
                         Next
                     </button>
-                </div>
+                </div> */}
             </div>
         </div>
     );

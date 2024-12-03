@@ -6,11 +6,11 @@ import AdminLogin from "./pages/auth/login";
 import ForgotPassword from "./pages/auth/forgot-password";
 import CreateNewRockTournament from "./pages/tournaments/create-new-rock-tournament";
 import CreateNewAdminTournament from "./pages/tournaments/create-new-admin-tournament";
-import AdminList from "./pages/dashboard/admin-list";
+import AdminList from "./pages/admin/admin-list";
 import AdminScreen from "./pages/admin/admin-screen";
 import AddAdmin from "./pages/admin/add-admin";
 import EditAdmin from "./pages/admin/edit-admin";
-import Dashboard from "./pages/project-details";
+import Dashboards from "./pages/project-details";
 import Tournament from "./pages/tournaments/tournament-history";
 import ChangePassword from "./pages/auth/change-password";
 import AdminUserList from "./pages/admin/admin-user-list";
@@ -55,6 +55,8 @@ import UserReferralDetails from "./pages/users/user-referral-details";
 import UserTransactionDetails from "./pages/users/user-transaction-details";
 import UserTournamentDetails from "./pages/users/user-tournament-details";
 import RootRedirect from "./components/RootRedirect";
+import Dashboard from "./pages/dashboard"
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 
 const App: React.FC = () => {
@@ -82,7 +84,8 @@ const App: React.FC = () => {
                   <Route path="/create-new-rock-tournament" element={<CreateNewRockTournament />} />
                   <Route path="/create-new-vip-tournament" element={<CreateNewVIPTournament />} />
                   <Route path="/create-new-admin-tournament" element={<CreateNewAdminTournament />} />
-                  <Route path="/project-details" element={<Dashboard />} />
+                  <Route path="/project-details" element={<Dashboards />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/admin-list" element={<AdminList />} />
                   <Route path="/admin-screen" element={<AdminScreen />} />
                   <Route path="/add-admin" element={<AddAdmin />} />

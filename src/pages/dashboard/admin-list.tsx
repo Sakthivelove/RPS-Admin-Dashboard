@@ -39,18 +39,7 @@ const AdminList = () => {
     const {sidebarActive} = useSidebar()
     return (
         <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]': 'w-[94%]'} h-screen flex flex-col`}>
-            {/* Top Row: Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-6">
-                {cardData.map((card, index) => (
-                    <GradientCard
-                        key={index}
-                        title={card.title}
-                        value={card.value}
-                        imageSrc={card.imageSrc}
-                        imageAlt={card.imageAlt}
-                    />
-                ))}
-            </div>
+
 
             {/* Table Section */}
             <div className="bg-[#1A1D26] p-2 mx-[2%] mb-[1%] rounded-lg flex-grow">
@@ -61,16 +50,17 @@ const AdminList = () => {
                         <h1 className="text-[#45F882] text-rajdhani text-[1.5rem]">Admin List</h1>
 
                         {/* Add Admin Button */}
+                        {/*
                         <button
                             className="flex items-center space-x-2 bg-[#45F882] text-black px-4 py-2 rounded-lg font-medium"
                             onClick={() => navigate("/add-admin")} // Navigate to /add-admin
                         >
-                            {/* Circle for the plus icon */}
                             <div className="flex items-center justify-center w-5 h-5 bg-green rounded-full text-black border-[1px] border-black">
                                 <FontAwesomeIcon icon={faPlus} />
                             </div>
                             <span>Add Admin</span>
-                        </button>
+                        </button> 
+                        */}
                     </div>
 
                     <table

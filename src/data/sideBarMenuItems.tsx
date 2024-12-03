@@ -83,41 +83,42 @@ import { FiLogOut } from 'react-icons/fi';
 
 export const sidebarMenuItems = [
   { label: "Rock Tournaments", icon: <PlayIcon className="w-6 h-6" />, path: "/create-new-rock-tournament" },
-  { label: "VIP Tournaments", icon: <StarIcon className="w-6 h-6" />, path: "/create-new-vip-tournament" },
+  // { label: "VIP Tournaments", icon: <StarIcon className="w-6 h-6" />, path: "/create-new-vip-tournament" },
   { label: "User Info", icon: <UserIcon className="w-6 h-6" />, path: "/user-info" },
   { label: "Admin List", icon: <UserGroupIcon className="w-6 h-6" />, path: "/admin-list" },
-  { label: "Admin Add", icon: <UserGroupIcon className="w-6 h-6" />, path: "/add-admin" }, // Replaced with UserGroupIcon
-  { label: "Admin Edit", icon: <PencilIcon className="w-6 h-6" />, path: "/edit-admin" },
-  { label: "Admin Screen", icon: <DocumentTextIcon className="w-6 h-6" />, path: "/admin-screen" },
-  { label: "Activity List", icon: <ClipboardIcon className="w-6 h-6" />, path: "/activity-list" },
-  { label: "Tournament List", icon: <TableCellsIcon className="w-6 h-6" />, path: "/tournament-list" },
-  { label: "Tournament Info", icon: <DocumentTextIcon className="w-6 h-6" />, path: "/tournament-info" },
-  { label: "Tournament History", icon: <DocumentTextIcon className="w-6 h-6" />, path: "/tournament-history" },
-  { label: "Game History", icon: <InformationCircleIcon className="w-6 h-6" />, path: "/game-history" },
-  { label: "Game Info", icon: <InformationCircleIcon className="w-6 h-6" />, path: "/game-info" },
-  { label: "Stake History", icon: <ChartBarIcon className="w-6 h-6" />, path: "/stake-history" },
-  { label: "Stake Info", icon: <ChartPieIcon className="w-6 h-6" />, path: "/stake-info" },
-  { label: "Project Settings", icon: <CogIcon className="w-6 h-6" />, path: "/project-details" },
-  { label: "Change Password", icon: <LockClosedIcon className="w-6 h-6" />, path: "/change-password" },
-  { label: "Logout", icon: <FiLogOut className="w-6 h-6" /> },
+  // { label: "Admin Add", icon: <UserGroupIcon className="w-6 h-6" />, path: "/add-admin" },
+  // { label: "Admin Edit", icon: <PencilIcon className="w-6 h-6" />, path: "/edit-admin" },
+  // { label: "Admin Screen", icon: <DocumentTextIcon className="w-6 h-6" />, path: "/admin-screen" },
+  // { label: "Activity List", icon: <ClipboardIcon className="w-6 h-6" />, path: "/activity-list" },
+  // { label: "Tournament List", icon: <TableCellsIcon className="w-6 h-6" />, path: "/tournament-list" },
+  // { label: "Tournament Info", icon: <DocumentTextIcon className="w-6 h-6" />, path: "/tournament-info" },
+  // { label: "Tournament History", icon: <DocumentTextIcon className="w-6 h-6" />, path: "/tournament-history" },
+  // { label: "Game History", icon: <InformationCircleIcon className="w-6 h-6" />, path: "/game-history" },
+  // { label: "Game Info", icon: <InformationCircleIcon className="w-6 h-6" />, path: "/game-info" },
+  // { label: "Stake History", icon: <ChartBarIcon className="w-6 h-6" />, path: "/stake-history" },
+  // { label: "Stake Info", icon: <ChartPieIcon className="w-6 h-6" />, path: "/stake-info" },
+  // { label: "Project Settings", icon: <CogIcon className="w-6 h-6" />, path: "/project-details" },
+  // { label: "Change Password", icon: <LockClosedIcon className="w-6 h-6" />, path: "/change-password" },
 
   // New Routes for Activities
   { label: "Activities", icon: <UserGroupIcon className="w-6 h-6" />, path: "/activities" },
-  
+
   // New Routes for Users
   { label: "User Affiliates", icon: <DevicePhoneMobileIcon className="w-6 h-6" />, path: "/users/affiliates" },
-  { label: "User Referrals", icon: <PlayIcon className="w-6 h-6" />, path: "/users/referrals" },
-  { label: "User Tasks", icon: <BriefcaseIcon className="w-6 h-6" />, path: "/users/tasks" },
-  { label: "User Transactions", icon: <CurrencyDollarIcon className="w-6 h-6" />, path: "/users/transactions" },
-  { label: "User Tournaments", icon: <PlayIcon className="w-6 h-6" />, path: "/users/usertournaments" },
+  // { label: "User Referrals", icon: <PlayIcon className="w-6 h-6" />, path: "/users/referrals" },
+  // { label: "User Tasks", icon: <BriefcaseIcon className="w-6 h-6" />, path: "/users/tasks" },
+  // { label: "User Transactions", icon: <CurrencyDollarIcon className="w-6 h-6" />, path: "/users/transactions" },
+  // { label: "User Tournaments", icon: <PlayIcon className="w-6 h-6" />, path: "/users/usertournaments" },
   { label: "User Registered Upcoming Tournaments", icon: <CalendarIcon className="w-6 h-6" />, path: "/users/registeredupcomingtournament" },
   { label: "User Win/Loss History", icon: <ChartBarIcon className="w-6 h-6" />, path: "/users/winlosshistory" },
 
   // New Routes for Settings
   { label: "General Settings", icon: <CogIcon className="w-6 h-6" />, path: "/settings" },
-  { label: "Dashboard Settings", icon: <DocumentTextIcon className="w-6 h-6" />, path: "/settings/dashboard" },
+  // { label: "Dashboard Settings", icon: <DocumentTextIcon className="w-6 h-6" />, path: "/settings/dashboard" },
   { label: "Change Password Settings", icon: <LockClosedIcon className="w-6 h-6" />, path: "/settings/change-password" },
   { label: "Module Settings", icon: <CogIcon className="w-6 h-6" />, path: "/settings/modulesettings" },
-  { label: "Project Settings", icon: <BriefcaseIcon className="w-6 h-6" />, path: "/settings/projectsettings" },
+  // { label: "Project Settings", icon: <BriefcaseIcon className="w-6 h-6" />, path: "/settings/projectsettings" },
+
+  { label: "Logout", icon: <FiLogOut className="w-6 h-6" /> },
 ];
 

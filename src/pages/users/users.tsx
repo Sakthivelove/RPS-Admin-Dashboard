@@ -8,6 +8,13 @@ const Users: React.FC = () => {
   const { sidebarActive } = useSidebar()
   const { data, isLoading, isError, isFetching, error } = useUsers(page);
 
+  console.log("Data:", data);
+  console.log("Loading:", isLoading);
+  console.log("Error:", isError);
+  console.log("Fetching:", isFetching);
+  console.log("API Error:", error);
+
+
   const handleNextPage = () => {
     setPage((prevPage) => prevPage + 1);
   };
@@ -16,28 +23,7 @@ const Users: React.FC = () => {
     setPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
-  if (isLoading) {
-    return (
-      <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen p-8 text-white flex justify-center items-center`}>
-        <div className="flex items-center">
-          <div className="spinner-border animate-spin w-8 h-8 border-4 border-t-4 border-[#45F882] rounded-full mr-4"></div>
-          <span className="text-xl">Loading...</span>
-        </div>
-      </div>
-    );
-  }
 
-
-  if (error) {
-    return (
-      <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen p-8 text-white flex justify-center items-center`}>
-        <div className="bg-red-500 p-6 rounded-md shadow-lg">
-          <h2 className="text-xl font-bold text-white">Error fetching Tournaments!</h2>
-          <p className="mt-2 text-white">Error: {error.message}</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen text-white overflow-auto`}>
@@ -45,7 +31,7 @@ const Users: React.FC = () => {
       <ul>
         {data?.users?.map((user: User) => (
           <li key={user.id}>
-            <p>{user.name}</p>
+            <p>{user.XLink}</p>
             <p>{user.email}</p>
             {/* Add other user details here */}
           </li>
