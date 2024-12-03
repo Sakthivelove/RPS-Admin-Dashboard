@@ -55,7 +55,7 @@ const AdminLogin: React.FC = () => {
           navigate('/verify-2fa');
         } else {
           // If no 2FA required, navigate to the home page
-          navigate('/affiliate-tournaments');
+          navigate('/dashboard');
         }
       } else {
         console.error('Login failed: ', data.message);
