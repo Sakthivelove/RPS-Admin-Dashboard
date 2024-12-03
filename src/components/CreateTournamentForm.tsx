@@ -19,7 +19,7 @@ export interface TournamentData {
   entryFee: number;
   nominalTournament: boolean;
   nominalFee: number;
-  bannerImage: string;
+  bannerImage: string; // Image URL
 }
 
 const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
@@ -39,7 +39,7 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
   const [entryFee, setEntryFee] = useState<number>(5);
   const [nominalTournament, setNominalTournament] = useState<boolean>(true);
   const [nominalFee, setNominalFee] = useState<number>(5);
-  const [bannerImage, setBannerImage] = useState<string>("http://example.com/banner.jpg");
+  const [bannerImage, setBannerImage] = useState<string>("");
 
   // Callback functions for updating state
   const handleTournamentName = (value: string) => setTournamentName(value);
@@ -53,15 +53,28 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
     if (selectedDate <= currentDate) {
       selectedDate = new Date(currentDate.getTime() + 15 * 60 * 1000); // Add 15 minutes
     }
-
     setDateTime(selectedDate);
   };
 
   const handleType = (value: string) => setType(value);
-  const handleEntryFee = (value: string) => setEntryFee(Math.max(0, Number(value))); // Prevent negative values
+  const handleEntryFee = (value: string) => setEntryFee(Math.max(0, Number(value)));
   const handleNominalTournament = (value: string) => setNominalTournament(value === "true");
   const handleNominalFee = (value: string) => setNominalFee(Number(value));
-  const handleBannerImage = (value: string) => setBannerImage(value);
+
+  // Image upload handler
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file && file.size <= 1 * 1024 * 1024) { // 1MB
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setBannerImage(reader.result as string); // Set base64 URL as banner image
+      };
+      reader.readAsDataURL(file); // Read the file as base64
+    } else {
+      alert("File size exceeds the 1MB limit.");
+    }
+  };
+
 
   // Reset the form fields
   const handleReset = () => {
@@ -71,7 +84,7 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
     setEntryFee(5);
     setNominalTournament(true);
     setNominalFee(5);
-    setBannerImage("http://example.com/banner.jpg");
+    setBannerImage("");
   };
 
   // Open modal when creating a tournament
@@ -97,12 +110,11 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
       // If API call is successful, show the success modal
       setIsModalOpen(true);
     } catch (err: any) {
-      console.log("Error caught during API call:", err);  // Log the error
+      console.log("Error caught during API call:", err);
       setIsModalOpen(false);
       setError({ message: err.message || "An error occurred while creating the tournament" });
     } finally {
       // Reset the loading state
-      setIsModalOpen(false);
       setIsLoading(false);
     }
   };
@@ -112,17 +124,6 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
     setIsModalOpen(false);
   };
 
-  // Format the date for display (e.g., MM/DD/YYYY HH:MM AM/PM)
-  const formattedDate = dateTime.toLocaleString('en-US', {
-    weekday: 'short', // Weekday (Mon, Tue, etc.)
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: true, // AM/PM format
-  });
 
   if (isLoading || error) {
     return (
@@ -143,6 +144,47 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
           {title}
         </h1>
       </section>
+      {/* Banner Image Upload Section */}
+      <section className="mt-[2rem]">
+        <div className="w-full h-[15rem] lg:h-[20rem] bg-gradient-to-r from-[#45F882] to-[#FFBE18] rounded-[1.5rem] p-[0.1rem]">
+          <div className="bg-[#0B0D13] rounded-[1.5rem] w-full h-full flex justify-center items-center">
+            {/* File Upload Section or Image Preview */}
+            {bannerImage ? (
+              <div className="w-full h-full flex justify-center items-center rounded-[1.5rem]">
+                <img
+                  src={bannerImage}
+                  alt="Banner Preview"
+                  className="max-w-full max-h-full object-contain rounded-[1.5rem] shadow-lg"
+                />
+              </div>
+            ) : (
+              <label
+                htmlFor="dropzone-file"
+                className="flex flex-col items-center justify-center w-full h-full rounded-[1.5rem] cursor-pointer bg-[#1A1D26]"
+              >
+                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  <img
+                    src="/create-tournament/file_upload.png"
+                    alt="Upload"
+                    className="h-[5rem] w-[5rem] lg:h-[10rem] lg:w-[10rem]"
+                  />
+                  <p className="text-center text-white rajdhani-bold text-[1rem] md:text-[1.875rem]">
+                    100*100 <span className="text-[#45F882]">Below 1 MB</span>
+                  </p>
+                </div>
+                <input
+                  id="dropzone-file"
+                  type="file"
+                  className="hidden"
+                  onChange={handleFileChange} // Trigger file selection
+                />
+              </label>
+            )}
+          </div>
+        </div>
+      </section>
+
+
 
       <section className="bg-[#1A1D26] w-full p-[3.125px] rounded-[1.5rem] mt-[2rem]">
         <div className="p-[1.125rem]">
@@ -150,40 +192,34 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
             {/* Tournament Name */}
             <div className="mb-[2.75rem]">
               <CreateTournamentInput
-                inputLabel={"Tournament Name"}
+                inputLabel="Tournament Name"
                 isRequired={true}
                 placeHolder={tournamentPlaceholder}
-                type={"text"}
+                type="text"
                 value={tournamentName}
                 callback={handleTournamentName}
               />
             </div>
+
             {/* Date */}
             <div className="mb-[2.75rem]">
               <CreateTournamentInput
-                inputLabel={"Tournament Date"}
+                inputLabel="Tournament Date"
                 isRequired={true}
-                placeHolder={"Select a date"}
-                type={"date"}
+                placeHolder="Select a date"
+                type="date"
                 value={dateTime.getTime()} // Pass date as timestamp (milliseconds)
                 callback={handleDateTime}
               />
             </div>
 
-
-            {/* Display formatted date
-            <div className="mb-[2.75rem]">
-              <label className="text-white">Selected Date (User-Friendly)</label>
-              <p className="text-white">{formattedDate}</p>
-            </div> */}
-
             {/* Entry Fee */}
             <div className="mb-[2.75rem]">
               <CreateTournamentInput
-                inputLabel={"Entry Fee"}
+                inputLabel="Entry Fee"
                 isRequired={true}
-                placeHolder={"Enter fee amount"}
-                type={"number"}
+                placeHolder="Enter fee amount"
+                type="number"
                 value={entryFee}
                 callback={handleEntryFee}
               />
@@ -192,10 +228,10 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
             {/* Nominal Tournament */}
             <div className="mb-[2.75rem]">
               <CreateTournamentInput
-                inputLabel={"Nominal Tournament"}
+                inputLabel="Nominal Tournament"
                 isRequired={true}
-                placeHolder={"Select true/false"}
-                type={"select"}
+                placeHolder="Select true/false"
+                type="select"
                 value={nominalTournament ? "true" : "false"}
                 callback={handleNominalTournament}
                 options={["true", "false"]}
@@ -206,27 +242,15 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
             {nominalTournament && (
               <div className="mb-[2.75rem]">
                 <CreateTournamentInput
-                  inputLabel={"Nominal Fee"}
+                  inputLabel="Nominal Fee"
                   isRequired={true}
-                  placeHolder={"Enter nominal fee"}
-                  type={"number"}
+                  placeHolder="Enter nominal fee"
+                  type="number"
                   value={nominalFee}
                   callback={handleNominalFee}
                 />
               </div>
             )}
-
-            {/* Banner Image */}
-            <div className="mb-[2.75rem]">
-              <CreateTournamentInput
-                inputLabel={"Banner Image"}
-                isRequired={true}
-                placeHolder={"Enter banner image URL"}
-                type={"text"}
-                value={bannerImage}
-                callback={handleBannerImage}
-              />
-            </div>
 
             <div className="flex gap-[1rem] flex-col md:flex-row items-center justify-center">
               <AdminButton

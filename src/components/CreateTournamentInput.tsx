@@ -23,13 +23,6 @@ const CreateTournamentInput: React.FC<CreateTournamentInputIF> = ({
     callback(event.target.value);
   };
 
-  // Helper function to format the date
-  const formatDate = (date: string | number | null) => {
-    if (!date) return "";
-    const newDate = new Date(date);
-    return newDate.toLocaleDateString("en-US");
-  };
-
   // Conditional rendering based on the input type
   const renderInput = () => {
     switch (type) {
@@ -78,9 +71,6 @@ const CreateTournamentInput: React.FC<CreateTournamentInputIF> = ({
       <h1 className="capitalize text-[#45F882] poppins-regular text-[1.5rem]">
         {`${inputLabel} ${isRequired ? "*" : ""}`}
       </h1>
-      {/* {type === "date" && value && (
-        <p className="text-white mt-2">{formatDate(value)}</p> // Display formatted date
-      )} */}
       {renderInput()}
     </div>
   );
