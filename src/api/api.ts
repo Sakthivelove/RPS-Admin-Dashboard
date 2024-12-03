@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
 
 // Define the base URL for your API
-const API_BASE_URL = 'https://qoj48osm1l.execute-api.ap-southeast-2.amazonaws.com/dev';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://qoj48osm1l.execute-api.ap-southeast-2.amazonaws.com/dev';
 // Create an axios instance
 const api: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
