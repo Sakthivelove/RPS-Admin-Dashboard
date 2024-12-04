@@ -3,6 +3,7 @@ import Table from '../../components/common/Table';
 import { useReferrals } from '../../hooks/useReferrals';
 import { useNavigate } from 'react-router-dom';  // Import useNavigate for navigation
 import StatusMessage from '../../components/StatusMessage'; // Import StatusMessage
+import { truncateAddress } from '../../utils';
 
 const UserReferrals: React.FC = () => {
     const { data, error, isLoading } = useReferrals(1, 10);
@@ -27,7 +28,7 @@ const UserReferrals: React.FC = () => {
         'S.No': index + 1,
         'Id': referral.id,
         'Referral Code': referral.referralCode,
-        'Wallet ID': referral.walletId,
+        'Wallet ID': truncateAddress(referral.walletId, 6),  // Truncate walletId here
         'Referral Count': referral.referralCount,
         'Reward': referral.reward,
         'Created On': new Date(parseInt(referral.createdOn) * 1000).toLocaleString(),
@@ -57,14 +58,14 @@ const UserReferrals: React.FC = () => {
 
     return (
 
-            <Table
-                columns={columns}
-                data={formattedData}
-                showSearchBar={true}
-                headerTextColor="text-[#45F882]"
-                className='items-stretch overflow-auto'
-                height='450px'
-            />
+        <Table
+            columns={columns}
+            data={formattedData}
+            showSearchBar={true}
+            headerTextColor="text-[#45F882]"
+            className='items-stretch overflow-auto'
+            height='450px'
+        />
 
     );
 };

@@ -3,6 +3,7 @@ import { useUserTournaments } from '../../hooks/useUserTournaments';
 import Table from '../../components/common/Table';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import StatusMessage from '../../components/StatusMessage'; // Import StatusMessage
+import { truncateAddress } from '../../utils';
 
 const UserTournaments = () => {
     const { data, error, isLoading } = useUserTournaments(1, 10);  // Pagination (page 1, 10 items per page)
@@ -46,11 +47,11 @@ const UserTournaments = () => {
     // Mapping API data to table rows
     const tableData = data?.usertournament.map((item) => ({
         'Tournament ID': item.tournamentId,
-        'Wallet ID': item.walletId,
+        'Wallet ID': truncateAddress(item.walletId, 6),
         'Type': item.type,
         'Entry Paid': item.entryPaid ? 'Yes' : 'No',
         'Nominal Paid': item.nominalPaid ? 'Yes' : 'No',
-        'Transaction ID': item.transactionId,
+        'Transaction ID': truncateAddress(item.transactionId, 6),
         'Entry Fee': item.entryFee,
         'Nominal Tournament': item.nominalTournament ? 'Yes' : 'No',
         'Nominal Fee': item.nominalFee,

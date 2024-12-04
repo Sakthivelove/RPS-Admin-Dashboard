@@ -4,6 +4,7 @@ import { useRegisteredTournaments } from '../../hooks/useRegisteredTournaments';
 import { useSidebar } from '../../context/SidebarContext';
 import { useNavigate } from 'react-router-dom';
 import StatusMessage from '../../components/StatusMessage';
+import { truncateAddress } from '../../utils';
 
 const UpcomingTournaments: React.FC = () => {
     const [page, setPage] = useState(1);
@@ -37,11 +38,11 @@ const UpcomingTournaments: React.FC = () => {
     const tableData = useMemo(() =>
         data?.map((tournament) => ({
             'ID': tournament.id,
-            'Wallet ID': tournament.walletId,
+            'Wallet ID': truncateAddress(tournament.walletId, 6),
             'Tournament ID': tournament.tournamentId,
             'Entry Paid': tournament.entryPaid ? 'Yes' : 'No',
             'Nominal Paid': tournament.nominalPaid ? 'Yes' : 'No',
-            'Transaction ID': tournament.transactionId,
+            'Transaction ID': truncateAddress(tournament.walletId, 6),
             'Entry Fee': tournament.entryFee,
             'Nominal Fee': tournament.nominalFee,
             'Default Move': tournament.defaultMove,

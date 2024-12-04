@@ -22,7 +22,7 @@ import StakeHistory from "./pages/games/stake-history";
 import TournamentHistory from "./pages/tournaments/tournament-history-table";
 import UserInfo from "./pages/user-info";
 import ActivityList from "./pages/dashboard/activity-list";
-import UserList from "./pages/users/affiliates";
+import UserList from "./pages/user-list";
 import Layout from "./layouts/Layout";
 import TournamentInfo from "./pages/tournaments/tournament-info";
 import CreateNewVIPTournament from "./pages/tournaments/create-new-VIP-tournament";
@@ -79,7 +79,7 @@ const App: React.FC = () => {
                 <Route path="/change-password" element={<ChangePassword />} />
 
                 {/* Protected Routes */}
-                <Route element={<ProtectedRoute />}>
+                {/* <Route element={<ProtectedRoute />}> */}
                   <Route path="/affiliate-tournaments" element={<AffiliateTournaments />} />
                   <Route path="/create-new-rock-tournament" element={<CreateNewRockTournament />} />
                   <Route path="/create-new-vip-tournament" element={<CreateNewVIPTournament />} />
@@ -134,7 +134,7 @@ const App: React.FC = () => {
                   {/* Catch-all route for non-existing paths */}
                   <Route path="/404" element={<NotFound />} />
                   <Route path="*" element={<Navigate to="/404" />} /> {/* Redirect invalid paths to 404 page */}
-                </Route>
+                {/* </Route> */}
               </Routes>
             </Layout>
           </SidebarProvider>

@@ -86,6 +86,7 @@ export const sidebarMenuItems = [
   // { label: "VIP Tournaments", icon: <StarIcon className="w-6 h-6" />, path: "/create-new-vip-tournament" },
   { label: "User Info", icon: <UserIcon className="w-6 h-6" />, path: "/user-info" },
   { label: "Admin List", icon: <UserGroupIcon className="w-6 h-6" />, path: "/admin-list" },
+  { label: "User List", icon: <UserGroupIcon className="w-6 h-6" />, path: "/user-list" },
   // { label: "Admin Add", icon: <UserGroupIcon className="w-6 h-6" />, path: "/add-admin" },
   // { label: "Admin Edit", icon: <PencilIcon className="w-6 h-6" />, path: "/edit-admin" },
   // { label: "Admin Screen", icon: <DocumentTextIcon className="w-6 h-6" />, path: "/admin-screen" },

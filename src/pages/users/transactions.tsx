@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useTransactions } from '../../hooks/useTransactions';
 import Table from '../../components/common/Table';
-import { useSidebar } from '../../context/SidebarContext';
 import StatusMessage from '../../components/StatusMessage';
+import { truncateAddress } from '../../utils';
 
 const UserTransactions: React.FC = () => {
     const [page, setPage] = useState(1);
@@ -26,7 +26,7 @@ const UserTransactions: React.FC = () => {
     // Transform the data into the format needed for the table rows
     const tableData = data?.transaction.map((txn, index) => ({
         id: txn.id,
-        walletId: txn.walletId,
+        walletId: truncateAddress(txn.walletId, 6),  // Truncate walletId here,
         transactionId: txn.transactionId || 'N/A',
         amount: txn.amount,
         dateTime: new Date(txn.dateTime).toLocaleString(),

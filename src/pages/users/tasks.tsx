@@ -4,6 +4,7 @@ import { useUserTasks } from '../../hooks/useUserTasks';
 import { useNavigate } from 'react-router-dom'; // React Router hook
 import { FaEye, FaEdit, FaTrash } from 'react-icons/fa';
 import StatusMessage from '../../components/StatusMessage'; // Import StatusMessage
+import { truncateAddress } from '../../utils';
 
 const UserTasks: React.FC = () => {
   const [page, setPage] = useState(1);
@@ -41,7 +42,7 @@ const UserTasks: React.FC = () => {
 
   const tableData = data?.tasks.map((task: any) => ({
     ID: task.id,
-    'Wallet ID': task.walletId,
+    'Wallet ID': truncateAddress(task.walletId, 6),  // Truncate walletId here,
     'Wallet Connection': task.walletConnection ? 'Yes' : 'No',
     'Telegram Connection': task.telegramConnection ? 'Yes' : 'No',
     'X Connection': task.xConnection ? 'Yes' : 'No',
@@ -69,19 +70,19 @@ const UserTasks: React.FC = () => {
   }));
 
   return (
-      <div>
-        <Table
-          columns={columns}
-          data={tableData || []}
-          showSearchBar
-          rowColor="bg-[#0F1C23]"
-          tableBgColor="bg-[#1A1D26]"
-          headerTextColor="text-[#45F882]"
-          searchPlaceholder="Search tasks..."
-          height="450px"
-        />
-        {/* Pagination Controls */}
-        {/* <div className="flex justify-between items-center mt-4">
+    <div>
+      <Table
+        columns={columns}
+        data={tableData || []}
+        showSearchBar
+        rowColor="bg-[#0F1C23]"
+        tableBgColor="bg-[#1A1D26]"
+        headerTextColor="text-[#45F882]"
+        searchPlaceholder="Search tasks..."
+        height="450px"
+      />
+      {/* Pagination Controls */}
+      {/* <div className="flex justify-between items-center mt-4">
           <button
             disabled={page === 1 || isLoading}
             onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
@@ -98,7 +99,7 @@ const UserTasks: React.FC = () => {
             Next
           </button>
         </div> */}
-      </div>
+    </div>
   );
 };
 

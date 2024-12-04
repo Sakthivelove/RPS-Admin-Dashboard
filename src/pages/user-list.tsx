@@ -1,14 +1,16 @@
 import React from 'react';
 import Table from "../components/common/Table";
-import { useUsers } from '../hooks/useUsers'; 
+import { useUsers } from '../hooks/useUsers';
+import { useSidebar } from '../context/SidebarContext';
 
 const UserList: React.FC = () => {
   const { data, error, isLoading } = useUsers();  // Using the custom hook to fetch user data
+  const { sidebarActive } = useSidebar()
 
   // Handle loading and error states
   if (isLoading) {
     return (
-      <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+      <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen overflow-hidden flex flex-col justify-center items-center bg-black bg-opacity-50`}>
         <div className="text-white text-xl">Loading...</div>
       </div>
     );
@@ -16,25 +18,24 @@ const UserList: React.FC = () => {
 
   if (error instanceof Error) {
     return (
-      <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="text-white text-xl">Error: {error.message}</div>
+      <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen overflow-hidden flex flex-col justify-center items-center bg-black bg-opacity-50`}>
+        <div className="text-white text-xl">Details: {error.message}</div>
       </div>
     );
   }
 
   // Define columns for the table
-  const userListColumns = ['S.No', 'Telegram ID', 'ID', 'Reset Expiry'];
+  const userListColumns = ['S.No', 'Telegram ID', 'ID'];
 
   // Transform API data into the format expected by the table
-  const userListData = data?.map((user, index) => ({
+  const userListData = data?.users.map((user, index) => ({
     'S.No': index + 1,
     'Telegram ID': user.telegramId,  // Display the Telegram ID
     ID: `U00${user.id}`,             // Format user ID as needed (e.g., "U001", "U002")
-    'Reset Expiry': user.ResetExpiry, // Show the Reset Expiry date
   }));
 
   return (
-    <div className="flex h-screen relative">
+    <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen overflow-hidden flex flex-col`}>
       <div className="flex-1 p-6 bg-opacity-80">
         <Table
           columns={userListColumns}
