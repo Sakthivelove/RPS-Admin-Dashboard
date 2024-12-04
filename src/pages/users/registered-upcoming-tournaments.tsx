@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Table from '../../components/common/Table';
 import { useRegisteredTournaments } from '../../hooks/useRegisteredTournaments';
 import { useSidebar } from '../../context/SidebarContext';
@@ -12,9 +12,7 @@ const UpcomingTournaments: React.FC = () => {
     const { sidebarActive } = useSidebar();
     const navigate = useNavigate();
 
-    const { data, isLoading, isError, error, refetch } = useRegisteredTournaments(page, limit);
-
-    console.log("upcoming", data);
+    const { data, isLoading, isError, error } = useRegisteredTournaments(page, limit);
 
     const columns = [
         'ID',
@@ -32,7 +30,7 @@ const UpcomingTournaments: React.FC = () => {
         'Date Time',
         'Tournament Name',
         'Winner',
-        'Actions'
+        'Actions',
     ];
 
     const tableData = useMemo(() =>
@@ -42,7 +40,7 @@ const UpcomingTournaments: React.FC = () => {
             'Tournament ID': tournament.tournamentId,
             'Entry Paid': tournament.entryPaid ? 'Yes' : 'No',
             'Nominal Paid': tournament.nominalPaid ? 'Yes' : 'No',
-            'Transaction ID': truncateAddress(tournament.walletId, 6),
+            'Transaction ID': truncateAddress(tournament.transactionId, 6),
             'Entry Fee': tournament.entryFee,
             'Nominal Fee': tournament.nominalFee,
             'Default Move': tournament.defaultMove,
@@ -80,6 +78,10 @@ const UpcomingTournaments: React.FC = () => {
 
     const [filteredData, setFilteredData] = useState(tableData);
 
+    useEffect(() => {
+        setFilteredData(tableData); // Sync filteredData with tableData when tableData changes
+    }, [tableData]);
+
     const handleSearch = (searchTerm: string) => {
         const filtered = tableData.filter((row) =>
             Object.values(row)
@@ -104,8 +106,6 @@ const UpcomingTournaments: React.FC = () => {
         console.log(`Deleting tournament with ID: ${id}`);
         // Implement your logic for deleting a tournament (e.g., show a confirmation modal and delete via API)
     };
-
-    // Replace existing error and loading sections with StatusMessage
     if (isLoading || isError) {
         return (
             <StatusMessage
@@ -131,24 +131,6 @@ const UpcomingTournaments: React.FC = () => {
                     onSearch={handleSearch}
                     searchPlaceholder="Search tournaments..."
                 />
-                {/* Pagination Controls */}
-                {/* <div className="flex justify-between items-center mt-4">
-                    <button
-                        disabled={page === 1 || isLoading}
-                        onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-                        className="px-4 py-2 bg-[#1A1D26] text-[#45F882] rounded disabled:opacity-50"
-                    >
-                        Previous
-                    </button>
-                    <span className="text-white">Page {page}</span>
-                    <button
-                        // disabled={isLoading || (data?.total && page * limit >= data.total)}
-                        onClick={() => setPage((prev) => prev + 1)}
-                        className="px-4 py-2 bg-[#1A1D26] text-[#45F882] rounded disabled:opacity-50"
-                    >
-                        Next
-                    </button>
-                </div> */}
             </div>
         </div>
     );
