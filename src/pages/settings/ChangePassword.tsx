@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSidebar } from "../../context/SidebarContext";
 import { useChangePassword } from "../../hooks/useChangePassword";
 import StatusMessage from "../../components/StatusMessage";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline"; // You need to install Heroicons if not already installed
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline"; 
 
 const ChangePassword: React.FC = () => {
   const [currentPassword, setCurrentPassword] = useState<string>("");
@@ -16,6 +16,15 @@ const ChangePassword: React.FC = () => {
   // Use the custom hook
   const { mutate, isPending, error, isSuccess } = useChangePassword();
 
+  // Reset fields after success using useEffect
+  useEffect(() => {
+    if (isSuccess) {
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    }
+  }, [isSuccess]); // Runs only when isSuccess changes to true
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -28,13 +37,6 @@ const ChangePassword: React.FC = () => {
     // Trigger mutation
     mutate({ currentPassword, newPassword });
   };
-
-  // Clear the fields after successful password change
-  if (isSuccess) {
-    setCurrentPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
-  }
 
   // Conditionally render StatusMessage or the main content
   if (isPending || error) {
