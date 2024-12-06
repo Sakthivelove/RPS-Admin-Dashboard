@@ -8,13 +8,14 @@ interface ModalProps {
     content: string;
     onConfirm?: () => void; // Optional for cases without "Yes/No" buttons
     buttons?: { text: string; onClick: () => void; image: "green" | "yellow" }[]; // Custom buttons array
+    className?: string;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, content, onConfirm, buttons }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, content, onConfirm, buttons, className }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 flex justify-center items-center z-50">
+        <div className={`fixed w-full inset-0 flex justify-center items-center z-50 ${className}`}>
             {/* Backdrop */}
             <div
                 className="absolute inset-0 bg-black opacity-50"

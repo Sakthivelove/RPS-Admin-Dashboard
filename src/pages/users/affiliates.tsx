@@ -9,21 +9,25 @@ const UserAffiliates: React.FC = () => {
   const { sidebarActive } = useSidebar(); // Sidebar state
 
   // Define columns for the table
-  const userListColumns = ['S.No', 'Telegram ID', 'ID', 'Reset Expiry'];
+  const userListColumns = [
+    'S.No',
+    'Telegram ID',
+    // 'ID',
+    // 'Reset Expiry'
+  ];
 
   // Transform API data into the format expected by the table
   const userListData = data?.map((user, index) => ({
     'S.No': index + 1,
     'Telegram ID': user.telegramId, // Display the Telegram ID
-    ID: `U00${user.id}`, // Format user ID as needed
-    'Reset Expiry': user.ResetExpiry, // Show the Reset Expiry date
+    // ID: `U00${user.id}`, // Format user ID as needed
+    // 'Reset Expiry': user.ResetExpiry, // Show the Reset Expiry date
   }));
 
   return (
     <div
-      className={`absolute right-0 ${
-        sidebarActive ? 'w-[77%]' : 'w-[94%]'
-      } h-screen overflow-auto`}
+      className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'
+        } h-screen overflow-auto`}
     >
       {/* Wrapper to handle positioning and sizing */}
       <div className="flex-1 h-full p-6 bg-opacity-80 relative">

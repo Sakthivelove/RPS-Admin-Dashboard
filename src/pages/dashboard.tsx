@@ -9,13 +9,13 @@ const Dashboard: React.FC = () => {
     const { data, isLoading, isError, error } = useDashboardData();
 
     if (isLoading || isError) {
-        <StatusMessage
+        return(<StatusMessage
             isLoading={isLoading}
             error={error instanceof Error ? error : null}
             loadingMessage="Loading Dashboard Data..."
             errorMessage="Failed to load the dashboard data"
-            className="absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen"
-        />
+            className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen flex justify-center items-center`}
+        />)
     }
 
     return (

@@ -30,7 +30,7 @@ const UpcomingTournaments: React.FC = () => {
         'Date Time',
         'Tournament Name',
         'Winner',
-        'Actions',
+        // 'Actions',
     ];
 
     const tableData = useMemo(() =>
@@ -50,28 +50,28 @@ const UpcomingTournaments: React.FC = () => {
             'Date Time': new Date(Number(tournament.dateTime) * 1000).toLocaleString(),
             'Tournament Name': tournament.tournamentName || 'N/A',
             'Winner': tournament.winner || 'N/A',
-            'Actions': (
-                <div className="flex gap-2">
-                    <button
-                        onClick={() => handleView(tournament.id)}
-                        className="text-blue-500 hover:text-blue-700"
-                    >
-                        View
-                    </button>
-                    <button
-                        onClick={() => handleEdit(tournament.id)}
-                        className="text-yellow-500 hover:text-yellow-700"
-                    >
-                        Edit
-                    </button>
-                    <button
-                        onClick={() => handleDelete(tournament.id)}
-                        className="text-red-500 hover:text-red-700"
-                    >
-                        Delete
-                    </button>
-                </div>
-            ),
+            // 'Actions': (
+            //     <div className="flex gap-2">
+            //         <button
+            //             onClick={() => handleView(tournament.id)}
+            //             className="text-blue-500 hover:text-blue-700"
+            //         >
+            //             View
+            //         </button>
+            //         <button
+            //             onClick={() => handleEdit(tournament.id)}
+            //             className="text-yellow-500 hover:text-yellow-700"
+            //         >
+            //             Edit
+            //         </button>
+            //         <button
+            //             onClick={() => handleDelete(tournament.id)}
+            //             className="text-red-500 hover:text-red-700"
+            //         >
+            //             Delete
+            //         </button>
+            //     </div>
+            // ),
         })) || [],
         [data]
     );
