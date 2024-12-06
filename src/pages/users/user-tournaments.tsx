@@ -17,7 +17,7 @@ const UserTournaments = () => {
                 error={error}
                 loadingMessage="Loading tournaments..."
                 errorMessage={error?.message || 'Error fetching tournaments'}
-                className="h-screen flex justify-center items-center"
+                className="h-[80vh] flex justify-center items-center"
             />
         );
     }

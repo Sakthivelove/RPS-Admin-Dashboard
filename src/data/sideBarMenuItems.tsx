@@ -91,7 +91,7 @@ export const sidebarMenuItems = [
   // { label: "Admin Edit", icon: <PencilIcon className="w-6 h-6" />, path: "/edit-admin" },
   // { label: "Admin Screen", icon: <DocumentTextIcon className="w-6 h-6" />, path: "/admin-screen" },
   // { label: "Activity List", icon: <ClipboardIcon className="w-6 h-6" />, path: "/activity-list" },
-  // { label: "Tournament List", icon: <TableCellsIcon className="w-6 h-6" />, path: "/tournament-list" },
+  { label: "Tournament List", icon: <TableCellsIcon className="w-6 h-6" />, path: "/tournament-list" },
   // { label: "Tournament Info", icon: <DocumentTextIcon className="w-6 h-6" />, path: "/tournament-info" },
   // { label: "Tournament History", icon: <DocumentTextIcon className="w-6 h-6" />, path: "/tournament-history" },
   // { label: "Game History", icon: <InformationCircleIcon className="w-6 h-6" />, path: "/game-history" },
@@ -114,10 +114,10 @@ export const sidebarMenuItems = [
   { label: "User Win/Loss History", icon: <ChartBarIcon className="w-6 h-6" />, path: "/users/winlosshistory" },
 
   // New Routes for Settings
-  { label: "General Settings", icon: <CogIcon className="w-6 h-6" />, path: "/settings" },
+  { label: "Settings", icon: <CogIcon className="w-6 h-6" />, path: "/settings" },
   // { label: "Dashboard Settings", icon: <DocumentTextIcon className="w-6 h-6" />, path: "/settings/dashboard" },
-  { label: "Change Password Settings", icon: <LockClosedIcon className="w-6 h-6" />, path: "/settings/change-password" },
-  { label: "Module Settings", icon: <CogIcon className="w-6 h-6" />, path: "/settings/modulesettings" },
+  { label: "Change Password", icon: <LockClosedIcon className="w-6 h-6" />, path: "/settings/change-password" },
+  // { label: "Module Settings", icon: <CogIcon className="w-6 h-6" />, path: "/settings/modulesettings" },
   // { label: "Project Settings", icon: <BriefcaseIcon className="w-6 h-6" />, path: "/settings/projectsettings" },
 
   { label: "Logout", icon: <FiLogOut className="w-6 h-6" /> },

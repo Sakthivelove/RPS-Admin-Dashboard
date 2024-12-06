@@ -56,6 +56,8 @@ import UserTransactionDetails from "./pages/users/user-transaction-details";
 import UserTournamentDetails from "./pages/users/user-tournament-details";
 import RootRedirect from "./components/RootRedirect";
 import Dashboard from "./pages/dashboard"
+import TournamentTable from "./pages/TournamentTable";
+import SettingsComponent from "./pages/settings/settings";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 
@@ -79,7 +81,7 @@ const App: React.FC = () => {
                 <Route path="/change-password" element={<ChangePassword />} />
 
                 {/* Protected Routes */}
-                {/* <Route element={<ProtectedRoute />}> */}
+                <Route element={<ProtectedRoute />}>
                   <Route path="/affiliate-tournaments" element={<AffiliateTournaments />} />
                   <Route path="/create-new-rock-tournament" element={<CreateNewRockTournament />} />
                   <Route path="/create-new-vip-tournament" element={<CreateNewVIPTournament />} />
@@ -92,7 +94,7 @@ const App: React.FC = () => {
                   <Route path="/edit-admin" element={<EditAdmin />} />
                   <Route path="/tournament" element={<Tournament />} />
                   <Route path="/admin-user-list" element={<AdminUserList />} />
-                  <Route path="/tournament-list" element={<TournamentList />} />
+                  <Route path="/tournaments" element={<TournamentList />} />
                   <Route path="/game-history" element={<GameHistory />} />
                   <Route path="/game-info" element={<GameInfo />} />
                   <Route path="/stake-info" element={<StakeInfo />} />
@@ -104,10 +106,11 @@ const App: React.FC = () => {
                   <Route path="/tournament-info" element={<TournamentInfo />} />
                   <Route path="/referrals" element={<Referrals />} />
                   <Route path="/user-tournaments" element={<UserTournamentTable />} />
+                  <Route path="/tournament-list" element={<TournamentTable />} />
 
 
                   {/* New Routes for Settings */}
-                  <Route path="/settings" element={<GeneralSettings />} />
+                  <Route path="/settings" element={<SettingsComponent />} />
                   <Route path="/settings/dashboard" element={<DashboardSettings />} />
                   <Route path="/settings/change-password" element={<ChangePasswordSettings />} />
                   <Route path="/settings/modulesettings" element={<ModuleSettings />} />
@@ -134,7 +137,7 @@ const App: React.FC = () => {
                   {/* Catch-all route for non-existing paths */}
                   <Route path="/404" element={<NotFound />} />
                   <Route path="*" element={<Navigate to="/404" />} /> {/* Redirect invalid paths to 404 page */}
-                {/* </Route> */}
+                </Route>
               </Routes>
             </Layout>
           </SidebarProvider>

@@ -32,8 +32,8 @@ const Table: React.FC<TableProps> = ({
   alternateColumnTextColors,
   height = 'auto',
   searchPlaceholder = 'Search...',
-  scrollX = 'auto', 
-  scrollY = 'auto', 
+  scrollX = 'auto',
+  scrollY = 'auto',
   className
 }) => {
   return (
@@ -105,20 +105,7 @@ const Table: React.FC<TableProps> = ({
                           color: textColor, // Set the dynamic text color
                         }}
                       >
-                        {col === 'Tournament Name' ? (
-                          <div className="flex items-center justify-start">
-                            <img
-                              src={rowIndex % 2 === 0
-                                ? '/affiliate-panel/icons/vip_active.png'
-                                : '/affiliate-panel/icons/vip_unactive.png'}
-                              alt="Tournament Icon"
-                              className="w-6 h-6 mr-2"
-                            />
-                            {row[col]}
-                          </div>
-                        ) : (
-                          row[col]
-                        )}
+                        {row[col]}
                       </td>
                     );
                   })}

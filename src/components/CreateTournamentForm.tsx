@@ -5,11 +5,46 @@ import Modal from "./common/Modal";
 import StatusMessage from "./StatusMessage"; // Import the StatusMessage component
 
 interface CreateTournamentFormProps {
-  title: string; // Title of the form (e.g., "Create New VIP Tournament")
-  tournamentPlaceholder: string; // Placeholder for the tournament name input
-  buttonLabel: string; // Label for the "Create Tournament" button
-  onSubmit: (data: TournamentData) => Promise<void>; // Callback to submit the form data
+  /**
+   * The title of the form (e.g., "Create New VIP Tournament").
+   */
+  title: string;
+
+  /**
+   * Placeholder text for the tournament name input field.
+   */
+  tournamentPlaceholder: string;
+
+  /**
+   * Label text for the "Create Tournament" button.
+   */
+  buttonLabel: string;
+
+  /**
+   * Callback function to handle form submission.
+   * @param data - The tournament data to be submitted.
+   * @returns A promise that resolves once the submission is complete.
+   */
+  onSubmit: (data: TournamentData) => Promise<void>;
+
+  /**
+   * Callback function to handle successful form submission.
+   * This allows the parent component to trigger additional actions, such as showing a success modal.
+   */
+  onSuccess: () => void;
+
+  /**
+   * Optional boolean flag to disable the form. Useful for loading states.
+   * Defaults to `false` if not provided.
+   */
+  isDisabled?: boolean;
+
+  /**
+   * Optional custom error message to display when the form submission fails.
+   */
+  errorMessage?: string;
 }
+
 
 // Define Tournament Data Interface
 export interface TournamentData {
@@ -27,6 +62,7 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
   tournamentPlaceholder,
   buttonLabel,
   onSubmit,
+  onSuccess, // Add new prop for success callback
 }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false); // Track loading state
@@ -91,7 +127,7 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
   const handleCreateTournament = async () => {
     const tournamentData: TournamentData = {
       tournamentName,
-      dateTime: Math.floor(dateTime.getTime() / 1000), // Convert dateTime to Unix timestamp (seconds)
+      dateTime: Math.floor(dateTime.getTime() / 1000),
       type,
       entryFee,
       nominalTournament,
@@ -99,29 +135,18 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
       bannerImage,
     };
 
-    // Set loading to true and reset the error state before submitting
     setIsLoading(true);
     setError(null); // Reset any previous error
 
     try {
-      // Attempt to create the tournament through the provided onSubmit API function
-      await onSubmit(tournamentData); // Pass the tournament data to the parent component
-
-      // If API call is successful, show the success modal
-      setIsModalOpen(true);
+      await onSubmit(tournamentData); // Call parent-provided API function
+      onSuccess(); // Trigger the parent callback for success
     } catch (err: any) {
       console.log("Error caught during API call:", err);
-      setIsModalOpen(false);
       setError({ message: err.message || "An error occurred while creating the tournament" });
     } finally {
-      // Reset the loading state
       setIsLoading(false);
     }
-  };
-
-  // Close modal
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
   };
 
 
@@ -272,13 +297,6 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
         </div>
       </section>
 
-      {/* Success Modal */}
-      {isModalOpen && (
-        <Modal
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-          content="Tournament created successfully!" title={""} />
-      )}
     </div>
   );
 };

@@ -67,7 +67,7 @@ const UserTransactions: React.FC = () => {
                 error={error}
                 loadingMessage="Loading transactions..."
                 errorMessage={error ? `Error: ${error.message}` : 'Something went wrong.'}
-                className="p-8 flex justify-center items-center h-screen"
+                className="p-8 flex justify-center items-center h-[80vh]"
             />
 
             {/* Only render the table if there is no loading or error */}

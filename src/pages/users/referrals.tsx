@@ -18,7 +18,7 @@ const UserReferrals: React.FC = () => {
                 error={error}
                 loadingMessage="Loading referrals..."
                 errorMessage={error ? `Error: ${error.message}` : 'Something went wrong.'}
-                className="h-screen flex justify-center items-center"
+                className="h-[80vh] flex justify-center items-center"
             />
         )
     }

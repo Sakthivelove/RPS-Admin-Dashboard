@@ -24,7 +24,7 @@ const UserTasks: React.FC = () => {
         error={error}
         loadingMessage="Loading tasks..."
         errorMessage={error?.message || 'Error fetching tasks'}
-        className="h-screen flex justify-center items-center"
+        className="h-[80vh] flex justify-center items-center"
       />
     );
   }

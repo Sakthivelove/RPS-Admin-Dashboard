@@ -28,11 +28,10 @@ console.log("Admin list data", data);
     // Data mapping to match table columns
     const tableData = data?.map((item: DataRow, index: number) => ({
         "S.No": index + 1,
-        'ID': item.id,
         'Telegram ID': item.telegramId,
     }));
 
-    const columns = ['S.No', 'ID', 'Telegram ID'];
+    const columns = ['S.No', 'Telegram ID'];
 
     return (
         <div className={`absolute right-0 ${sidebarActive ? "w-[77%]" : "w-[94%]"} p-4 `}>

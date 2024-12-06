@@ -2,15 +2,19 @@ import React, { useState } from "react";
 import { useSidebar } from "../../context/SidebarContext";
 import { useChangePassword } from "../../hooks/useChangePassword";
 import StatusMessage from "../../components/StatusMessage";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline"; // You need to install Heroicons if not already installed
 
 const ChangePassword: React.FC = () => {
   const [currentPassword, setCurrentPassword] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [showCurrentPassword, setShowCurrentPassword] = useState<boolean>(false);
+  const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
   const { sidebarActive } = useSidebar();
 
   // Use the custom hook
-  const { mutate, isPending, error } = useChangePassword();
+  const { mutate, isPending, error, isSuccess } = useChangePassword();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,6 +29,13 @@ const ChangePassword: React.FC = () => {
     mutate({ currentPassword, newPassword });
   };
 
+  // Clear the fields after successful password change
+  if (isSuccess) {
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+  }
+
   // Conditionally render StatusMessage or the main content
   if (isPending || error) {
     return (
@@ -33,15 +44,14 @@ const ChangePassword: React.FC = () => {
         error={error}
         loadingMessage="Updating password..."
         errorMessage="Failed to update password"
-        className={`absolute right-0 ${sidebarActive ? "w-[77%]" : "w-[94%]"} h-screen  flex justify-center items-center`}
+        className={`absolute right-0 ${sidebarActive ? "w-[77%]" : "w-[94%]"} h-screen flex justify-center items-center`}
       />
     );
   }
 
   return (
     <div
-      className={`absolute right-0 ${sidebarActive ? "w-[77%]" : "w-[94%]"
-        } h-screen flex justify-center items-center p-6 sm:p-8 md:p-10`}
+      className={`absolute right-0 ${sidebarActive ? "w-[77%]" : "w-[94%]"} h-screen flex justify-center items-center p-6 sm:p-8 md:p-10`}
     >
       <div className="m-3 text-white overflow-auto bg-gray-800 p-6 w-1/2 rounded-lg">
         <div className="max-w-xl mx-auto">
@@ -50,33 +60,72 @@ const ChangePassword: React.FC = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-lg font-medium">Current Password</label>
-              <input
-                type="password"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                required
-                className="mt-2 w-full p-3 bg-gray-700 text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
+              <div className="relative">
+                <input
+                  type={showCurrentPassword ? "text" : "password"}
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  required
+                  className="w-full p-3 bg-gray-700 text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowCurrentPassword((prev) => !prev)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                >
+                  {showCurrentPassword ? (
+                    <EyeSlashIcon className="h-5 w-5 text-gray-400" />
+                  ) : (
+                    <EyeIcon className="h-5 w-5 text-gray-400" />
+                  )}
+                </button>
+              </div>
             </div>
             <div>
               <label className="block text-lg font-medium">New Password</label>
-              <input
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                required
-                className="mt-2 w-full p-3 bg-gray-700 text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
+              <div className="relative">
+                <input
+                  type={showNewPassword ? "text" : "password"}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  required
+                  className="w-full p-3 bg-gray-700 text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowNewPassword((prev) => !prev)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                >
+                  {showNewPassword ? (
+                    <EyeSlashIcon className="h-5 w-5 text-gray-400" />
+                  ) : (
+                    <EyeIcon className="h-5 w-5 text-gray-400" />
+                  )}
+                </button>
+              </div>
             </div>
             <div>
               <label className="block text-lg font-medium">Confirm Password</label>
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                className="mt-2 w-full p-3 bg-gray-700 text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
+              <div className="relative">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  className="w-full p-3 bg-gray-700 text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                >
+                  {showConfirmPassword ? (
+                    <EyeSlashIcon className="h-5 w-5 text-gray-400" />
+                  ) : (
+                    <EyeIcon className="h-5 w-5 text-gray-400" />
+                  )}
+                </button>
+              </div>
             </div>
             <div className="flex justify-end">
               <button
