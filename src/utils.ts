@@ -11,3 +11,16 @@ export const getContainerClass = (sidebarActive: boolean): string => {
     return `absolute right-0 ${sidebarActive ? "w-[77%]" : "w-[94%]"} h-screen`;
   };
   
+  // src/utils/dateUtils.ts
+
+export const formatDate = (timestamp: number): string => {
+    const date = new Date(timestamp * 1000); // Convert Unix timestamp to milliseconds
+    return new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    }).format(date);
+  };
+  

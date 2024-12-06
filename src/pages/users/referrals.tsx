@@ -4,6 +4,8 @@ import { useReferrals } from '../../hooks/useReferrals';
 import { useNavigate } from 'react-router-dom';  // Import useNavigate for navigation
 import StatusMessage from '../../components/StatusMessage'; // Import StatusMessage
 import { truncateAddress } from '../../utils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const UserReferrals: React.FC = () => {
     const { data, error, isLoading } = useReferrals(1, 10);
@@ -32,25 +34,19 @@ const UserReferrals: React.FC = () => {
         'Referral Count': referral.referralCount,
         'Reward': referral.reward,
         'Created On': new Date(parseInt(referral.createdOn) * 1000).toLocaleString(),
-        'Actions': (  // Add actions for each referral
-            <div className="flex space-x-2">
+        'Actions': (
+            <div className="flex space-x-3">
                 <button
                     onClick={() => navigate(`/users/referral/${referral.id}`)} // Redirect to /users/referral/:id
                     className="text-blue-500 hover:text-blue-700"
                 >
-                    View
+                    <FontAwesomeIcon icon={faEye} />
                 </button>
-                <button
-                    // Implement edit logic here (e.g., open a modal or navigate to an edit page)
-                    className="text-yellow-500 hover:text-yellow-700"
-                >
-                    Edit
+                <button className="text-yellow-500 hover:text-yellow-700">
+                    <FontAwesomeIcon icon={faEdit} />
                 </button>
-                <button
-                    // Implement delete logic here (e.g., confirm deletion)
-                    className="text-red-500 hover:text-red-700"
-                >
-                    Delete
+                <button className="text-red-500 hover:text-red-700">
+                    <FontAwesomeIcon icon={faTrash} />
                 </button>
             </div>
         )

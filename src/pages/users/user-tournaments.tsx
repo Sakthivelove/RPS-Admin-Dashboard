@@ -4,6 +4,8 @@ import Table from '../../components/common/Table';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import StatusMessage from '../../components/StatusMessage'; // Import StatusMessage
 import { truncateAddress } from '../../utils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const UserTournaments = () => {
     const { data, error, isLoading } = useUserTournaments(1, 10);  // Pagination (page 1, 10 items per page)
@@ -67,27 +69,27 @@ const UserTournaments = () => {
         'Winner': item.winner || 'N/A',
         // Action buttons (View, Edit, Delete)
         'Actions': (
-            <div className="flex gap-2">
+            <div className="flex space-x-3">
                 <button
                     onClick={() => handleView(item.id)}  // Pass tournamentId to handleView
                     className="text-blue-500 hover:text-blue-700"
                 >
-                    View
+                    <FontAwesomeIcon icon={faEye} />
                 </button>
                 <button
                     onClick={() => handleEdit(item.tournamentId)}
-                    className="text-yellow-500 hover:text-yellow-700"
-                >
-                    Edit
+                    className="text-yellow-500 hover:text-yellow-700">
+
+                    <FontAwesomeIcon icon={faEdit} />
                 </button>
                 <button
                     onClick={() => handleDelete(item.tournamentId)}
                     className="text-red-500 hover:text-red-700"
                 >
-                    Delete
+                    <FontAwesomeIcon icon={faTrash} />
                 </button>
             </div>
-        ),
+        )
     })) || [];
 
     // Handle actions for View, Edit, and Delete

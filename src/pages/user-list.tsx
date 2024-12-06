@@ -5,6 +5,9 @@ import { useUsers } from '../hooks/useUsers';
 import { useSidebar } from '../context/SidebarContext';
 import { truncateAddress } from '../utils';
 import StatusMessage from '../components/StatusMessage';
+import { formatDate } from '../utils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const UserList: React.FC = () => {
   const { data, error, isLoading } = useUsers(); // Using the custom hook to fetch user data
@@ -47,18 +50,23 @@ const UserList: React.FC = () => {
     'External Username': user.xUserName || 'N/A',
     'Total Win Amount': user.totalWinAmount || 0,
     'Avatar Created': user.isAvatarCreated ? 'Yes' : 'No',
-    'Created On': user.createdOn || 'N/A',
-    'Actions':
-      <div className="flex space-x-2">
+    'Created On': user.createdOn ? formatDate(Number(user.createdOn)) : 'N/A', // Ensure it's a number
+    'Actions': (
+      <div className="flex space-x-3">
         <button
           onClick={() => navigate(`/user-info`)} // Navigate to user-info
-          className="text-blue-500"
+          className="text-blue-500 hover:text-blue-700"
         >
-          View
+          <FontAwesomeIcon icon={faEye} />
         </button>
-        <button className="text-yellow-500">Edit</button>
-        <button className="text-red-500">Delete</button>
+        <button className="text-yellow-500 hover:text-yellow-700">
+          <FontAwesomeIcon icon={faEdit} />
+        </button>
+        <button className="text-red-500 hover:text-red-700">
+          <FontAwesomeIcon icon={faTrash} />
+        </button>
       </div>
+    )
   }));
 
   return (

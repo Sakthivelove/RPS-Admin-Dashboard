@@ -3,6 +3,8 @@ import { useTransactions } from '../../hooks/useTransactions';
 import Table from '../../components/common/Table';
 import StatusMessage from '../../components/StatusMessage';
 import { truncateAddress } from '../../utils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const UserTransactions: React.FC = () => {
     const [page, setPage] = useState(1);
@@ -31,12 +33,18 @@ const UserTransactions: React.FC = () => {
         amount: txn.amount,
         dateTime: new Date(txn.dateTime).toLocaleString(),
         user: txn.user.name,
-        actions: (
-            <>
-                <button>View</button>
-                <button>Edit</button>
-                <button>Delete</button>
-            </>
+        'Actions': (
+            <div className="flex space-x-3">
+                <button className="text-blue-500 hover:text-blue-700">
+                    <FontAwesomeIcon icon={faEye} />
+                </button>
+                <button className="text-yellow-500 hover:text-yellow-700">
+                    <FontAwesomeIcon icon={faEdit} />
+                </button>
+                <button className="text-red-500 hover:text-red-700">
+                    <FontAwesomeIcon icon={faTrash} />
+                </button>
+            </div>
         ),
         // Add a row detail section that will be toggled
         rowDetails: (
@@ -72,34 +80,34 @@ const UserTransactions: React.FC = () => {
 
             {/* Only render the table if there is no loading or error */}
             {!isLoading && !error && data && (
-    
-                    <Table
-                        columns={columns}
-                        data={tableData}
-                        rowColor="bg-[#0F1C23]"
-                        tableBgColor="bg-[#1A1D26]"
-                        headerTextColor="text-[#45F882]"
-                        showSearchBar={true}
-                        onSearch={handleSearch}
-                        height="450px"
-                        searchPlaceholder="Search transactions..."
-                    />
-                    // <div className="flex justify-between mt-4">
-                    //     <button
-                    //         className="p-2 bg-gray-300"
-                    //         disabled={page === 1}
-                    //         onClick={() => setPage((prev) => prev - 1)}
-                    //     >
-                    //         Previous
-                    //     </button>
-                    //     <button
-                    //         className="p-2 bg-gray-300"
-                    //         onClick={() => setPage((prev) => prev + 1)}
-                    //     >
-                    //         Next
-                    //     </button>
-                    // </div>
-        
+
+                <Table
+                    columns={columns}
+                    data={tableData}
+                    rowColor="bg-[#0F1C23]"
+                    tableBgColor="bg-[#1A1D26]"
+                    headerTextColor="text-[#45F882]"
+                    showSearchBar={true}
+                    onSearch={handleSearch}
+                    height="450px"
+                    searchPlaceholder="Search transactions..."
+                />
+                // <div className="flex justify-between mt-4">
+                //     <button
+                //         className="p-2 bg-gray-300"
+                //         disabled={page === 1}
+                //         onClick={() => setPage((prev) => prev - 1)}
+                //     >
+                //         Previous
+                //     </button>
+                //     <button
+                //         className="p-2 bg-gray-300"
+                //         onClick={() => setPage((prev) => prev + 1)}
+                //     >
+                //         Next
+                //     </button>
+                // </div>
+
             )}
         </div>
     );
