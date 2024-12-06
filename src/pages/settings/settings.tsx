@@ -32,19 +32,20 @@ const SettingsComponent = () => {
       setProjectSettings({
         adminWallet: generalSettings.adminWallet || "",
         rockUSDPrice: generalSettings.rockUSDPrice || 0,
-        telegramLink: generalSettings.telegramLink || "",
-        XLink: generalSettings.XLink || "",
-        facebookLink: generalSettings.facebookLink || "",
-        instagramLink: generalSettings.instagramLink || "",
-        linkedInLink: generalSettings.linkedInLink || "",
-        playstoreLink: generalSettings.playstoreLink || "",
+        telegramLink: generalSettings.telegramLink ? generalSettings.telegramLink.replace("https://t.me/", "") : "",
+        facebookLink: generalSettings.facebookLink ? generalSettings.facebookLink.replace("https://facebook.com/", "") : "",
+        instagramLink: generalSettings.instagramLink ? generalSettings.instagramLink.replace("https://instagram.com/", "") : "",
+        linkedInLink: generalSettings.linkedInLink ? generalSettings.linkedInLink.replace("https://linkedin.com/in/", "") : "",
+        playstoreLink: generalSettings.playstoreLink ? generalSettings.playstoreLink.replace("https://play.google.com/store/apps/details?id=", "") : "",
+        XLink: generalSettings.XLink ? generalSettings.XLink.replace("https://twitter.com/", "") : "", // Handle Twitter/X link
       });
       setModuleSettings({
         admin2FA: generalSettings.admin2FA,
         affiliate2FA: generalSettings.affiliate2FA,
-      })
+      });
     }
   }, [settings]);
+
 
   const handleModuleSettingsSubmit = () => {
     updateModuleSettings.mutate(
@@ -193,6 +194,7 @@ const SettingsComponent = () => {
                 className="col-span-6 w-full p-2 text-black border border-gray-300 rounded-md"
               />
             </div>
+
             {/* Rock USD Price */}
             <div className="grid grid-cols-7 items-center gap-4">
               <label className="flex items-center gap-2 text-right">
@@ -211,6 +213,7 @@ const SettingsComponent = () => {
                 className="col-span-6 w-full p-2 text-black border border-gray-300 rounded-md"
               />
             </div>
+
             {/* Telegram Link */}
             <div className="grid grid-cols-7 items-center gap-4">
               <label className="flex items-center gap-2 text-right">
@@ -218,17 +221,18 @@ const SettingsComponent = () => {
               </label>
               <input
                 type="text"
-                placeholder="e.g., https://t.me/yourchannel"
-                value={projectSettings.telegramLink}
+                placeholder="e.g., yourchannel"
+                value={projectSettings.telegramLink ? `https://t.me/${projectSettings.telegramLink}` : ""}
                 onChange={(e) =>
                   setProjectSettings({
                     ...projectSettings,
-                    telegramLink: e.target.value,
+                    telegramLink: e.target.value.replace("https://t.me/", ""), // Store only the unique part
                   })
                 }
                 className="col-span-6 w-full p-2 text-black border border-gray-300 rounded-md"
               />
             </div>
+
             {/* Facebook Link */}
             <div className="grid grid-cols-7 items-center gap-4">
               <label className="flex items-center gap-2 text-right">
@@ -236,17 +240,18 @@ const SettingsComponent = () => {
               </label>
               <input
                 type="text"
-                placeholder="e.g., https://facebook.com/yourpage"
-                value={projectSettings.facebookLink}
+                placeholder="e.g., yourpage"
+                value={projectSettings.facebookLink ? `https://facebook.com/${projectSettings.facebookLink}` : ""}
                 onChange={(e) =>
                   setProjectSettings({
                     ...projectSettings,
-                    facebookLink: e.target.value,
+                    facebookLink: e.target.value.replace("https://facebook.com/", ""), // Store only the unique part
                   })
                 }
                 className="col-span-6 w-full p-2 text-black border border-gray-300 rounded-md"
               />
             </div>
+
             {/* Instagram Link */}
             <div className="grid grid-cols-7 items-center gap-4">
               <label className="flex items-center gap-2 text-right">
@@ -254,17 +259,18 @@ const SettingsComponent = () => {
               </label>
               <input
                 type="text"
-                placeholder="e.g., https://instagram.com/yourprofile"
-                value={projectSettings.instagramLink}
+                placeholder="e.g., yourprofile"
+                value={projectSettings.instagramLink ? `https://instagram.com/${projectSettings.instagramLink}` : ""}
                 onChange={(e) =>
                   setProjectSettings({
                     ...projectSettings,
-                    instagramLink: e.target.value,
+                    instagramLink: e.target.value.replace("https://instagram.com/", ""), // Store only the unique part
                   })
                 }
                 className="col-span-6 w-full p-2 text-black border border-gray-300 rounded-md"
               />
             </div>
+
             {/* LinkedIn Link */}
             <div className="grid grid-cols-7 items-center gap-4">
               <label className="flex items-center gap-2 text-right">
@@ -272,17 +278,18 @@ const SettingsComponent = () => {
               </label>
               <input
                 type="text"
-                placeholder="e.g., https://linkedin.com/in/yourprofile"
-                value={projectSettings.linkedInLink}
+                placeholder="e.g., yourprofile"
+                value={projectSettings.linkedInLink ? `https://linkedin.com/in/${projectSettings.linkedInLink}` : ""}
                 onChange={(e) =>
                   setProjectSettings({
                     ...projectSettings,
-                    linkedInLink: e.target.value,
+                    linkedInLink: e.target.value.replace("https://linkedin.com/in/", ""), // Store only the unique part
                   })
                 }
                 className="col-span-6 w-full p-2 text-black border border-gray-300 rounded-md"
               />
             </div>
+
             {/* Playstore Link */}
             <div className="grid grid-cols-7 items-center gap-4">
               <label className="flex items-center gap-2 text-right">
@@ -290,17 +297,38 @@ const SettingsComponent = () => {
               </label>
               <input
                 type="text"
-                placeholder="e.g., https://play.google.com/store/apps/details?id=yourapp"
-                value={projectSettings.playstoreLink}
+                placeholder="e.g., yourapp"
+                value={projectSettings.playstoreLink ? `https://play.google.com/store/apps/details?id=${projectSettings.playstoreLink}` : ""}
                 onChange={(e) =>
                   setProjectSettings({
                     ...projectSettings,
-                    playstoreLink: e.target.value,
+                    playstoreLink: e.target.value.replace("https://play.google.com/store/apps/details?id=", ""), // Store only the unique part
                   })
                 }
                 className="col-span-6 w-full p-2 text-black border border-gray-300 rounded-md"
               />
             </div>
+
+            {/* Twitter XLink */}
+            <div className="grid grid-cols-7 items-center gap-4">
+              <label className="flex items-center gap-2 text-right">
+                <FaTwitter className="text-blue-500" /> Twitter XLink:
+              </label>
+              <input
+                type="text"
+                placeholder="e.g., yourtwitterhandle"
+                value={projectSettings.XLink ? `https://twitter.com/${projectSettings.XLink}` : ""} // Add "https://twitter.com/" when displaying
+                onChange={(e) =>
+                  setProjectSettings({
+                    ...projectSettings,
+                    XLink: e.target.value.replace(/^https:\/\/twitter\.com\//, ""), // Store only the Twitter handle
+                  })
+                }
+                className="col-span-6 w-full p-2 text-black border border-gray-300 rounded-md"
+              />
+            </div>
+
+
             <button
               type="submit"
               className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4"
@@ -309,6 +337,7 @@ const SettingsComponent = () => {
             </button>
           </form>
         </section>
+
       </div>
 
     </div>
