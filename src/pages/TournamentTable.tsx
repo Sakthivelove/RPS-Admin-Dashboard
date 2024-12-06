@@ -2,19 +2,25 @@ import React, { useState } from 'react';
 import useTournaments from '../hooks/useTournaments';
 import Table from '../components/common/Table';
 import { useSidebar } from '../context/SidebarContext';
-import { getContainerClass,truncateAddress } from '../utils';
+import { getContainerClass, truncateAddress } from '../utils';
+import StatusMessage from '../components/StatusMessage';
 
 const TournamentTable: React.FC = () => {
     const { data, error, isLoading } = useTournaments();
     const [searchQuery, setSearchQuery] = useState('');
     const { sidebarActive } = useSidebar();
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error instanceof Error) {
-        return <div>Error: {error.message}</div>;
+    // If loading or error occurs, render the StatusMessage
+    if (isLoading || error) {
+        return (
+            <StatusMessage
+                isLoading={isLoading}
+                error={error}
+                loadingMessage="Loading tournament data..."
+                errorMessage={error?.message || 'Unable to fetch tournament data.'}
+                className={`absolute right-0 ${sidebarActive ? "w-[77%]" : "w-[94%]"} flex justify-center items-center h-full`}
+            />
+        );
     }
 
     // Define columns with all fields from the Tournament interface
@@ -50,7 +56,7 @@ const TournamentTable: React.FC = () => {
         'Nominal Tournament': tournament.nominalTournament ? 'Yes' : 'No',
         'Nominal Fee': tournament.nominalFee,
         'Prize Pool': tournament.totalPrizePool ?? 'N/A',
-        'Winner': truncateAddress(tournament.winner,6),
+        'Winner': truncateAddress(tournament.winner, 6),
         'Current Stage': tournament.currentStage,
         'Status': tournament.status,
         'Payment Window': tournament.paymentWindow ? 'Open' : 'Closed',

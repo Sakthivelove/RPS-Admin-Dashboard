@@ -165,7 +165,7 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
   return (
     <div className="m-4">
       <section>
-        <h1 className="capitalize text-[#45F882] text-[2rem] md:text-[4rem] lg:text-[6rem] rajdhani-bold">
+        <h1 className="capitalize text-[#45F882] text-[2rem] md:text-[4rem]  rajdhani-bold">
           {title}
         </h1>
       </section>

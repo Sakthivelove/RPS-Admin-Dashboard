@@ -3,6 +3,7 @@ import { useGeneralSettings, useUpdateModuleSettings, useUpdateProjectSettings }
 import { useSidebar } from "../../context/SidebarContext";
 import { getContainerClass } from "../../utils";
 import { FaWallet, FaDollarSign, FaTelegram, FaFacebook, FaInstagram, FaLinkedin, FaGooglePlay, FaTwitter, FaUserShield, FaKey } from "react-icons/fa";
+import StatusMessage from "../../components/StatusMessage";
 
 const SettingsComponent = () => {
   const { data: settings, isLoading, isError, error } = useGeneralSettings();
@@ -70,8 +71,21 @@ const SettingsComponent = () => {
     );
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error loading settings</div>;
+  // Use the StatusMessage component for loading and error handling
+  if (isLoading || isError) {
+    return (
+      <div className={`${getContainerClass(sidebarActive)} p-6 text-white overflow-auto`}>
+        <h1 className="text-3xl font-bold mb-4">Settings</h1>
+        <StatusMessage
+          isLoading={isLoading}
+          error={error}
+          loadingMessage="Fetching settings..."
+          errorMessage="Failed to load settings."
+          className="flex justify-center items-center h-[80vh]"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className={`${getContainerClass(sidebarActive)} bg-gray-800 p-6 text-white overflow-auto`}>
