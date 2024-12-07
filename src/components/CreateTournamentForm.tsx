@@ -149,28 +149,15 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
     }
   };
 
-
-  if (isLoading || error) {
-    return (
-      <StatusMessage
-        isLoading={isLoading}
-        error={error}
-        loadingMessage="Creating Tournament..."
-        errorMessage={error?.message || "Failed to create tournament."}
-        className="mb-4"
-      />
-    );
-  }
-
   return (
     <div className="m-4">
       <section>
-        <h1 className="capitalize text-[#45F882] text-[2rem] md:text-[4rem]  rajdhani-bold">
+        <h1 className="capitalize text-[#45F882] text-[2rem] md:text-[3rem]  rajdhani-bold">
           {title}
         </h1>
       </section>
       {/* Banner Image Upload Section */}
-      <section className="mt-[2rem]">
+      <section className="mt-[0.5rem]">
         <div className="w-full h-[15rem] lg:h-[20rem] bg-gradient-to-r from-[#45F882] to-[#FFBE18] rounded-[1.5rem] p-[0.1rem]">
           <div className="bg-[#0B0D13] rounded-[1.5rem] w-full h-full flex justify-center items-center">
             {/* File Upload Section or Image Preview */}
@@ -208,9 +195,8 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
           </div>
         </div>
       </section>
-
-
-
+      {error && <div className="text-red-500 mt-2">{error.message}</div>}
+      {isLoading && <div className="text-green-500 mt-2">Creating tournament...</div>}
       <section className="bg-[#1A1D26] w-full p-[3.125px] rounded-[1.5rem] mt-[2rem]">
         <div className="p-[1.125rem]">
           <form onSubmit={(e) => e.preventDefault()}>

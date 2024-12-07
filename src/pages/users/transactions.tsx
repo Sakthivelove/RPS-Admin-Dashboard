@@ -38,12 +38,6 @@ const UserTransactions: React.FC = () => {
                 <button className="text-blue-500 hover:text-blue-700">
                     <FontAwesomeIcon icon={faEye} />
                 </button>
-                <button className="text-yellow-500 hover:text-yellow-700">
-                    <FontAwesomeIcon icon={faEdit} />
-                </button>
-                <button className="text-red-500 hover:text-red-700">
-                    <FontAwesomeIcon icon={faTrash} />
-                </button>
             </div>
         ),
         // Add a row detail section that will be toggled

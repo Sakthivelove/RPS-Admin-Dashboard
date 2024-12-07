@@ -35,19 +35,20 @@ const UserReferrals: React.FC = () => {
         'Reward': referral.reward,
         'Created On': new Date(parseInt(referral.createdOn) * 1000).toLocaleString(),
         'Actions': (
-            <div className="flex space-x-3">
+            <div className="flex space-x-3 justify-center items-center">
                 <button
                     onClick={() => navigate(`/users/referral/${referral.id}`)} // Redirect to /users/referral/:id
                     className="text-blue-500 hover:text-blue-700"
                 >
                     <FontAwesomeIcon icon={faEye} />
                 </button>
-                <button className="text-yellow-500 hover:text-yellow-700">
+                {/* Temporarily disabled
+                 <button className="text-yellow-500 hover:text-yellow-700">
                     <FontAwesomeIcon icon={faEdit} />
                 </button>
                 <button className="text-red-500 hover:text-red-700">
                     <FontAwesomeIcon icon={faTrash} />
-                </button>
+                </button> */}
             </div>
         )
     })) || [];

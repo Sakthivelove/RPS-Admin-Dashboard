@@ -5,7 +5,6 @@ import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRou
 import AdminLogin from "./pages/auth/login";
 import ForgotPassword from "./pages/auth/forgot-password";
 import CreateNewRockTournament from "./pages/tournaments/create-new-rock-tournament";
-import CreateNewAdminTournament from "./pages/tournaments/create-new-admin-tournament";
 import AdminList from "./pages/admin/admin-list";
 import AdminScreen from "./pages/admin/admin-screen";
 import AddAdmin from "./pages/admin/add-admin";
@@ -25,7 +24,6 @@ import ActivityList from "./pages/dashboard/activity-list";
 import UserList from "./pages/user-list";
 import Layout from "./layouts/Layout";
 import TournamentInfo from "./pages/tournaments/tournament-info";
-import CreateNewVIPTournament from "./pages/tournaments/create-new-VIP-tournament";
 import AffiliateTournaments from "./pages/activities/activities"
 import { QueryClientProvider } from "@tanstack/react-query";
 import queryClient from "./api/reactQuerClient";
@@ -84,8 +82,6 @@ const App: React.FC = () => {
                 <Route element={<ProtectedRoute />}>
                   <Route path="/affiliate-tournaments" element={<AffiliateTournaments />} />
                   <Route path="/create-new-rock-tournament" element={<CreateNewRockTournament />} />
-                  <Route path="/create-new-vip-tournament" element={<CreateNewVIPTournament />} />
-                  <Route path="/create-new-admin-tournament" element={<CreateNewAdminTournament />} />
                   <Route path="/project-details" element={<Dashboards />} />
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/admin-list" element={<AdminList />} />

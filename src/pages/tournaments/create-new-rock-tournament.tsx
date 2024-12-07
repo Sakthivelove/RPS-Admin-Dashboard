@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useCreateTournament } from '../../hooks/useCreateTournament';
 import CreateTournamentForm from '../../components/CreateTournamentForm';
 import { TournamentData } from '../../services/tournamentService';
-import { useSidebar } from '../../context/SidebarContext';
-import StatusMessage from '../../components/StatusMessage';
+import { useSidebar } from '../../context/SidebarContext'
 import Modal from "../../components/common/Modal"
 
 const CreateRockTournament: React.FC = () => {
@@ -32,20 +31,10 @@ const CreateRockTournament: React.FC = () => {
   // Dynamic class for the container
   const containerClass = `absolute right-0 ${sidebarActive ? "w-[77%]" : "w-[94%]"} h-screen overflow-auto`;
 
-  if (isPending || isError) {
-    return (
-      <StatusMessage
-        isLoading={isPending}
-        error={error}
-        loadingMessage="Creating Tournament..."
-        errorMessage={error?.message || "Failed to create tournament."}
-        className={containerClass}
-      />
-    );
-  }
-
   return (
     <div className={containerClass}>
+      {error && <div className="text-red-500 mt-2">{error.message}</div>}
+      {isPending && <div className="text-green-500 mt-2">Creating tournament...</div>}
       <CreateTournamentForm
         title="Create New Rock Tournament"
         tournamentPlaceholder="Enter Rock Tournament Name"

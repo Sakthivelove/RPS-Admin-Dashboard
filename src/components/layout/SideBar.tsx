@@ -68,7 +68,7 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({
   };
 
   return (
-    <div className="my-[2rem] overflow-y-auto">
+    <div className="mt-[0.5rem] overflow-y-auto">
       <div className={window.innerHeight < 400 ? "h-[10rem]" : "h-full"}>
         <ul>
           {menuItems.map((item, index) => {
@@ -198,9 +198,9 @@ const Sidebar: React.FC<SidebarProps> = ({
         } bg-[#0E1B22] opacity-90 flex-shrink-0`}
     >
       <div className="absolute top-0 w-full h-full px-[0.5rem] xl:px-[1rem] py-[0.857rem] flex flex-col">
-        <div className="flex w-full justify-center">
+        {/* <div className="flex w-full justify-center">
           {profileCard(sidebarActive, username)}
-        </div>
+        </div> */}
 
         {sidebarActive ? (
           <div className="w-full my-[1rem]">

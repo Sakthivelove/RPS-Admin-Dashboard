@@ -69,13 +69,14 @@ const UserTournaments = () => {
         'Winner': item.winner || 'N/A',
         // Action buttons (View, Edit, Delete)
         'Actions': (
-            <div className="flex space-x-3">
+            <div className="flex space-x-3 justify-center items-center">
                 <button
                     onClick={() => handleView(item.id)}  // Pass tournamentId to handleView
                     className="text-blue-500 hover:text-blue-700"
                 >
                     <FontAwesomeIcon icon={faEye} />
                 </button>
+                {/* Temporarily disabled
                 <button
                     onClick={() => handleEdit(item.tournamentId)}
                     className="text-yellow-500 hover:text-yellow-700">
@@ -87,7 +88,7 @@ const UserTournaments = () => {
                     className="text-red-500 hover:text-red-700"
                 >
                     <FontAwesomeIcon icon={faTrash} />
-                </button>
+                </button> */}
             </div>
         )
     })) || [];

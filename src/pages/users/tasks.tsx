@@ -57,14 +57,6 @@ const UserTasks: React.FC = () => {
         >
           <FaEye size={20} /> {/* Eye icon */}
         </button>
-        {/* Edit Icon */}
-        <button className="text-yellow-500 hover:text-yellow-700">
-          <FaEdit size={20} /> {/* Edit icon */}
-        </button>
-        {/* Delete Icon */}
-        <button className="text-red-500 hover:text-red-700">
-          <FaTrash size={20} /> {/* Trash icon */}
-        </button>
       </div>
     ),
   }));
