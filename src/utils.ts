@@ -24,3 +24,17 @@ export const formatDate = (timestamp: number): string => {
     }).format(date);
   };
   
+// Validate URL function
+export const validateLink = (url: string): boolean => {
+  const pattern = new RegExp(
+    '^(https?:\\/\\/)?' + // protocol
+    '((([a-zA-Z\\d]([a-zA-Z\\d-]*[a-zA-Z\\d])*))\\.)+' + // domain name
+    '([a-zA-Z]{2,})' + // TLD
+    '(\\:\\d+)?(\\/[-a-zA-Z\\d%_.~+]*)*' + // port and path
+    '(\\?[;&a-zA-Z\\d%_.~+=-]*)?' + // query string
+    '(\\#[-a-zA-Z\\d_]*)?$'
+  );
+  return pattern.test(url);
+};
+  
+  

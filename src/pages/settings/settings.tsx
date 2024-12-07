@@ -4,6 +4,7 @@ import { useSidebar } from "../../context/SidebarContext";
 import { getContainerClass } from "../../utils";
 import { FaWallet, FaDollarSign, FaTelegram, FaFacebook, FaInstagram, FaLinkedin, FaGooglePlay, FaTwitter, FaUserShield, FaKey } from "react-icons/fa";
 import StatusMessage from "../../components/StatusMessage";
+import { Box, CircularProgress, Table, TableBody, TableCell, TableHead, TableRow, Typography, Link, Alert, Paper } from "@mui/material";
 
 const SettingsComponent = () => {
   const { data: settings, isLoading, isError, error } = useGeneralSettings();
@@ -32,12 +33,12 @@ const SettingsComponent = () => {
       setProjectSettings({
         adminWallet: generalSettings.adminWallet || "",
         rockUSDPrice: generalSettings.rockUSDPrice || 0,
-        telegramLink: generalSettings.telegramLink ? generalSettings.telegramLink.replace("https://t.me/", "") : "",
-        facebookLink: generalSettings.facebookLink ? generalSettings.facebookLink.replace("https://facebook.com/", "") : "",
-        instagramLink: generalSettings.instagramLink ? generalSettings.instagramLink.replace("https://instagram.com/", "") : "",
-        linkedInLink: generalSettings.linkedInLink ? generalSettings.linkedInLink.replace("https://linkedin.com/in/", "") : "",
-        playstoreLink: generalSettings.playstoreLink ? generalSettings.playstoreLink.replace("https://play.google.com/store/apps/details?id=", "") : "",
-        XLink: generalSettings.XLink ? generalSettings.XLink.replace("https://twitter.com/", "") : "", // Handle Twitter/X link
+        telegramLink: generalSettings.telegramLink ? generalSettings.telegramLink : "",
+        facebookLink: generalSettings.facebookLink ? generalSettings.facebookLink : "",
+        instagramLink: generalSettings.instagramLink ? generalSettings.instagramLink : "",
+        linkedInLink: generalSettings.linkedInLink ? generalSettings.linkedInLink : "",
+        playstoreLink: generalSettings.playstoreLink ? generalSettings.playstoreLink : "",
+        XLink: generalSettings.XLink ? generalSettings.XLink : "", // Handle Twitter/X link
       });
       setModuleSettings({
         admin2FA: generalSettings.admin2FA,
@@ -62,6 +63,7 @@ const SettingsComponent = () => {
   };
 
   const handleProjectSettingsSubmit = () => {
+    console.log("Project Settings:", projectSettings);  // Log the project settings
     updateProjectSettings.mutate(
       projectSettings,
       {
@@ -92,16 +94,59 @@ const SettingsComponent = () => {
       <div className="m-4 bg-gray-800 p-6">
         <h1 className="text-3xl font-bold mb-4">Settings</h1>
         {/* General Settings Display */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-2">General Settings</h2>
+        <Box sx={{ mb: 8, p: 3, backgroundColor: "#f9f9f9", borderRadius: 2 }}>
+          <Typography variant="h5" fontWeight="bold" sx={{ mb: 3 }} color="black">
+            General Settings
+          </Typography>
           {isLoading ? (
-            <p>Loading...</p>
+            <Box display="flex" alignItems="center" justifyContent="center" sx={{ height: 200 }}>
+              <CircularProgress />
+            </Box>
           ) : isError ? (
-            <p className="text-red-500">Error loading settings</p>
+            <Alert severity="error">Error loading settings. Please try again later.</Alert>
+          ) : settings && settings[0] ? (
+            <Paper elevation={3} sx={{ overflow: "hidden" }}>
+              <Table>
+                <TableHead sx={{ backgroundColor: "#1976d2" }}>
+                  <TableRow>
+                    <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>Setting</TableCell>
+                    <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>Value</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {Object.entries(settings[0]).map(([key, value]) =>
+                    key !== "id" && key !== "createdAt" && key !== "updatedAt" ? (
+                      <TableRow key={key} sx={{ "&:nth-of-type(even)": { backgroundColor: "#f5f5f5" } }}>
+                        <TableCell sx={{ fontWeight: "bold" }}>{key}</TableCell>
+                        <TableCell>
+                          {key.includes("Link") ? (
+                            <Link href={value} target="_blank" rel="noopener noreferrer" sx={{ color: "#1976d2", textDecoration: "none", "&:hover": { textDecoration: "underline" } }}>
+                              {value}
+                            </Link>
+                          ) : typeof value === "boolean" ? (
+                            <Typography
+                              sx={{
+                                fontWeight: "bold",
+                                color: value ? "green" : "red",
+                              }}
+                            >
+                              {value ? "Enabled" : "Disabled"}
+                            </Typography>
+                          ) : (
+                            value
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ) : null
+                  )}
+                </TableBody>
+              </Table>
+            </Paper>
           ) : (
-            <pre className="bg-gray-700 p-4 rounded-md overflow-auto text-sm">{JSON.stringify(settings, null, 2)}</pre>
+            <Typography>No settings available.</Typography>
           )}
-        </section>
+        </Box>
+
         {/* Module Settings Form */}
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Module Settings</h2>
@@ -222,11 +267,11 @@ const SettingsComponent = () => {
               <input
                 type="text"
                 placeholder="e.g., yourchannel"
-                value={projectSettings.telegramLink ? `https://t.me/${projectSettings.telegramLink}` : ""}
+                value={projectSettings.telegramLink}
                 onChange={(e) =>
                   setProjectSettings({
                     ...projectSettings,
-                    telegramLink: e.target.value.replace("https://t.me/", ""), // Store only the unique part
+                    telegramLink: `https://t.me/${e.target.value.replace("https://t.me/", "")}`,
                   })
                 }
                 className="col-span-6 w-full p-2 text-black border border-gray-300 rounded-md"
@@ -241,11 +286,11 @@ const SettingsComponent = () => {
               <input
                 type="text"
                 placeholder="e.g., yourpage"
-                value={projectSettings.facebookLink ? `https://facebook.com/${projectSettings.facebookLink}` : ""}
+                value={projectSettings.facebookLink}
                 onChange={(e) =>
                   setProjectSettings({
                     ...projectSettings,
-                    facebookLink: e.target.value.replace("https://facebook.com/", ""), // Store only the unique part
+                    facebookLink: `https://facebook.com/${e.target.value.replace("https://facebook.com/", "")}`,
                   })
                 }
                 className="col-span-6 w-full p-2 text-black border border-gray-300 rounded-md"
@@ -260,11 +305,11 @@ const SettingsComponent = () => {
               <input
                 type="text"
                 placeholder="e.g., yourprofile"
-                value={projectSettings.instagramLink ? `https://instagram.com/${projectSettings.instagramLink}` : ""}
+                value={projectSettings.instagramLink}
                 onChange={(e) =>
                   setProjectSettings({
                     ...projectSettings,
-                    instagramLink: e.target.value.replace("https://instagram.com/", ""), // Store only the unique part
+                    instagramLink: `https://instagram.com/${e.target.value.replace("https://instagram.com/", "")}`,
                   })
                 }
                 className="col-span-6 w-full p-2 text-black border border-gray-300 rounded-md"
@@ -279,11 +324,11 @@ const SettingsComponent = () => {
               <input
                 type="text"
                 placeholder="e.g., yourprofile"
-                value={projectSettings.linkedInLink ? `https://linkedin.com/in/${projectSettings.linkedInLink}` : ""}
+                value={projectSettings.linkedInLink}
                 onChange={(e) =>
                   setProjectSettings({
                     ...projectSettings,
-                    linkedInLink: e.target.value.replace("https://linkedin.com/in/", ""), // Store only the unique part
+                    linkedInLink: `https://linkedin.com/in/${e.target.value.replace("https://linkedin.com/in/", "")}`,
                   })
                 }
                 className="col-span-6 w-full p-2 text-black border border-gray-300 rounded-md"
@@ -298,11 +343,11 @@ const SettingsComponent = () => {
               <input
                 type="text"
                 placeholder="e.g., yourapp"
-                value={projectSettings.playstoreLink ? `https://play.google.com/store/apps/details?id=${projectSettings.playstoreLink}` : ""}
+                value={projectSettings.playstoreLink}
                 onChange={(e) =>
                   setProjectSettings({
                     ...projectSettings,
-                    playstoreLink: e.target.value.replace("https://play.google.com/store/apps/details?id=", ""), // Store only the unique part
+                    playstoreLink: `https://play.google.com/store/apps/details?id=${e.target.value.replace("https://play.google.com/store/apps/details?id=", "")}`,
                   })
                 }
                 className="col-span-6 w-full p-2 text-black border border-gray-300 rounded-md"
@@ -317,27 +362,27 @@ const SettingsComponent = () => {
               <input
                 type="text"
                 placeholder="e.g., yourtwitterhandle"
-                value={projectSettings.XLink ? `https://twitter.com/${projectSettings.XLink}` : ""} // Add "https://twitter.com/" when displaying
+                value={projectSettings.XLink}
                 onChange={(e) =>
                   setProjectSettings({
                     ...projectSettings,
-                    XLink: e.target.value.replace(/^https:\/\/twitter\.com\//, ""), // Store only the Twitter handle
+                    XLink: `https://twitter.com/${e.target.value.replace(/^https:\/\/twitter\.com\//, "")}`,
                   })
                 }
                 className="col-span-6 w-full p-2 text-black border border-gray-300 rounded-md"
               />
             </div>
 
-
             <button
               type="submit"
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+              disabled={updateProjectSettings.isPending}
             >
-              Update Project Settings
+              {updateProjectSettings.isPending ? "Updating..." : "Update Project Settings"}
             </button>
+
           </form>
         </section>
-
       </div>
 
     </div>
