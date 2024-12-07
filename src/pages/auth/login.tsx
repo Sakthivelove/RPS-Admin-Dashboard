@@ -4,8 +4,7 @@ import { FaEye, FaEyeSlash, FaUser, FaLock } from 'react-icons/fa';
 import Button from '../../components/common/AdminButton';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../../api/api';
-import logo from "/RockMainLogo.png"; // Logo Image
-import StatusMessage from '../../components/StatusMessage';
+import logo from '/RockMainLogo.png'; // Logo Image
 import { useAuth } from '../../context/AuthContext';
 
 interface LoginDto {
@@ -34,8 +33,9 @@ const AdminLogin: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [telegramId, setTelegramId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const navigate = useNavigate();
-  const { setUser } = useAuth();  // Access setUser from context
+  const { setUser } = useAuth(); // Access setUser from context
 
   const mutation = useMutation<LoginResponse, Error, LoginDto>({
     mutationFn: loginUser,
@@ -58,39 +58,31 @@ const AdminLogin: React.FC = () => {
           navigate('/dashboard');
         }
       } else {
-        console.error('Login failed: ', data.message);
+        setErrorMessage(data.message);
       }
     },
     onError: (error: Error) => {
       console.error('Login failed:', error.message);
+      setErrorMessage('Login failed. Please check your credentials.');
     },
   });
 
-  const handleLoginSubmit = (e: FormEvent) => {
-    e.preventDefault();
+const handleLoginSubmit = (e: FormEvent) => {
+  e.preventDefault();
 
-    if (!telegramId || !password) {
-      alert('Both fields are required.');
-      return;
-    }
+  // Clear any existing error messages when starting a new attempt
+  setErrorMessage(null);
 
-    mutation.mutate({ telegramId, password });
-  };
-
-
-
-
-  if (mutation.isPending || mutation.error) {
-    return (
-      <StatusMessage
-        isLoading={mutation.isPending}
-        error={mutation.error ? new Error(mutation.error?.message || 'Login failed. Please check your credentials.') : null}
-        loadingMessage="Logging in..."
-        errorMessage="Login failed. Please check your credentials."
-        className="h-screen"
-      />
-    );
+  // Validate input fields
+  if (!telegramId || !password) {
+    setErrorMessage('Both fields are required.');
+    return;
   }
+
+  // Initiate login mutation
+  mutation.mutate({ telegramId, password });
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 overflow-hidden">
@@ -117,7 +109,11 @@ const AdminLogin: React.FC = () => {
                   type="text"
                   placeholder="Telegram ID"
                   value={telegramId}
-                  onChange={(e) => setTelegramId(e.target.value)}
+                  onChange={(e) => {
+                    setTelegramId(e.target.value);
+                    setErrorMessage(null); // Clear error on input change
+                  }}
+                  
                   className="p-2 pl-10 pr-3 rounded-md focus:outline-none focus:ring focus:ring-green-100 w-full"
                   style={{
                     backgroundColor: 'rgba(14, 27, 34, 1)',
@@ -134,7 +130,11 @@ const AdminLogin: React.FC = () => {
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setErrorMessage(null); // Clear error on input change
+                  }}
+                  
                   className="p-2 pl-10 pr-3 rounded-md focus:outline-none focus:ring focus:ring-green-100 w-full"
                   style={{
                     backgroundColor: 'rgba(14, 27, 34, 1)',
@@ -163,6 +163,11 @@ const AdminLogin: React.FC = () => {
                 Forgot Password?
               </button>
             </div>
+
+            {/* Error message */}
+            {errorMessage && (
+              <div className="text-red-500 text-center mt-2">{errorMessage}</div>
+            )}
 
             {/* Login Button */}
             <div className="flex justify-center mt-6">

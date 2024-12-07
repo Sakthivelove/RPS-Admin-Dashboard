@@ -4,7 +4,6 @@ import { api } from "../../api/api";
 import Container from "../../components/form/FormContainer";
 import { Field } from "../../components/form/FormFields";
 import { useSidebar } from "../../context/SidebarContext";
-import StatusMessage from "../../components/StatusMessage";  // Import StatusMessage
 
 // Enum for button colors
 enum ButtonColors {
@@ -21,9 +20,7 @@ const changePasswordFormFields: Field[] = [
 
 // API call function
 const changePassword = async (data: { currentPassword: string; newPassword: string }) => {
-    console.log("API call initiated with data:", data); // Log data being sent to the API
     const response = await api.put("/settings/change-password", data);
-    console.log("API call successful, response:", response.data); // Log the successful response
     return response.data;
 };
 
@@ -35,59 +32,52 @@ const ChangePassword: React.FC = () => {
         confirmPassword: "",
     });
 
+    const [statusMessage, setStatusMessage] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
     const { sidebarActive } = useSidebar();
 
-    const { mutate, isPending, isError, isSuccess, error } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationFn: changePassword,
         onSuccess: () => {
-            console.log("Password change successful."); // Log success
-            alert("Password changed successfully");
+            setStatusMessage("Password changed successfully.");
+            setErrorMessage(null); // Clear error message
+            setTimeout(() => setStatusMessage(null), 3000); // Clear status message after 3 seconds
         },
         onError: (err: any) => {
-            console.error("Password change failed:", err); // Log the error
-            alert(`Failed to change password: ${err.response?.data?.message || err.message}`);
+            setErrorMessage(err.response?.data?.message || "Failed to change password.");
+            setStatusMessage(null); // Clear status message
+            setTimeout(() => setErrorMessage(null), 3000); // Clear error message after 3 seconds
         },
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(`Field updated: ${e.target.name}, Value: ${e.target.value}`); // Log field changes
         setFormValues({ ...formValues, [e.target.name]: e.target.value });
     };
 
     const handleSaveClick = () => {
         const { currentPassword, newPassword, confirmPassword } = formValues;
-        console.log("Save button clicked with values:", formValues); // Log button click and values
+
         if (newPassword !== confirmPassword) {
-            console.warn("New password and confirmation do not match."); // Log mismatch warning
             alert("New password and confirmation do not match.");
             return;
         }
-        console.log("Initiating password change mutation."); // Log mutation initiation
+
         mutate({ currentPassword, newPassword });
     };
 
-    if (error || isPending) {
-        return (
-            /* StatusMessage for loading or error */
-            <StatusMessage
-                isLoading={isPending}
-                error={error ? { message: error.message } : null}
-                loadingMessage="Changing password..."
-                errorMessage="Failed to change password."
-                className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen`}
-            />
-        )
-    }
-
-
     return (
-        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen flex overflow-auto`}>
+        <div className={`absolute right-0 ${sidebarActive ? "w-[77%]" : "w-[94%]"} h-screen flex overflow-auto`}>
             {/* Main container */}
             <div className="flex-1 flex flex-col justify-center items-center p-4 bg-[#0E1B2280] m-4 rounded-lg shadow-lg">
                 {/* Title */}
                 <h1 className="text-green-500 font-rajdhani text-3xl font-bold mb-6">
                     Change Password
                 </h1>
+
+                {/* Display Status or Error Message */}
+                {statusMessage && <div className="text-green-500 mb-4">{statusMessage}</div>}
+                {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
 
                 {/* Form container */}
                 <Container
