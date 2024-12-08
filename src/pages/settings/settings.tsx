@@ -5,7 +5,7 @@ import { getContainerClass } from "../../utils";
 import { FaWallet, FaDollarSign, FaTelegram, FaFacebook, FaInstagram, FaLinkedin, FaGooglePlay, FaTwitter, FaUserShield, FaKey } from "react-icons/fa";
 import StatusMessage from "../../components/StatusMessage";
 import { Box, CircularProgress, Table, TableBody, TableCell, TableHead, TableRow, Typography, Link, Alert, Paper } from "@mui/material";
-import { ToastContainer,toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const SettingsComponent = () => {
@@ -99,11 +99,11 @@ const SettingsComponent = () => {
 
   return (
     <div className={`${getContainerClass(sidebarActive)} text-white overflow-auto`}>
-       <ToastContainer />
+      <ToastContainer />
       <div className="m-4 bg-gray-800 p-6">
         <h1 className="text-3xl font-bold mb-4">Settings</h1>
         {/* General Settings Display */}
-        <Box sx={{ mb: 8, p: 3, backgroundColor: "#f9f9f9", borderRadius: 2 }}>
+        <Box sx={{ mb: 8, p: 3, backgroundColor: "#f4f4f4", borderRadius: 2 }}>
           <Typography variant="h5" fontWeight="bold" sx={{ mb: 3 }} color="black">
             General Settings
           </Typography>
@@ -116,33 +116,42 @@ const SettingsComponent = () => {
           ) : settings && settings[0] ? (
             <Paper elevation={3} sx={{ overflow: "hidden" }}>
               <Table>
-                <TableHead sx={{ backgroundColor: "#1976d2" }}>
+                <TableHead sx={{ backgroundColor: "#e0e7ff" }}>
                   <TableRow>
-                    <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>Setting</TableCell>
-                    <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>Value</TableCell>
+                    <TableCell sx={{ color: "#1e3a8a", fontWeight: "bold" }}>Setting</TableCell>
+                    <TableCell sx={{ color: "#1e3a8a", fontWeight: "bold" }}>Value</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {Object.entries(settings[0]).map(([key, value]) =>
                     key !== "id" && key !== "createdAt" && key !== "updatedAt" ? (
-                      <TableRow key={key} sx={{ "&:nth-of-type(even)": { backgroundColor: "#f5f5f5" } }}>
-                        <TableCell sx={{ fontWeight: "bold" }}>{key}</TableCell>
+                      <TableRow key={key} sx={{ "&:nth-of-type(even)": { backgroundColor: "#f9fafb" } }}>
+                        <TableCell sx={{ fontWeight: "bold", color: "#374151" }}>{key}</TableCell>
                         <TableCell>
                           {key.includes("Link") ? (
-                            <Link href={value} target="_blank" rel="noopener noreferrer" sx={{ color: "#1976d2", textDecoration: "none", "&:hover": { textDecoration: "underline" } }}>
+                            <Link
+                              href={value}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              sx={{
+                                color: "#2563eb",
+                                textDecoration: "none",
+                                "&:hover": { textDecoration: "underline", color: "#1d4ed8" },
+                              }}
+                            >
                               {value}
                             </Link>
                           ) : typeof value === "boolean" ? (
                             <Typography
                               sx={{
                                 fontWeight: "bold",
-                                color: value ? "green" : "red",
+                                color: value ? "#059669" : "#dc2626",
                               }}
                             >
                               {value ? "Enabled" : "Disabled"}
                             </Typography>
                           ) : (
-                            value
+                            <Typography sx={{ color: "#374151" }}>{value}</Typography>
                           )}
                         </TableCell>
                       </TableRow>
@@ -155,6 +164,7 @@ const SettingsComponent = () => {
             <Typography>No settings available.</Typography>
           )}
         </Box>
+
 
         {/* Module Settings Form */}
         <section className="mb-8">

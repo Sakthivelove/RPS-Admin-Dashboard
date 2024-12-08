@@ -40,7 +40,7 @@ const UserReferrals: React.FC = () => {
         'Actions': (
             <div className="flex space-x-3 justify-center items-center">
                 <button
-                    onClick={() => navigate(`/users/referral/${referral.id}`)} // Redirect to /users/referral/:id
+                    onClick={() => navigate(`/users/referrals/${referral.id}`)} // Redirect to /users/referral/:id
                     className="text-blue-500 hover:text-blue-700"
                 >
                     <EyeIcon className="w-6 h-6" />

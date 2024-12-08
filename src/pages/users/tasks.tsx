@@ -55,7 +55,7 @@ const UserTasks: React.FC = () => {
         {/* View Icon */}
         <button
           className="text-blue-500 hover:text-blue-700"
-          onClick={() => navigate(`/users/task/${task.id}`)}
+          onClick={() => navigate(`/users/tasks/${task.id}`)}
         >
           <EyeIcon className="w-6 h-6" />
         </button>

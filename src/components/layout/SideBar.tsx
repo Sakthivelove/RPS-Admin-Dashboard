@@ -51,9 +51,14 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({
 
   // Set selected menu based on current path
   useEffect(() => {
-    const activeMenuItem = menuItems.find((item) => item.path === location.pathname);
+    const activeMenuItem = menuItems.find((item) => {
+      // Ensure item.path is defined before comparing it
+      return item.path && (location.pathname === item.path || location.pathname.startsWith(item.path));
+    });
     setSelectedMenu(activeMenuItem?.label || null);
   }, [location.pathname, menuItems]);
+
+
 
   const handleItemClick = (item: MenuItem) => {
     setSelectedMenu(item.label);

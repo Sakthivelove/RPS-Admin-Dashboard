@@ -125,10 +125,10 @@ const App: React.FC = () => {
                   <Route path="/users/registeredupcomingtournament" element={<UpcomingTournaments />} />
                   <Route path="/users/winlosshistory" element={<WinLossHistory />} />
                   <Route path="/users/:id" element={<UserDetails />} />
-                  <Route path="/users/task/:id" element={<UserTaskDetails />} />
-                  <Route path="/users/referral/:id" element={<UserReferralDetails />} />
-                  <Route path="/users/transaction/:id" element={<UserTransactionDetails />} />
-                  <Route path="/users/usertournament/:id" element={<UserTournamentDetails />} />
+                  <Route path="/users/tasks/:id" element={<UserTaskDetails />} />
+                  <Route path="/users/referrals/:id" element={<UserReferralDetails />} />
+                  <Route path="/users/transactions/:id" element={<UserTransactionDetails />} />
+                  <Route path="/users/usertournaments/:id" element={<UserTournamentDetails />} />
 
                   {/* Catch-all route for non-existing paths */}
                   <Route path="/404" element={<NotFound />} />

@@ -96,7 +96,7 @@ const UserTournaments = () => {
     // Handle actions for View, Edit, and Delete
     const handleView = (id: string) => {
         // Navigate to the user tournament detail page with the selected tournament ID
-        navigate(`/users/usertournament/${id}`);
+        navigate(`/users/usertournaments/${id}`);
     };
 
     const handleEdit = (id: string) => {

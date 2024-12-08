@@ -5,6 +5,7 @@ import { useSidebar } from '../../context/SidebarContext';
 import StatusMessage from '../../components/StatusMessage';
 import { EyeIcon } from '@heroicons/react/24/outline'
 import { truncateAddress } from '../../utils';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const UserTransactions: React.FC = () => {
     const [page, setPage] = useState(1);
@@ -16,11 +17,18 @@ const UserTransactions: React.FC = () => {
 
     // Function for expanding/collapsing row details
     const [expandedRows, setExpandedRows] = useState<number[]>([]);
+    const navigate = useNavigate();  // Initialize the navigate function
 
     const toggleRowExpansion = (rowIndex: number) => {
         setExpandedRows((prev) =>
             prev.includes(rowIndex) ? prev.filter((index) => index !== rowIndex) : [...prev, rowIndex]
         );
+    };
+
+    // Handle actions for View, Edit, and Delete
+    const handleView = (id: string) => {
+        // Navigate to the user tournament detail page with the selected tournament ID
+        navigate(`/users/transactions/${id}`);
     };
 
     // Columns for the table
@@ -38,6 +46,7 @@ const UserTransactions: React.FC = () => {
             <div className="flex space-x-3 justify-center items-center">
                 <button
                     className="text-blue-500 hover:text-blue-700"
+                    onClick={() => handleView(txn.id)}  // Pass transactionId to handleView
                 >
                     <EyeIcon className="w-6 h-6" />
                 </button>
