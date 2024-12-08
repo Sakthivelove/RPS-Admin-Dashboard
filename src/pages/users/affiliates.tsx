@@ -30,7 +30,7 @@ const UserAffiliates: React.FC = () => {
         } h-screen overflow-auto`}
     >
       {/* Wrapper to handle positioning and sizing */}
-      <div className="flex-1 h-full p-6 bg-opacity-80 relative">
+      <div className="h-full bg-opacity-80">
         {/* Use StatusMessage for loading and error states with custom positioning */}
         <StatusMessage
           isLoading={isLoading}
@@ -48,6 +48,7 @@ const UserAffiliates: React.FC = () => {
               data={userListData || []}
               title="User Affiliates"
               headerTextColor="text-[#45F882]"
+              showSearchBar={true}
             />
           </div>
         )}

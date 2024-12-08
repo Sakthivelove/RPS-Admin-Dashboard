@@ -5,6 +5,8 @@ import { getContainerClass } from "../../utils";
 import { FaWallet, FaDollarSign, FaTelegram, FaFacebook, FaInstagram, FaLinkedin, FaGooglePlay, FaTwitter, FaUserShield, FaKey } from "react-icons/fa";
 import StatusMessage from "../../components/StatusMessage";
 import { Box, CircularProgress, Table, TableBody, TableCell, TableHead, TableRow, Typography, Link, Alert, Paper } from "@mui/material";
+import { ToastContainer,toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SettingsComponent = () => {
   const { data: settings, isLoading, isError, error } = useGeneralSettings();
@@ -56,8 +58,11 @@ const SettingsComponent = () => {
       },
       {
         onSuccess: () => {
-          alert("Module settings updated successfully!");
+          toast.success("Module settings updated successfully!"); // Use toast instead of alert
         },
+        onError: () => {
+          toast.error("Failed to update module settings."); // Optional: Handle error case
+        }
       }
     );
   };
@@ -68,8 +73,11 @@ const SettingsComponent = () => {
       projectSettings,
       {
         onSuccess: () => {
-          alert("Project settings updated successfully!");
+          toast.success("Project settings updated successfully!"); // Use toast instead of alert
         },
+        onError: () => {
+          toast.error("Failed to update project settings."); // Optional: Handle error case
+        }
       }
     );
   };
@@ -91,6 +99,7 @@ const SettingsComponent = () => {
 
   return (
     <div className={`${getContainerClass(sidebarActive)} text-white overflow-auto`}>
+       <ToastContainer />
       <div className="m-4 bg-gray-800 p-6">
         <h1 className="text-3xl font-bold mb-4">Settings</h1>
         {/* General Settings Display */}
@@ -207,7 +216,7 @@ const SettingsComponent = () => {
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
             >
-              Update Module Settings
+              {updateModuleSettings.isPending ? "Updating..." : "Update Module Settings"}
             </button>
           </form>
         </section>

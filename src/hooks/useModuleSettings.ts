@@ -18,14 +18,14 @@ export const useModuleSettings = () => {
     // Mutation for updating module settings
     const { mutate: saveModules, isPending: isSaving } = useMutation({
         mutationFn: updateModuleSettings,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['moduleSettings'] }); // Invalidate the query to refetch data after mutation
-            alert("Module settings updated");
-        },
-        onError: (error) => {
-            console.error("Error updating module settings:", error);
-            alert("Failed to update module settings");
-        },
+        // onSuccess: () => {
+        //     queryClient.invalidateQueries({ queryKey: ['moduleSettings'] }); // Invalidate the query to refetch data after mutation
+        //     alert("Module settings updated");
+        // },
+        // onError: (error) => {
+        //     console.error("Error updating module settings:", error);
+        //     alert("Failed to update module settings");
+        // },
     });
 
     return { modules, isLoading, isError, error, saveModules, isSaving };

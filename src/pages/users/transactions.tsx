@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { useTransactions } from '../../hooks/useTransactions';
 import Table from '../../components/common/Table';
+import { useSidebar } from '../../context/SidebarContext';
 import StatusMessage from '../../components/StatusMessage';
+import { EyeIcon } from '@heroicons/react/24/outline'
 import { truncateAddress } from '../../utils';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const UserTransactions: React.FC = () => {
     const [page, setPage] = useState(1);
     const limit = 10;
 
+    const { sidebarActive } = useSidebar();
 
     const { data, isLoading, isError, error } = useTransactions({ page, limit });
 
@@ -33,10 +34,12 @@ const UserTransactions: React.FC = () => {
         amount: txn.amount,
         dateTime: new Date(txn.dateTime).toLocaleString(),
         user: txn.user.name,
-        'Actions': (
-            <div className="flex space-x-3">
-                <button className="text-blue-500 hover:text-blue-700">
-                    <FontAwesomeIcon icon={faEye} />
+        actions: (
+            <div className="flex space-x-3 justify-center items-center">
+                <button
+                    className="text-blue-500 hover:text-blue-700"
+                >
+                    <EyeIcon className="w-6 h-6" />
                 </button>
             </div>
         ),
@@ -62,46 +65,47 @@ const UserTransactions: React.FC = () => {
     };
 
     return (
-        <div>
+        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen text-white overflow-auto`}>
             {/* Use StatusMessage for loading and error states */}
             <StatusMessage
                 isLoading={isLoading}
                 error={error}
                 loadingMessage="Loading transactions..."
                 errorMessage={error ? `Error: ${error.message}` : 'Something went wrong.'}
-                className="p-8 flex justify-center items-center h-[80vh]"
+                className="p-8 flex justify-center items-center h-screen"
             />
 
             {/* Only render the table if there is no loading or error */}
             {!isLoading && !error && data && (
-
-                <Table
-                    columns={columns}
-                    data={tableData}
-                    rowColor="bg-[#0F1C23]"
-                    tableBgColor="bg-[#1A1D26]"
-                    headerTextColor="text-[#45F882]"
-                    showSearchBar={true}
-                    onSearch={handleSearch}
-                    height="450px"
-                    searchPlaceholder="Search transactions..."
-                />
-                // <div className="flex justify-between mt-4">
-                //     <button
-                //         className="p-2 bg-gray-300"
-                //         disabled={page === 1}
-                //         onClick={() => setPage((prev) => prev - 1)}
-                //     >
-                //         Previous
-                //     </button>
-                //     <button
-                //         className="p-2 bg-gray-300"
-                //         onClick={() => setPage((prev) => prev + 1)}
-                //     >
-                //         Next
-                //     </button>
-                // </div>
-
+                <div className="m-[2%]">
+                    <Table
+                        columns={columns}
+                        data={tableData}
+                        rowColor="bg-[#0F1C23]"
+                        tableBgColor="bg-[#1A1D26]"
+                        headerTextColor="text-[#45F882]"
+                        showSearchBar={true}
+                        onSearch={handleSearch}
+                        height="68vh"
+                        searchPlaceholder="Search transactions..."
+                        title="Transaction History"
+                    />
+                    {/* <div className="flex justify-between mt-4">
+                        <button
+                            className="p-2 bg-gray-300"
+                            disabled={page === 1}
+                            onClick={() => setPage((prev) => prev - 1)}
+                        >
+                            Previous
+                        </button>
+                        <button
+                            className="p-2 bg-gray-300"
+                            onClick={() => setPage((prev) => prev + 1)}
+                        >
+                            Next
+                        </button>
+                    </div> */}
+                </div>
             )}
         </div>
     );

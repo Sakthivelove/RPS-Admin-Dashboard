@@ -1,89 +1,145 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "../components/layout/SideBar";
 import { sidebarMenuItems } from "../data/sideBarMenuItems";
-import { useNavigate } from "react-router-dom";
 import Modal from "../components/common/Modal";
 import { useAuth } from "../context/AuthContext";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-    const location = useLocation();
-    const navigate = useNavigate();
-    const { setUser } = useAuth();  
-    const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { setUser } = useAuth();
 
-    // Handle Logout Click
-    const handleLogoutClick = () => {
-        setLogoutModalOpen(true);
-    };
+  const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState({
+    title: "",
+    content: "",
+    type: "success" as "success" | "error", // Default type is success
+  });
+  const [snackbar, setSnackbar] = useState({
+    isOpen: false,
+    message: "",
+    severity: "success" as "success" | "error", // Default to success
+  });
 
-    // Confirm logout
-    const handleConfirmLogout = () => {
-        setLogoutModalOpen(false);
+  // Handle Logout Click
+  const handleLogoutClick = () => {
+    setModalContent({
+      title: "Confirm Logout",
+      content: "Are you sure you want to log out?",
+      type: "error", // Using error type for logout confirmation
+    });
+    setLogoutModalOpen(true);
+  };
 
-        // Perform logout actions
-        console.log("Logging out user...");
+  // Confirm logout
+  const handleConfirmLogout = () => {
+    setLogoutModalOpen(false);
 
-        // Clear user data from context
-        setUser(null);  // Clear user data in context
+    // Perform logout actions
+    console.log("Logging out user...");
 
-        // Remove auth token from local storage
-        localStorage.removeItem("token"); 
+    // Clear user data from context
+    setUser(null);
 
-        // Clear session storage if needed
-        sessionStorage.clear();
+    // Remove auth token from local storage
+    localStorage.removeItem("token");
 
-        // Redirect to login page
-        navigate("/login");
-    };
+    // Clear session storage if needed
+    sessionStorage.clear();
 
-    // Handle Close Modal
-    const handleCloseLogoutModal = () => {
-        setLogoutModalOpen(false);
-    };
+    // Show success snackbar
+    setSnackbar({
+      isOpen: true,
+      message: "Logged out successfully.",
+      severity: "success",
+    });
 
-    // Routes that should not display the sidebar
-    const routesWithoutSidebar = [
-        "/signup",
-        "/login",
-        "/verify-2fa",
-        "/forgot-password",
-        "/reset-password",
-        "/404",
-        "/test/sidebartablelayout"
-    ];
+    // Redirect to login page
+    navigate("/login");
+  };
 
-    const showSidebar = !routesWithoutSidebar.includes(location.pathname);
+  // Handle Close Modal
+  const handleCloseLogoutModal = () => {
+    setLogoutModalOpen(false);
+  };
 
-    return (
-        <div className="bg-cover bg-no-repeat bg-center min-h-screen flex w-screen" style={{ backgroundImage: "url(/adminlist.png)" }}>
-            {showSidebar && (
-                <Sidebar
-                    username="Admin"
-                    onLogoutClick={handleLogoutClick} // Pass the handleLogoutClick here
-                    menuItem={sidebarMenuItems}
-                    actionIcon={"/icons/affiliate_2.png"}
-                    actionText={"Dashboard"}
-                    actionPath={"/dashboard"}
-                    // breakIntervals={[3, 1, 4, 4, 2, 2, 3, 8, 5]}
-                />
-            )}
-            <div className="flex-grow">{children}</div>
+  // Close Snackbar
+  const handleCloseSnackbar = () => {
+    setSnackbar((prev) => ({ ...prev, isOpen: false }));
+  };
 
-            {/* Modal for Logout Confirmation */}
-            <Modal
-                isOpen={isLogoutModalOpen}
-                onClose={handleCloseLogoutModal}
-                title="Confirm Logout"
-                content="Are you sure you want to log out?"
-                onConfirm={handleConfirmLogout}
-                buttons={[
-                    { text: "Yes", onClick: handleConfirmLogout, image: "green" },
-                    { text: "No", onClick: handleCloseLogoutModal, image: "yellow" },
-                ]}
-            />
-        </div>
-    );
+  // Routes that should not display the sidebar
+  const routesWithoutSidebar = [
+    "/signup",
+    "/login",
+    "/verify-2fa",
+    "/forgot-password",
+    "/reset-password",
+    "/404",
+    "/test/sidebartablelayout",
+  ];
+
+  const showSidebar = !routesWithoutSidebar.includes(location.pathname);
+
+  return (
+    <div
+      className="bg-cover bg-no-repeat bg-center min-h-screen flex w-screen"
+      style={{ backgroundImage: "url(/adminlist.png)" }}
+    >
+      {showSidebar && (
+        <Sidebar
+          username="Admin"
+          onLogoutClick={handleLogoutClick} // Pass the handleLogoutClick here
+          menuItem={sidebarMenuItems}
+          actionIcon={"/icons/affiliate_2.png"}
+          actionText={"Dashboard"}
+          actionPath={"/dashboard"}
+        />
+      )}
+      <div className="flex-grow">{children}</div>
+
+      {/* Modal for Logout Confirmation */}
+      <Modal
+        isOpen={isLogoutModalOpen}
+        onClose={handleCloseLogoutModal}
+        title={modalContent.title}
+        content={modalContent.content}
+        onConfirm={handleConfirmLogout}
+        type={modalContent.type}
+        buttons={[
+          {
+            text: "Yes",
+            onClick: handleConfirmLogout,
+            image: "green", // Custom styling
+          },
+          {
+            text: "No",
+            onClick: handleCloseLogoutModal,
+            image: "yellow", // Custom styling
+          },
+        ]}
+      />
+
+      {/* MUI Snackbar for Notifications */}
+      <Snackbar
+        open={snackbar.isOpen}
+        autoHideDuration={3000} // Auto close after 3 seconds
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }} // Position
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+    </div>
+  );
 };
 
 export default Layout;

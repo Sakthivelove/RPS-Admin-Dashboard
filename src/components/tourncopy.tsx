@@ -1,27 +1,58 @@
 import React, { useState } from "react";
 import CreateTournamentInput from "./CreateTournamentInput";
 import AdminButton from "./common/AdminButton";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 interface CreateTournamentFormProps {
+  /**
+   * The title of the form (e.g., "Create New VIP Tournament").
+   */
   title: string;
+
+  /**
+   * Placeholder text for the tournament name input field.
+   */
   tournamentPlaceholder: string;
+
+  /**
+   * Label text for the "Create Tournament" button.
+   */
   buttonLabel: string;
+
+  /**
+   * Callback function to handle form submission.
+   * @param data - The tournament data to be submitted.
+   * @returns A promise that resolves once the submission is complete.
+   */
   onSubmit: (data: TournamentData) => Promise<void>;
+
+  /**
+   * Callback function to handle successful form submission.
+   * This allows the parent component to trigger additional actions, such as showing a success modal.
+   */
   onSuccess: () => void;
+
+  /**
+   * Optional boolean flag to disable the form. Useful for loading states.
+   * Defaults to `false` if not provided.
+   */
   isDisabled?: boolean;
+
+  /**
+   * Optional custom error message to display when the form submission fails.
+   */
   errorMessage?: string;
 }
 
+
+// Define Tournament Data Interface
 export interface TournamentData {
   tournamentName: string;
-  dateTime: number;
+  dateTime: number; // The dateTime will be a Unix timestamp (in seconds)
   type: string;
   entryFee: number;
   nominalTournament: boolean;
   nominalFee: number;
-  bannerImage: string;
+  bannerImage: string; // Image URL
 }
 
 const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
@@ -29,38 +60,33 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
   tournamentPlaceholder,
   buttonLabel,
   onSubmit,
-  onSuccess,
+  onSuccess, // Add new prop for success callback
 }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<{ message: string } | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false); // Track loading state
+  const [error, setError] = useState<{ message: string } | null>(null); // Track error state
 
+  // State variables for form inputs
   const [tournamentName, setTournamentName] = useState<string>("");
-  const [dateTime, setDateTime] = useState<Date | string>(new Date()); // Ensure it's a Date object
+  const [dateTime, setDateTime] = useState<Date>(new Date()); // Initialize with current date
   const [type, setType] = useState<string>("rock");
   const [entryFee, setEntryFee] = useState<number>(5);
   const [nominalTournament, setNominalTournament] = useState<boolean>(true);
   const [nominalFee, setNominalFee] = useState<number>(5);
   const [bannerImage, setBannerImage] = useState<string>("");
 
-  const [formErrors, setFormErrors] = useState<any>({});
-
+  // Callback functions for updating state
   const handleTournamentName = (value: string) => setTournamentName(value);
 
+  // Ensure dateTime is at least 15 minutes in the future and convert it to Unix timestamp
   const handleDateTime = (value: string) => {
     let selectedDate = new Date(value);
     const currentDate = new Date();
 
-    // Check if selected date is invalid and adjust accordingly
-    if (isNaN(selectedDate.getTime())) {
-      selectedDate = new Date(currentDate.getTime() + 15 * 60 * 1000); // Default to current time + 15 minutes
-    }
-
-    // Check if the selected date is in the past
+    // Add 15 minutes if the selected date is in the past
     if (selectedDate <= currentDate) {
       selectedDate = new Date(currentDate.getTime() + 15 * 60 * 1000); // Add 15 minutes
     }
-
     setDateTime(selectedDate);
   };
 
@@ -69,58 +95,37 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
   const handleNominalTournament = (value: string) => setNominalTournament(value === "true");
   const handleNominalFee = (value: string) => setNominalFee(Number(value));
 
+  // Image upload handler
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file && file.size <= 1 * 1024 * 1024) {
+    if (file && file.size <= 1 * 1024 * 1024) { // 1MB
       const reader = new FileReader();
       reader.onloadend = () => {
-        setBannerImage(reader.result as string);
+        setBannerImage(reader.result as string); // Set base64 URL as banner image
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file); // Read the file as base64
     } else {
-      toast.error("File size exceeds the 1MB limit."); // This shows the toast error message
+      alert("File size exceeds the 1MB limit.");
     }
   };
 
+
+  // Reset the form fields
   const handleReset = () => {
     setTournamentName("");
-    setDateTime(new Date());
+    setDateTime(new Date()); // Reset to current date
     setType("rock");
-    setEntryFee(0);
+    setEntryFee(5);
     setNominalTournament(true);
-    setNominalFee(0);
+    setNominalFee(5);
     setBannerImage("");
   };
 
-  const validateForm = () => {
-    const errors: any = {};
-
-    if (!tournamentName) {
-      errors.tournamentName = "Tournament Name is required.";
-    }
-
-    if (!dateTime || new Date(dateTime).getTime() < new Date().getTime() + 15 * 60 * 1000) {
-      errors.dateTime = "Tournament date must be at least 15 minutes in the future.";
-    }
-
-    if (entryFee <= 0) {
-      errors.entryFee = "Entry Fee must be a positive value.";
-    }
-
-    if (nominalTournament && nominalFee <= 0) {
-      errors.nominalFee = "Nominal Fee must be a positive value.";
-    }
-
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0; // If no errors, return true
-  };
-
+  // Open modal when creating a tournament
   const handleCreateTournament = async () => {
-    if (!validateForm()) return; // Only proceed if form is valid
-
     const tournamentData: TournamentData = {
       tournamentName,
-      dateTime: Math.floor(new Date(dateTime).getTime() / 1000), // Convert to UNIX timestamp
+      dateTime: Math.floor(dateTime.getTime() / 1000),
       type,
       entryFee,
       nominalTournament,
@@ -129,12 +134,13 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
     };
 
     setIsLoading(true);
-    setError(null);
+    setError(null); // Reset any previous error
 
     try {
-      await onSubmit(tournamentData);
-      onSuccess();
+      await onSubmit(tournamentData); // Call parent-provided API function
+      onSuccess(); // Trigger the parent callback for success
     } catch (err: any) {
+      console.log("Error caught during API call:", err);
       setError({ message: err.message || "An error occurred while creating the tournament" });
     } finally {
       setIsLoading(false);
@@ -143,16 +149,16 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
 
   return (
     <div className="m-4">
-      <ToastContainer />
       <section>
-        <h1 className="capitalize text-[#45F882] text-[2rem] md:text-[3rem] rajdhani-bold">
+        <h1 className="capitalize text-[#45F882] text-[2rem] md:text-[3rem]  rajdhani-bold">
           {title}
         </h1>
       </section>
-
+      {/* Banner Image Upload Section */}
       <section className="mt-[0.5rem]">
         <div className="w-full h-[15rem] lg:h-[20rem] bg-gradient-to-r from-[#45F882] to-[#FFBE18] rounded-[1.5rem] p-[0.1rem]">
           <div className="bg-[#0B0D13] rounded-[1.5rem] w-full h-full flex justify-center items-center">
+            {/* File Upload Section or Image Preview */}
             {bannerImage ? (
               <div className="w-full h-full flex justify-center items-center rounded-[1.5rem]">
                 <img
@@ -162,12 +168,16 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
                 />
               </div>
             ) : (
-              <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-full rounded-[1.5rem] cursor-pointer bg-[#1A1D26]">
+              <label
+                htmlFor="dropzone-file"
+                className="flex flex-col items-center justify-center w-full h-full rounded-[1.5rem] cursor-pointer bg-[#1A1D26]"
+              >
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                   <img
                     src="/create-tournament/file_upload.png"
                     alt="Upload"
-                    className="h-[5rem] w-[5rem] lg:h-[10rem] lg:w-[10rem]" />
+                    className="h-[5rem] w-[5rem] lg:h-[10rem] lg:w-[10rem]"
+                  />
                   <p className="text-center text-white rajdhani-bold text-[1rem] md:text-[1.875rem]">
                     100*100 <span className="text-[#45F882]">Below 1 MB</span>
                   </p>
@@ -176,17 +186,15 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
                   id="dropzone-file"
                   type="file"
                   className="hidden"
-                  onChange={handleFileChange}
+                  onChange={handleFileChange} // Trigger file selection
                 />
               </label>
             )}
           </div>
         </div>
       </section>
-
       {error && <div className="text-red-500 mt-2">{error.message}</div>}
       {isLoading && <div className="text-green-500 mt-2">Creating tournament...</div>}
-
       <section className="bg-[#1A1D26] w-full p-[3.125px] rounded-[1.5rem] mt-[2rem]">
         <div className="p-[1.125rem]">
           <form onSubmit={(e) => e.preventDefault()}>
@@ -200,21 +208,18 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
                 value={tournamentName}
                 callback={handleTournamentName}
               />
-              {formErrors.tournamentName && <p className="text-red-500">{formErrors.tournamentName}</p>}
             </div>
 
-            {/* Date and Time */}
+            {/* Date */}
             <div className="mb-[2.75rem]">
               <CreateTournamentInput
                 inputLabel="Tournament Date"
                 isRequired={true}
-                placeHolder="Select a date and time"
-                type="datetime-local"
-                value={dateTime ? new Date(dateTime).toLocaleString('sv-SE').slice(0, 16) : ""} // Local timezone format
+                placeHolder="Select a date"
+                type="date"
+                value={dateTime.getTime()} // Pass date as timestamp (milliseconds)
                 callback={handleDateTime}
               />
-
-              {formErrors.dateTime && <p className="text-red-500">{formErrors.dateTime}</p>}
             </div>
 
             {/* Entry Fee */}
@@ -224,10 +229,9 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
                 isRequired={true}
                 placeHolder="Enter fee amount"
                 type="number"
-                value={entryFee.toString()}
-                callback={(e) => handleEntryFee(e)}
+                value={entryFee}
+                callback={handleEntryFee}
               />
-              {formErrors.entryFee && <p className="text-red-500">{formErrors.entryFee}</p>}
             </div>
 
             {/* Nominal Tournament */}
@@ -251,10 +255,9 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
                   isRequired={true}
                   placeHolder="Enter nominal fee"
                   type="number"
-                  value={nominalFee.toString()}
-                  callback={(e) => handleNominalFee(e)}
+                  value={nominalFee}
+                  callback={handleNominalFee}
                 />
-                {formErrors.nominalFee && <p className="text-red-500">{formErrors.nominalFee}</p>}
               </div>
             )}
 
@@ -277,6 +280,7 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
           </form>
         </div>
       </section>
+
     </div>
   );
 };

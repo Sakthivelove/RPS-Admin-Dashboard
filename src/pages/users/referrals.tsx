@@ -1,16 +1,19 @@
 import React from 'react';
 import Table from '../../components/common/Table';
 import { useReferrals } from '../../hooks/useReferrals';
+import { useSidebar } from '../../context/SidebarContext';
 import { useNavigate } from 'react-router-dom';  // Import useNavigate for navigation
 import StatusMessage from '../../components/StatusMessage'; // Import StatusMessage
 import { truncateAddress } from '../../utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { EyeIcon } from '@heroicons/react/24/outline'
 
 const UserReferrals: React.FC = () => {
     const { data, error, isLoading } = useReferrals(1, 10);
     console.log("referrals", data);
 
+    const { sidebarActive } = useSidebar();
     const navigate = useNavigate(); // Initialize navigate hook
 
     if (error || isLoading) {
@@ -20,7 +23,7 @@ const UserReferrals: React.FC = () => {
                 error={error}
                 loadingMessage="Loading referrals..."
                 errorMessage={error ? `Error: ${error.message}` : 'Something went wrong.'}
-                className="h-[80vh] flex justify-center items-center"
+                className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen`}
             />
         )
     }
@@ -40,7 +43,7 @@ const UserReferrals: React.FC = () => {
                     onClick={() => navigate(`/users/referral/${referral.id}`)} // Redirect to /users/referral/:id
                     className="text-blue-500 hover:text-blue-700"
                 >
-                    <FontAwesomeIcon icon={faEye} />
+                    <EyeIcon className="w-6 h-6" />
                 </button>
                 {/* Temporarily disabled
                  <button className="text-yellow-500 hover:text-yellow-700">
@@ -54,16 +57,17 @@ const UserReferrals: React.FC = () => {
     })) || [];
 
     return (
-
-        <Table
-            columns={columns}
-            data={formattedData}
-            showSearchBar={true}
-            headerTextColor="text-[#45F882]"
-            className='items-stretch overflow-auto'
-            height='450px'
-        />
-
+        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen `}>
+            <div className="relative z-10 overflow-auto h-full p-[2%]">
+                <Table
+                    columns={columns}
+                    data={formattedData}
+                    title="Referral List"
+                    headerTextColor="text-[#45F882]"
+                    showSearchBar={true}
+                />
+            </div>
+        </div>
     );
 };
 

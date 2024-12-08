@@ -33,17 +33,29 @@ const CreateTournamentInput: React.FC<CreateTournamentInputIF> = ({
             value={value || ""}
             onChange={handleChange}
             type={type}
-            className="bg-[#0F1C23] text-[1.2rem] border-[1px] border-[#969EB280] w-full py-[16px] px-[12px] rounded-[1rem] mt-[10px] text-[#969EB2] focus:outline-none "
+            className="bg-[#0F1C23] text-[1.2rem] border-[1px] border-[#969EB280] w-full py-[16px] px-[12px] rounded-[1rem] mt-[10px] text-[#969EB2] focus:outline-none"
             placeholder={placeHolder}
           />
         );
       case "date":
         return (
           <input
-            value={value ? new Date(Number(value)).toISOString().split('T')[0] : ""} // Format for input field
+            value={value ? new Date(Number(value)).toISOString().split("T")[0] : ""}
             onChange={handleChange}
             type="date"
-            className="bg-[#0F1C23] text-[1.2rem] border-[1px] border-[#969EB280] w-full py-[16px] px-[12px] rounded-[1rem] mt-[10px] text-[#969EB2] focus:outline-none "
+            className="bg-[#0F1C23] text-[1.2rem] border-[1px] border-[#969EB280] w-full py-[16px] px-[12px] rounded-[1rem] mt-[10px] text-[#969EB2] focus:outline-none"
+            placeholder={placeHolder}
+          />
+        );
+      case "datetime-local":
+        // Use local time format (YYYY-MM-DDTHH:mm) to ensure correct timezone handling
+        const formattedValue = value ? new Date(value).toLocaleString('sv-SE').slice(0, 16) : new Date().toLocaleString('sv-SE').slice(0, 16);
+        return (
+          <input
+            type="datetime-local"
+            value={formattedValue}
+            onChange={handleChange}
+            className="bg-[#0F1C23] text-[1.2rem] border-[1px] border-[#969EB280] w-full py-[16px] px-[12px] rounded-[1rem] mt-[10px] text-[#969EB2] focus:outline-none"
             placeholder={placeHolder}
           />
         );
@@ -75,5 +87,6 @@ const CreateTournamentInput: React.FC<CreateTournamentInputIF> = ({
     </div>
   );
 };
+
 
 export default CreateTournamentInput;

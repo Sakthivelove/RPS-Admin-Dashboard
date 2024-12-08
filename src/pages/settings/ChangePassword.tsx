@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useSidebar } from "../../context/SidebarContext";
 import { useChangePassword } from "../../hooks/useChangePassword";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline"; 
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
+import { AxiosError } from 'axios';
+
+interface ErrorResponse {
+  message: string;
+  error: string;
+  statusCode: number;
+}
 
 const ChangePassword: React.FC = () => {
   const [currentPassword, setCurrentPassword] = useState<string>("");
@@ -11,49 +21,76 @@ const ChangePassword: React.FC = () => {
   const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
   const { sidebarActive } = useSidebar();
 
-  // Use the custom hook
+  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
+  const [snackbarMessage, setSnackbarMessage] = useState<string>("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">("success");
+
   const { mutate, isPending, error, isSuccess } = useChangePassword();
 
-  // Reset fields and messages after success using useEffect
+  console.log(error,"error change password")
+
   useEffect(() => {
     if (isSuccess) {
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
-      setLoadingMessage(null);
-      setErrorMessage(null);
+      setSnackbarMessage("Password changed successfully!");
+      setSnackbarSeverity("success");
+      setOpenSnackbar(true);
     }
   }, [isSuccess]);
 
-  // Update error and loading messages based on hook state
   useEffect(() => {
-    if (isPending) {
-      setLoadingMessage("Updating password...");
-    } else {
-      setLoadingMessage(null);
-    }
-
     if (error) {
-      setErrorMessage("Failed to update password. Please try again.");
-    } else {
-      setErrorMessage(null);
+     // Handle AxiosError response structure
+     const errorMsg = (error as AxiosError<ErrorResponse>)?.response?.data?.message || "Failed to update password. Please try again.";
+      setSnackbarMessage(errorMsg);
+      setSnackbarSeverity("error");
+      setOpenSnackbar(true);
     }
-  }, [isPending, error]);
+  }, [error]);
+
+  const validateForm: () => boolean = () => {
+    // Ensure new password and confirm password match
+    if (newPassword !== confirmPassword) {
+      setErrorMessage("Passwords do not match!");
+      // Clear the error message after 3 seconds
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 6000); // 3000 ms = 3 seconds
+      return false;
+    }
+  
+    // Check if the new password meets criteria (e.g., minimum length)
+    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    if (!passwordPattern.test(newPassword)) {
+      setErrorMessage("New password must be at least 8 characters long and include a number and a special character.");
+      // Clear the error message after 3 seconds
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 6000); // 3 seconds delay
+      return false;
+    }
+  
+    // Reset error message if all validations pass
+    setErrorMessage(null);
+    return true;
+  };
+  
+  
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Check if the new and confirm passwords match
-    if (newPassword !== confirmPassword) {
-      setErrorMessage("Passwords do not match!");
-      return;
-    }
+    if (!validateForm()) return;
 
-    // Trigger mutation
     mutate({ currentPassword, newPassword });
+  };
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
   };
 
   return (
@@ -63,15 +100,6 @@ const ChangePassword: React.FC = () => {
       <div className="m-3 text-white overflow-auto bg-gray-800 p-6 w-1/2 rounded-lg">
         <div className="max-w-xl mx-auto">
           <h1 className="text-2xl font-bold mb-6">Change Password</h1>
-
-          {/* Display loading or error messages */}
-          {loadingMessage && (
-            <p className="text-center text-indigo-400 font-medium mb-4">{loadingMessage}</p>
-          )}
-          {errorMessage && (
-            <p className="text-center text-red-500 font-medium mb-4">{errorMessage}</p>
-          )}
-
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-lg font-medium">Current Password</label>
@@ -142,17 +170,33 @@ const ChangePassword: React.FC = () => {
                 </button>
               </div>
             </div>
+            {errorMessage && <p className="text-red-500 mt-4">{errorMessage}</p>}
             <div className="flex justify-end">
               <button
                 type="submit"
-                className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-6 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                disabled={isPending}
+                className={`mt-4 ${isPending ? "bg-gray-500 " : "bg-indigo-600 hover:bg-indigo-700"} text-white py-2 px-6 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500`}
               >
-                Save Changes
+                {isPending ? (
+                  <CircularProgress size={20} color="inherit" />
+                ) : (
+                  "Save Changes"
+                )}
               </button>
             </div>
           </form>
         </div>
       </div>
+
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

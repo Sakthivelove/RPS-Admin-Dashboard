@@ -1,14 +1,14 @@
 import React from 'react';
 import { useUserTournaments } from '../../hooks/useUserTournaments';
 import Table from '../../components/common/Table';
+import { useSidebar } from '../../context/SidebarContext';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import StatusMessage from '../../components/StatusMessage'; // Import StatusMessage
+import { EyeIcon } from '@heroicons/react/24/outline'
 import { truncateAddress } from '../../utils';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
-
 const UserTournaments = () => {
     const { data, error, isLoading } = useUserTournaments(1, 10);  // Pagination (page 1, 10 items per page)
+    const { sidebarActive } = useSidebar();
     const navigate = useNavigate();  // Initialize the navigate function
 
     // Replace the loading and error handling sections with the StatusMessage component
@@ -19,7 +19,7 @@ const UserTournaments = () => {
                 error={error}
                 loadingMessage="Loading tournaments..."
                 errorMessage={error?.message || 'Error fetching tournaments'}
-                className="h-[80vh] flex justify-center items-center"
+                className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen`}
             />
         );
     }
@@ -74,23 +74,23 @@ const UserTournaments = () => {
                     onClick={() => handleView(item.id)}  // Pass tournamentId to handleView
                     className="text-blue-500 hover:text-blue-700"
                 >
-                    <FontAwesomeIcon icon={faEye} />
+                    <EyeIcon className="w-6 h-6" />
+                
                 </button>
-                {/* Temporarily disabled
-                <button
+                {/* <button
                     onClick={() => handleEdit(item.tournamentId)}
-                    className="text-yellow-500 hover:text-yellow-700">
-
-                    <FontAwesomeIcon icon={faEdit} />
+                    className="text-yellow-500 hover:text-yellow-700"
+                >
+                    Edit
                 </button>
                 <button
                     onClick={() => handleDelete(item.tournamentId)}
                     className="text-red-500 hover:text-red-700"
                 >
-                    <FontAwesomeIcon icon={faTrash} />
+                    Delete
                 </button> */}
             </div>
-        )
+        ),
     })) || [];
 
     // Handle actions for View, Edit, and Delete
@@ -110,14 +110,16 @@ const UserTournaments = () => {
     };
 
     return (
-        <Table
-            columns={columns}
-            data={tableData}
-            showSearchBar={true}
-            searchPlaceholder="Search tournaments..."
-            headerTextColor='text-[#45F882]'
-            height='450px'
-        />
+        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen p-4 text-white`}>
+            <Table
+                columns={columns}
+                data={tableData}
+                title="User Tournament Data"
+                showSearchBar={true}
+                searchPlaceholder="Search tournaments..."
+                headerTextColor='text-[#45F882]'
+            />
+        </div>
     );
 };
 

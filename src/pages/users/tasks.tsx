@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import Table from '../../components/common/Table';
 import { useUserTasks } from '../../hooks/useUserTasks';
+import { useSidebar } from '../../context/SidebarContext';
 import { useNavigate } from 'react-router-dom'; // React Router hook
 import { FaEye, FaEdit, FaTrash } from 'react-icons/fa';
 import StatusMessage from '../../components/StatusMessage'; // Import StatusMessage
+import { EyeIcon } from '@heroicons/react/24/outline'
 import { truncateAddress } from '../../utils';
-
 const UserTasks: React.FC = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const limit = 10;
   const navigate = useNavigate(); // React Router hook to navigate
 
+  const { sidebarActive } = useSidebar();
 
   // Fetch tasks using the custom hook
   const { data, isLoading, error } = useUserTasks({ page, limit, search });
@@ -24,7 +26,7 @@ const UserTasks: React.FC = () => {
         error={error}
         loadingMessage="Loading tasks..."
         errorMessage={error?.message || 'Error fetching tasks'}
-        className="h-[80vh] flex justify-center items-center"
+        className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen`}
       />
     );
   }
@@ -49,32 +51,34 @@ const UserTasks: React.FC = () => {
     'Registered Tournament': task.registeredTournament ? 'Yes' : 'No',
     'Friends Invited': task.friendsInvited,
     Action: (
-      <div className="flex gap-4">
+      <div className="flex space-x-3 justify-center items-center">
         {/* View Icon */}
         <button
           className="text-blue-500 hover:text-blue-700"
           onClick={() => navigate(`/users/task/${task.id}`)}
         >
-          <FaEye size={20} /> {/* Eye icon */}
+          <EyeIcon className="w-6 h-6" />
         </button>
       </div>
     ),
   }));
 
   return (
-    <div>
-      <Table
-        columns={columns}
-        data={tableData || []}
-        showSearchBar
-        rowColor="bg-[#0F1C23]"
-        tableBgColor="bg-[#1A1D26]"
-        headerTextColor="text-[#45F882]"
-        searchPlaceholder="Search tasks..."
-        height="450px"
-      />
-      {/* Pagination Controls */}
-      {/* <div className="flex justify-between items-center mt-4">
+    <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen text-white overflow-auto`}>
+      <div className="m-[2%]">
+        <Table
+          title="User Tasks"
+          columns={columns}
+          data={tableData || []}
+          showSearchBar
+          rowColor="bg-[#0F1C23]"
+          tableBgColor="bg-[#1A1D26]"
+          headerTextColor="text-[#45F882]"
+          searchPlaceholder="Search tasks..."
+          height="69vh"
+        />
+        {/* Pagination Controls */}
+        {/* <div className="flex justify-between items-center mt-4">
           <button
             disabled={page === 1 || isLoading}
             onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
@@ -91,6 +95,7 @@ const UserTasks: React.FC = () => {
             Next
           </button>
         </div> */}
+      </div>
     </div>
   );
 };

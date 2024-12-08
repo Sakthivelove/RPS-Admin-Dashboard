@@ -5,7 +5,7 @@ const NotFound: React.FC = () => {
   const navigate = useNavigate();
 
   const handleGoHome = () => {
-    navigate('/affiliate-tournaments'); // Redirect to the homepage (or any other page)
+    navigate('/dashboard'); // Redirect to the homepage (or any other page)
   };
 
   return (

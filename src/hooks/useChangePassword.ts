@@ -9,12 +9,12 @@ interface ChangePasswordInput {
 export const useChangePassword = () => {
   return useMutation({
     mutationFn: (data: ChangePasswordInput) => changePassword(data),
-    onSuccess: () => {
-      alert("Password updated successfully");
-    },
-    onError: (error: any) => {
-      console.error("Error updating password:", error);
-      alert("Failed to update password");
-    },
+    // onSuccess: () => {
+    //   alert("Password updated successfully");
+    // },
+    // onError: (error: any) => {
+    //   console.error("Error updating password:", error);
+    //   alert("Failed to update password");
+    // },
   });
 };

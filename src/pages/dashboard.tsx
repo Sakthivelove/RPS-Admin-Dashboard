@@ -9,13 +9,15 @@ const Dashboard: React.FC = () => {
     const { data, isLoading, isError, error } = useDashboardData();
 
     if (isLoading || isError) {
-        return(<StatusMessage
-            isLoading={isLoading}
-            error={error instanceof Error ? error : null}
-            loadingMessage="Loading Dashboard Data..."
-            errorMessage="Failed to load the dashboard data"
-            className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen flex justify-center items-center`}
-        />)
+        return (
+            <StatusMessage
+                isLoading={isLoading}
+                error={error instanceof Error ? error : null}
+                loadingMessage="Loading Dashboard Data..."
+                errorMessage="Failed to load the dashboard data"
+                className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen flex justify-center items-center`}
+            />
+        );
     }
 
     return (
@@ -24,13 +26,60 @@ const Dashboard: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {/* Metrics displayed using GradientCard */}
-                <GradientCard title="Total Players" value={data?.totalPlayers.toString()} imageSrc={''} imageAlt={''} />
-                <GradientCard title="Tournaments" value={data?.tournaments.toString()} imageSrc={''} imageAlt={''} />
-                <GradientCard title="Upcoming" value={data?.upcoming.toString()} imageSrc={''} imageAlt={''} />
-                <GradientCard title="Wallet Connection" value={data?.walletConnection.toString()} imageSrc={''} imageAlt={''} />
-                <GradientCard title="Telegram Connection" value={data?.telegramConnection.toString()} imageSrc={''} imageAlt={''} />
-                <GradientCard title="X Connection" value={data?.xConnection.toString()} imageSrc={''} imageAlt={''} />
-                <GradientCard title="Registered Tournaments" value={data?.registeredTournament.toString()} imageSrc={''} imageAlt={''} />
+                <GradientCard
+                    title="Total Players"
+                    value={data?.totalPlayers.toString()}
+                    imageSrc=""
+                    imageAlt="Total Players"
+                    // linkTo="/players-list"  // Add the link for "Total Players"
+                    linkTo="#"  // Add the link for "Total Players"
+                />
+                <GradientCard
+                    title="Tournaments"
+                    value={data?.tournaments.toString()}
+                    imageSrc=""
+                    imageAlt="Tournaments"
+                    linkTo="/tournament-list"  // Link for "Tournaments"
+                />
+                <GradientCard
+                    title="Upcoming"
+                    value={data?.upcoming.toString()}
+                    imageSrc=""
+                    imageAlt="Upcoming"
+                    linkTo="/users/registeredupcomingtournament"  // Link for "Upcoming"
+                />
+                <GradientCard
+                    title="Wallet Connection"
+                    value={data?.walletConnection.toString()}
+                    imageSrc=""
+                    imageAlt="Wallet Connection"
+                    linkTo="#"
+                // linkTo="/wallet-connection"  // Link for "Wallet Connection"
+                />
+                <GradientCard
+                    title="Telegram Connection"
+                    value={data?.telegramConnection.toString()}
+                    imageSrc=""
+                    imageAlt="Telegram Connection"
+                    linkTo="#"
+                // linkTo="/telegram-connection"  // Link for "Telegram Connection"
+                />
+                <GradientCard
+                    title="X Connection"
+                    value={data?.xConnection.toString()}
+                    imageSrc=""
+                    imageAlt="X Connection"
+                    linkTo="#"
+                // linkTo="/x-connection"  // Link for "X Connection"
+                />
+                <GradientCard
+                    title="Registered Tournaments"
+                    value={data?.registeredTournament.toString()}
+                    imageSrc=""
+                    imageAlt="Registered Tournaments"
+                    linkTo="#"
+                // linkTo="/registered-tournaments"  // Link for "Registered Tournaments"
+                />
             </div>
         </div>
     );

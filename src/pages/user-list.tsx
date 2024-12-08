@@ -31,7 +31,7 @@ const UserList: React.FC = () => {
     'Total Win Amount',
     'Avatar Created',
     'Created On',
-    'Actions'
+    // 'Actions'
   ];
 
   // Transform API data into the format expected by the table
@@ -51,23 +51,22 @@ const UserList: React.FC = () => {
     'Total Win Amount': user.totalWinAmount || 0,
     'Avatar Created': user.isAvatarCreated ? 'Yes' : 'No',
     'Created On': user.createdOn ? formatDate(Number(user.createdOn)) : 'N/A', // Ensure it's a number
-    'Actions': (
-      <div className="flex space-x-3 justify-center items-center">
-        <button
-          onClick={() => navigate(`/user-info`)} // Navigate to user-info
-          className="text-blue-500 hover:text-blue-700"
-        >
-          <FontAwesomeIcon icon={faEye} />
-        </button>
-        {/* Temporarily disabled
-        <button className="text-yellow-500 hover:text-yellow-700">
-          <FontAwesomeIcon icon={faEdit} />
-        </button>
-        <button className="text-red-500 hover:text-red-700">
-          <FontAwesomeIcon icon={faTrash} />
-        </button> */}
-      </div>
-    )
+    // 'Actions': (
+    //   <div className="flex space-x-3 justify-center items-center">
+    //     <button
+    //       onClick={() => navigate(`/user-info`)} // Navigate to user-info
+    //       className="text-blue-500 hover:text-blue-700"
+    //     >
+    //       <FontAwesomeIcon icon={faEye} />
+    //     </button>
+    //     <button className="text-yellow-500 hover:text-yellow-700">
+    //       <FontAwesomeIcon icon={faEdit} />
+    //     </button>
+    //     <button className="text-red-500 hover:text-red-700">
+    //       <FontAwesomeIcon icon={faTrash} />
+    //     </button>
+    //   </div>
+    // )
   }));
 
   return (
@@ -90,6 +89,7 @@ const UserList: React.FC = () => {
             title="User List"
             headerTextColor="text-[#45F882]"
             height='65vh'
+            showSearchBar={true}
           />
         </div>
       )}
