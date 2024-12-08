@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { api } from '../../api/api';
 import logo from '/RockMainLogo.png'; // Logo Image
 import { useAuth } from '../../context/AuthContext';
+import { ToastContainer, toast } from 'react-toastify'; // Import toast from react-toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import toastify CSS
 
 interface LoginDto {
   telegramId: string;
@@ -40,7 +42,8 @@ const AdminLogin: React.FC = () => {
   const mutation = useMutation<LoginResponse, Error, LoginDto>({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      // On successful login, store the token
+      console.log("Login Success Data: ", data);  // Check if data is received and correct
+
       if (data.status) {
         const user = {
           id: data.AuthId,
@@ -49,45 +52,60 @@ const AdminLogin: React.FC = () => {
         setUser(user); // Set user data in context
         localStorage.setItem('token', data.response);
 
-        // Check if 2FA is required
-        if (data.auth2) {
-          // If 2FA is required, navigate to 2FA page
-          navigate('/verify-2fa');
-        } else {
-          // If no 2FA required, navigate to the home page
-          navigate('/dashboard');
-        }
+        // Show success toast
+        toast.success('Login successful! Redirecting...');
+
+        // Delay the redirect to allow snackbar to be shown
+        setTimeout(() => {
+          // Navigate based on 2FA
+          if (data.auth2) {
+            navigate('/verify-2fa');
+          } else {
+            navigate('/dashboard');
+          }
+        }, 3000); // Delay for 1 second to let Snackbar appear
       } else {
         setErrorMessage(data.message);
+        toast.error(data.message || 'Login failed. Please try again.', {
+          position: 'top-right',
+        });
       }
     },
+
     onError: (error: Error) => {
       console.error('Login failed:', error.message);
       setErrorMessage('Login failed. Please check your credentials.');
+
+      // Show error toast
+      toast.error('Login failed. Please check your credentials.', {
+        position: 'top-right',
+      });
     },
   });
 
-const handleLoginSubmit = (e: FormEvent) => {
-  e.preventDefault();
+  const handleLoginSubmit = (e: FormEvent) => {
+    e.preventDefault();
 
-  // Clear any existing error messages when starting a new attempt
-  setErrorMessage(null);
+    // Clear any existing error messages when starting a new attempt
+    setErrorMessage(null);
 
-  // Validate input fields
-  if (!telegramId || !password) {
-    setErrorMessage('Both fields are required.');
-    return;
-  }
+    // Validate input fields
+    if (!telegramId || !password) {
+      setErrorMessage('Both fields are required.');
+      toast.error('Both fields are required.', {
+        position: 'top-center',
+      });
+      return;
+    }
 
-  // Initiate login mutation
-  mutation.mutate({ telegramId, password });
-};
-
+    // Initiate login mutation
+    mutation.mutate({ telegramId, password });
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 overflow-hidden">
       <div className="bg-opacity-90 rounded-lg shadow-lg overflow-hidden relative w-full flex flex-col justify-center items-center">
-
+        <ToastContainer />
         {/* Logo */}
         <img src={logo} alt="Rock Main Logo" className="mx-auto mb-4 h-24 w-auto" />
 
@@ -113,7 +131,6 @@ const handleLoginSubmit = (e: FormEvent) => {
                     setTelegramId(e.target.value);
                     setErrorMessage(null); // Clear error on input change
                   }}
-                  
                   className="p-2 pl-10 pr-3 rounded-md focus:outline-none focus:ring focus:ring-green-100 w-full"
                   style={{
                     backgroundColor: 'rgba(14, 27, 34, 1)',
@@ -134,7 +151,6 @@ const handleLoginSubmit = (e: FormEvent) => {
                     setPassword(e.target.value);
                     setErrorMessage(null); // Clear error on input change
                   }}
-                  
                   className="p-2 pl-10 pr-3 rounded-md focus:outline-none focus:ring focus:ring-green-100 w-full"
                   style={{
                     backgroundColor: 'rgba(14, 27, 34, 1)',
