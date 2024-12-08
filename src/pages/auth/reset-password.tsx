@@ -8,7 +8,7 @@ import { api } from "../../api/api";
 
 // Updated mutation function
 const resetPassword = async (password: string) => {
-  const response = await api.post("/api/reset-password", { password });
+  const response = await api.post("/auth/resetpassword", { password });
   return response.data;
 };
 
