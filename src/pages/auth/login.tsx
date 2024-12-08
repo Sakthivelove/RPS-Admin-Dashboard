@@ -43,7 +43,7 @@ const AdminLogin: React.FC = () => {
     mutationFn: loginUser,
     onSuccess: (data) => {
       console.log("Login Success Data: ", data);  // Check if data is received and correct
-
+      console.log("toast test")
       if (data.status) {
         const user = {
           id: data.AuthId,
