@@ -49,28 +49,49 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({
 
   const iconSize = sidebarActive ? "w-6 h-6" : "w-8 h-8";
 
+
   // Set selected menu based on current path
   useEffect(() => {
+    console.log("Current location.pathname:", location.pathname);
     const activeMenuItem = menuItems.find((item) => {
-      // Ensure item.path is defined before comparing it
-      return item.path && (location.pathname === item.path || location.pathname.startsWith(item.path));
+      if (item.path) {
+        // Log the current menu item being checked
+        console.log("Checking item.path:", item.path);
+        // Prioritize exact matches
+        if (location.pathname === item.path) {
+          console.log("Exact match found for path:", item.path);
+          return true;
+        }
+        // Fallback to partial match
+        if (location.pathname.startsWith(item.path)) {
+          console.log("Partial match found for path:", item.path);
+          return true;
+        }
+      }
+      return false;
     });
+    console.log("Active menu item based on path:", activeMenuItem);
     setSelectedMenu(activeMenuItem?.label || null);
   }, [location.pathname, menuItems]);
 
-
-
   const handleItemClick = (item: MenuItem) => {
+    console.log("Item clicked:", item);
+    console.log("Current selectedMenu:", selectedMenu);
+    console.log("Navigating to path:", item.path || "No path, triggering action.");
+
     setSelectedMenu(item.label);
     if (item.path) {
       navigate(item.path);
     } else if (item.action) {
+      console.log("Executing custom action for item:", item.label);
       item.action();
     }
     if (item.label === "Logout" && onLogoutClick) {
+      console.log("Logout clicked, executing logout callback.");
       onLogoutClick();
     }
   };
+
 
   return (
     <div className="mt-[0.5rem] overflow-y-auto">

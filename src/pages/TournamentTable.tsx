@@ -25,6 +25,7 @@ const TournamentTable: React.FC = () => {
 
     // Define columns with all fields from the Tournament interface
     const columns = [
+        'S.No',
         'Tournament ID',
         'Banner Image',
         'Tournament Name',
@@ -45,7 +46,8 @@ const TournamentTable: React.FC = () => {
     ];
 
     // Map data to include all fields in the table
-    const tableData = data?.map((tournament) => ({
+    const tableData = data?.map((tournament,index) => ({
+        'S.No': index+1,
         'Tournament ID': tournament.tournamentId,
         'Banner Image': tournament.bannerImage,
         'Tournament Name': tournament.tournamentName,

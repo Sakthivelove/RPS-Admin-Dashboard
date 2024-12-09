@@ -27,11 +27,11 @@ const UserReferrals: React.FC = () => {
             />
         )
     }
-    const columns = ['S.No', 'Id', 'Referral Code', 'Wallet ID', 'Referral Count', 'Reward', 'Created On', 'Actions'];  // Add 'Actions' to columns
+    const columns = ['S.No', 'Referral Code', 'Wallet ID', 'Referral Count', 'Reward', 'Created On', 'Actions'];  // Add 'Actions' to columns
 
     const formattedData = data?.referrals.map((referral, index) => ({
         'S.No': index + 1,
-        'Id': referral.id,
+        // 'Id': referral.id,
         'Referral Code': referral.referralCode,
         'Wallet ID': truncateAddress(referral.walletId, 6),  // Truncate walletId here
         'Referral Count': referral.referralCount,

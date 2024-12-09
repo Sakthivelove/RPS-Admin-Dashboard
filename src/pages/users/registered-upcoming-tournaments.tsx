@@ -15,7 +15,7 @@ const UpcomingTournaments: React.FC = () => {
     const { data, isLoading, isError, error } = useRegisteredTournaments(page, limit);
 
     const columns = [
-        'ID',
+        'S.No',
         'Wallet ID',
         'Tournament ID',
         'Entry Paid',
@@ -34,13 +34,13 @@ const UpcomingTournaments: React.FC = () => {
     ];
 
     const tableData = useMemo(() =>
-        data?.map((tournament) => ({
-            'ID': tournament.id,
+        data?.map((tournament,index) => ({
+            'S.No': index+1,
             'Wallet ID': truncateAddress(tournament.walletId, 6),
             'Tournament ID': tournament.tournamentId,
             'Entry Paid': tournament.entryPaid ? 'Yes' : 'No',
             'Nominal Paid': tournament.nominalPaid ? 'Yes' : 'No',
-            'Transaction ID': truncateAddress(tournament.transactionId, 6),
+            'Transaction ID': truncateAddress(tournament.transactionId, 6) || "N/A",
             'Entry Fee': tournament.entryFee,
             'Nominal Fee': tournament.nominalFee,
             'Default Move': tournament.defaultMove,

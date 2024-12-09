@@ -26,6 +26,7 @@ const UserTournaments = () => {
 
     // Columns for the table (using the fields from UserTournament interface)
     const columns = [
+        'S.No',
         'Tournament ID',
         'Wallet ID',
         'Type',
@@ -47,7 +48,8 @@ const UserTournaments = () => {
     ];
 
     // Mapping API data to table rows
-    const tableData = data?.usertournament.map((item) => ({
+    const tableData = data?.usertournament.map((item, index) => ({
+        'S.No': index + 1,
         'Tournament ID': item.tournamentId,
         'Wallet ID': truncateAddress(item.walletId, 6),
         'Type': item.type,
@@ -75,7 +77,7 @@ const UserTournaments = () => {
                     className="text-blue-500 hover:text-blue-700"
                 >
                     <EyeIcon className="w-6 h-6" />
-                
+
                 </button>
                 {/* <button
                     onClick={() => handleEdit(item.tournamentId)}

@@ -32,7 +32,7 @@ const UserTasks: React.FC = () => {
   }
 
   const columns = [
-    'ID',
+    'S.No',
     'Wallet ID',
     'Wallet Connection',
     'Telegram Connection',
@@ -42,8 +42,8 @@ const UserTasks: React.FC = () => {
     'Action', // Added Action column for View, Edit, Delete
   ];
 
-  const tableData = data?.tasks.map((task: any) => ({
-    ID: task.id,
+  const tableData = data?.tasks.map((task: any,index:number) => ({
+    'S.No': index+1,
     'Wallet ID': truncateAddress(task.walletId, 6),  // Truncate walletId here,
     'Wallet Connection': task.walletConnection ? 'Yes' : 'No',
     'Telegram Connection': task.telegramConnection ? 'Yes' : 'No',

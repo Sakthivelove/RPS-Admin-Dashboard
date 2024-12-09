@@ -4,21 +4,35 @@ import { useSidebar } from "../../context/SidebarContext";
 import { getContainerClass } from "../../utils";
 import { FaWallet, FaDollarSign, FaTelegram, FaFacebook, FaInstagram, FaLinkedin, FaGooglePlay, FaTwitter, FaUserShield, FaKey } from "react-icons/fa";
 import StatusMessage from "../../components/StatusMessage";
-import { Box, CircularProgress, Table, TableBody, TableCell, TableHead, TableRow, Typography, Link, Alert, Paper } from "@mui/material";
+import { Box, Tab, Tabs } from "@mui/material";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+// Define the types for projectSettings keys
+type ProjectSettings = {
+  adminWallet: string;
+  rockUSDPrice: number;
+  telegramLink: string;
+  XLink: string;
+  facebookLink: string;
+  instagramLink: string;
+  linkedInLink: string;
+  playstoreLink: string;
+};
+
+// Define the component
 const SettingsComponent = () => {
   const { data: settings, isLoading, isError, error } = useGeneralSettings();
   const updateModuleSettings = useUpdateModuleSettings();
   const updateProjectSettings = useUpdateProjectSettings();
-  const { sidebarActive } = useSidebar()
+  const { sidebarActive } = useSidebar();
   const [moduleSettings, setModuleSettings] = useState({
     admin2FA: false,
     affiliate2FA: false,
   });
 
-  const [projectSettings, setProjectSettings] = useState({
+  // Define projectSettings with the appropriate type
+  const [projectSettings, setProjectSettings] = useState<ProjectSettings>({
     adminWallet: "",
     rockUSDPrice: 0,
     telegramLink: "",
@@ -28,6 +42,8 @@ const SettingsComponent = () => {
     linkedInLink: "",
     playstoreLink: "",
   });
+
+  const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
     if (settings && settings.length > 0) {
@@ -40,7 +56,7 @@ const SettingsComponent = () => {
         instagramLink: generalSettings.instagramLink ? generalSettings.instagramLink : "",
         linkedInLink: generalSettings.linkedInLink ? generalSettings.linkedInLink : "",
         playstoreLink: generalSettings.playstoreLink ? generalSettings.playstoreLink : "",
-        XLink: generalSettings.XLink ? generalSettings.XLink : "", // Handle Twitter/X link
+        XLink: generalSettings.XLink ? generalSettings.XLink : "",
       });
       setModuleSettings({
         admin2FA: generalSettings.admin2FA,
@@ -49,6 +65,18 @@ const SettingsComponent = () => {
     }
   }, [settings]);
 
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setActiveTab(newValue);
+  };
+
+  const projectLinks = [
+    { label: "Telegram", icon: <FaTelegram />, key: "telegramLink" },
+    { label: "Facebook", icon: <FaFacebook />, key: "facebookLink" },
+    { label: "Instagram", icon: <FaInstagram />, key: "instagramLink" },
+    { label: "LinkedIn", icon: <FaLinkedin />, key: "linkedInLink" },
+    { label: "Playstore", icon: <FaGooglePlay />, key: "playstoreLink" },
+    { label: "Twitter", icon: <FaTwitter />, key: "XLink" },
+  ] as const;
 
   const handleModuleSettingsSubmit = () => {
     updateModuleSettings.mutate(
@@ -58,352 +86,157 @@ const SettingsComponent = () => {
       },
       {
         onSuccess: () => {
-          toast.success("Module settings updated successfully!"); // Use toast instead of alert
+          toast.success("Module settings updated successfully!");
         },
         onError: () => {
-          toast.error("Failed to update module settings."); // Optional: Handle error case
+          toast.error("Failed to update module settings.");
         }
       }
     );
   };
 
   const handleProjectSettingsSubmit = () => {
-    console.log("Project Settings:", projectSettings);  // Log the project settings
     updateProjectSettings.mutate(
       projectSettings,
       {
         onSuccess: () => {
-          toast.success("Project settings updated successfully!"); // Use toast instead of alert
+          toast.success("Project settings updated successfully!");
         },
         onError: () => {
-          toast.error("Failed to update project settings."); // Optional: Handle error case
+          toast.error("Failed to update project settings.");
         }
       }
     );
   };
 
-  // Use the StatusMessage component for loading and error handling
   if (isLoading || isError) {
     return (
-      <div className={`${getContainerClass(sidebarActive)} p-6 text-white overflow-auto`}>
+      <div className={`${getContainerClass(sidebarActive)} p-6 text-black overflow-auto bg-[#1A1C26]`}>
         <StatusMessage
           isLoading={isLoading}
           error={error}
           loadingMessage="Fetching settings..."
           errorMessage="Failed to load settings."
-          className="flex justify-center items-center h-full"
+          className="flex justify-center items-center h-full text-white"
         />
       </div>
     );
   }
 
   return (
-    <div className={`${getContainerClass(sidebarActive)} text-white overflow-auto`}>
+    <div className={`${getContainerClass(sidebarActive)} text-white overflow-auto h-screen setting-scrollbar`}>
       <ToastContainer />
-      <div className="m-4 bg-gray-800 p-6">
-        <h1 className="text-3xl font-bold mb-4">Settings</h1>
-        {/* General Settings Display */}
-        <Box sx={{ mb: 8, p: 3, backgroundColor: "#f4f4f4", borderRadius: 2 }}>
-          <Typography variant="h5" fontWeight="bold" sx={{ mb: 3 }} color="black">
-            General Settings
-          </Typography>
-          {isLoading ? (
-            <Box display="flex" alignItems="center" justifyContent="center" sx={{ height: 200 }}>
-              <CircularProgress />
-            </Box>
-          ) : isError ? (
-            <Alert severity="error">Error loading settings. Please try again later.</Alert>
-          ) : settings && settings[0] ? (
-            <Paper elevation={3} sx={{ overflow: "hidden" }}>
-              <Table>
-                <TableHead sx={{ backgroundColor: "#e0e7ff" }}>
-                  <TableRow>
-                    <TableCell sx={{ color: "#1e3a8a", fontWeight: "bold" }}>Setting</TableCell>
-                    <TableCell sx={{ color: "#1e3a8a", fontWeight: "bold" }}>Value</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {Object.entries(settings[0]).map(([key, value]) =>
-                    key !== "id" && key !== "createdAt" && key !== "updatedAt" ? (
-                      <TableRow key={key} sx={{ "&:nth-of-type(even)": { backgroundColor: "#f9fafb" } }}>
-                        <TableCell sx={{ fontWeight: "bold", color: "#374151" }}>{key}</TableCell>
-                        <TableCell>
-                          {key.includes("Link") ? (
-                            <Link
-                              href={value}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              sx={{
-                                color: "#2563eb",
-                                textDecoration: "none",
-                                "&:hover": { textDecoration: "underline", color: "#1d4ed8" },
-                              }}
-                            >
-                              {value}
-                            </Link>
-                          ) : typeof value === "boolean" ? (
-                            <Typography
-                              sx={{
-                                fontWeight: "bold",
-                                color: value ? "#059669" : "#dc2626",
-                              }}
-                            >
-                              {value ? "Enabled" : "Disabled"}
-                            </Typography>
-                          ) : (
-                            <Typography sx={{ color: "#374151" }}>{value}</Typography>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ) : null
-                  )}
-                </TableBody>
-              </Table>
-            </Paper>
-          ) : (
-            <Typography>No settings available.</Typography>
-          )}
+      <div className="m-4 bg-[#1A1C26] p-6 rounded-lg shadow-lg">
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={activeTab} onChange={handleTabChange} aria-label="settings tabs">
+            <Tab label="Module Settings" sx={{ color: "#45F882" }} />
+            <Tab label="Project Settings" sx={{ color: "#45F882" }} />
+          </Tabs>
         </Box>
 
+        <Box sx={{ p: 3, height: "78vh", overflow: "auto" }} className="setting-scrollbar">
+          {activeTab === 0 && (
+            <section className="mb-8">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleModuleSettingsSubmit();
+                }}
+                className="space-y-4"
+              >
+                {/* Admin 2FA */}
+                <div className="grid grid-cols-3 items-center gap-4">
+                  <label className="flex items-center gap-2 text-right text-gray-200">
+                    <FaKey className="text-gray-600" /> Admin 2FA:
+                  </label>
+                  <div className="col-span-2 flex items-center">
+                    <input
+                      id="admin2FA"
+                      type="checkbox"
+                      checked={moduleSettings.admin2FA}
+                      onChange={() =>
+                        setModuleSettings((prev) => ({
+                          ...prev,
+                          admin2FA: !prev.admin2FA,
+                        }))
+                      }
+                      className="text-[#45F882] border-gray-400"
+                    />
+                  </div>
+                </div>
+                {/* Affiliate 2FA */}
+                <div className="grid grid-cols-3 items-center gap-4">
+                  <label className="flex items-center gap-2 text-right text-gray-200">
+                    <FaUserShield className="text-gray-600" /> Affiliate 2FA:
+                  </label>
+                  <div className="col-span-2 flex items-center">
+                    <input
+                      id="affiliate2FA"
+                      type="checkbox"
+                      checked={moduleSettings.affiliate2FA}
+                      onChange={() =>
+                        setModuleSettings((prev) => ({
+                          ...prev,
+                          affiliate2FA: !prev.affiliate2FA,
+                        }))
+                      }
+                      className="text-[#45F882] border-gray-400"
+                    />
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  className="mt-4 px-6 py-2 bg-[#45F882] text-black rounded-lg hover:bg-green-600 transition duration-200"
+                >
+                  Save Settings
+                </button>
+              </form>
+            </section>
+          )}
 
-        {/* Module Settings Form */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">Module Settings</h2>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleModuleSettingsSubmit();
-            }}
-            className="space-y-4"
-          >
-            {/* Admin 2FA */}
-            <div className="grid grid-cols-3 items-center gap-4">
-              <label className="flex items-center gap-2 text-right">
-                <FaKey className="text-gray-500" /> Admin 2FA:
-              </label>
-              <div className="col-span-2 flex items-center">
-                <label htmlFor="admin2FA" className="switch">
-                  <input
-                    id="admin2FA"
-                    type="checkbox"
-                    checked={moduleSettings.admin2FA}
-                    onChange={(e) =>
-                      setModuleSettings({
-                        ...moduleSettings,
-                        admin2FA: e.target.checked,
-                      })
-                    }
-                    className="hidden"
-                  />
-                  <span className="slider"></span>
-                </label>
-              </div>
-            </div>
-            {/* Affiliate 2FA */}
-            <div className="grid grid-cols-3 items-center gap-4">
-              <label className="flex items-center gap-2 text-right">
-                <FaUserShield className="text-gray-500" /> Affiliate 2FA:
-              </label>
-              <div className="col-span-2 flex items-center">
-                <label htmlFor="affiliate2FA" className="switch">
-                  <input
-                    id="affiliate2FA"
-                    type="checkbox"
-                    checked={moduleSettings.affiliate2FA}
-                    onChange={(e) =>
-                      setModuleSettings({
-                        ...moduleSettings,
-                        affiliate2FA: e.target.checked,
-                      })
-                    }
-                    className="hidden"
-                  />
-                  <span className="slider"></span>
-                </label>
-              </div>
-            </div>
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-            >
-              {updateModuleSettings.isPending ? "Updating..." : "Update Module Settings"}
-            </button>
-          </form>
-        </section>
-        {/* Project Settings Form */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">Project Settings</h2>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleProjectSettingsSubmit();
-            }}
-            className="space-y-4"
-          >
-            {/* Admin Wallet */}
-            <div className="grid grid-cols-7 items-center gap-4">
-              <label className="flex items-center gap-2 text-right">
-                <FaWallet className="text-gray-500" /> Admin Wallet:
-              </label>
-              <input
-                type="text"
-                placeholder="Enter Admin Wallet Address"
-                value={projectSettings.adminWallet}
-                onChange={(e) =>
-                  setProjectSettings({
-                    ...projectSettings,
-                    adminWallet: e.target.value,
-                  })
-                }
-                className="col-span-6 w-full p-2 text-black border border-gray-300 rounded-md"
-              />
-            </div>
+          {activeTab === 1 && (
+            <section className="mb-4">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleProjectSettingsSubmit();
+                }}
+                className="space-y-4"
+              >
+                {[{ label: "Admin Wallet", key: "adminWallet", icon: <FaWallet /> }, { label: "RockUSD Price", key: "rockUSDPrice", icon: <FaDollarSign /> }, ...projectLinks].map(({ label, icon, key }) => (
+                  <div key={key} className="grid grid-cols-3 items-center gap-4">
+                    <label className="flex items-center gap-2 text-right text-gray-200">
+                      {icon} {label}:
+                    </label>
+                    <div className="col-span-2">
+                      <input
+                        type="text"
+                        value={projectSettings[key as keyof ProjectSettings]}
+                        onChange={(e) =>
+                          setProjectSettings((prev) => ({
+                            ...prev,
+                            [key]: e.target.value,
+                          }))
+                        }
+                        className="w-full p-2 border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#45F882] text-black" // Added text-black class here
+                        placeholder={`Enter ${label} URL`}
+                      />
+                    </div>
+                  </div>
+                ))}
 
-            {/* Rock USD Price */}
-            <div className="grid grid-cols-7 items-center gap-4">
-              <label className="flex items-center gap-2 text-right">
-                <FaDollarSign className="text-gray-500" /> Rock USD Price:
-              </label>
-              <input
-                type="number"
-                placeholder="e.g., 50"
-                value={projectSettings.rockUSDPrice}
-                onChange={(e) =>
-                  setProjectSettings({
-                    ...projectSettings,
-                    rockUSDPrice: parseFloat(e.target.value),
-                  })
-                }
-                className="col-span-6 w-full p-2 text-black border border-gray-300 rounded-md"
-              />
-            </div>
+                <button
+                  type="submit"
+                  className="mt-4 px-6 py-2 bg-[#45F882] text-black rounded-lg hover:bg-green-600 transition duration-200"
+                >
+                  Save Settings
+                </button>
+              </form>
+            </section>
+          )}
 
-            {/* Telegram Link */}
-            <div className="grid grid-cols-7 items-center gap-4">
-              <label className="flex items-center gap-2 text-right">
-                <FaTelegram className="text-gray-500" /> Telegram Link:
-              </label>
-              <input
-                type="text"
-                placeholder="e.g., yourchannel"
-                value={projectSettings.telegramLink}
-                onChange={(e) =>
-                  setProjectSettings({
-                    ...projectSettings,
-                    telegramLink: `https://t.me/${e.target.value.replace("https://t.me/", "")}`,
-                  })
-                }
-                className="col-span-6 w-full p-2 text-black border border-gray-300 rounded-md"
-              />
-            </div>
-
-            {/* Facebook Link */}
-            <div className="grid grid-cols-7 items-center gap-4">
-              <label className="flex items-center gap-2 text-right">
-                <FaFacebook className="text-blue-600" /> Facebook Link:
-              </label>
-              <input
-                type="text"
-                placeholder="e.g., yourpage"
-                value={projectSettings.facebookLink}
-                onChange={(e) =>
-                  setProjectSettings({
-                    ...projectSettings,
-                    facebookLink: `https://facebook.com/${e.target.value.replace("https://facebook.com/", "")}`,
-                  })
-                }
-                className="col-span-6 w-full p-2 text-black border border-gray-300 rounded-md"
-              />
-            </div>
-
-            {/* Instagram Link */}
-            <div className="grid grid-cols-7 items-center gap-4">
-              <label className="flex items-center gap-2 text-right">
-                <FaInstagram className="text-pink-500" /> Instagram Link:
-              </label>
-              <input
-                type="text"
-                placeholder="e.g., yourprofile"
-                value={projectSettings.instagramLink}
-                onChange={(e) =>
-                  setProjectSettings({
-                    ...projectSettings,
-                    instagramLink: `https://instagram.com/${e.target.value.replace("https://instagram.com/", "")}`,
-                  })
-                }
-                className="col-span-6 w-full p-2 text-black border border-gray-300 rounded-md"
-              />
-            </div>
-
-            {/* LinkedIn Link */}
-            <div className="grid grid-cols-7 items-center gap-4">
-              <label className="flex items-center gap-2 text-right">
-                <FaLinkedin className="text-blue-700" /> LinkedIn Link:
-              </label>
-              <input
-                type="text"
-                placeholder="e.g., yourprofile"
-                value={projectSettings.linkedInLink}
-                onChange={(e) =>
-                  setProjectSettings({
-                    ...projectSettings,
-                    linkedInLink: `https://linkedin.com/in/${e.target.value.replace("https://linkedin.com/in/", "")}`,
-                  })
-                }
-                className="col-span-6 w-full p-2 text-black border border-gray-300 rounded-md"
-              />
-            </div>
-
-            {/* Playstore Link */}
-            <div className="grid grid-cols-7 items-center gap-4">
-              <label className="flex items-center gap-2 text-right">
-                <FaGooglePlay className="text-green-500" /> Playstore Link:
-              </label>
-              <input
-                type="text"
-                placeholder="e.g., yourapp"
-                value={projectSettings.playstoreLink}
-                onChange={(e) =>
-                  setProjectSettings({
-                    ...projectSettings,
-                    playstoreLink: `https://play.google.com/store/apps/details?id=${e.target.value.replace("https://play.google.com/store/apps/details?id=", "")}`,
-                  })
-                }
-                className="col-span-6 w-full p-2 text-black border border-gray-300 rounded-md"
-              />
-            </div>
-
-            {/* Twitter XLink */}
-            <div className="grid grid-cols-7 items-center gap-4">
-              <label className="flex items-center gap-2 text-right">
-                <FaTwitter className="text-blue-500" /> Twitter XLink:
-              </label>
-              <input
-                type="text"
-                placeholder="e.g., yourtwitterhandle"
-                value={projectSettings.XLink}
-                onChange={(e) =>
-                  setProjectSettings({
-                    ...projectSettings,
-                    XLink: `https://twitter.com/${e.target.value.replace(/^https:\/\/twitter\.com\//, "")}`,
-                  })
-                }
-                className="col-span-6 w-full p-2 text-black border border-gray-300 rounded-md"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-              disabled={updateProjectSettings.isPending}
-            >
-              {updateProjectSettings.isPending ? "Updating..." : "Update Project Settings"}
-            </button>
-
-          </form>
-        </section>
+        </Box>
       </div>
-
     </div>
   );
 };

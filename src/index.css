@@ -11,6 +11,30 @@
   /* Thumb and Track color for Firefox */
 }
 
+
+/* Custom scrollbar for .setting-scrollbar */
+.setting-scrollbar {
+  scrollbar-width: thin; /* Thin scrollbar for Firefox */
+  scrollbar-color: #cccccc #f0f0f0; /* Light gray thumb and lighter gray track */
+}
+
+/* For WebKit browsers (Chrome, Edge, Safari) */
+.setting-scrollbar::-webkit-scrollbar {
+  width: 8px; /* Adjust scrollbar width */
+  height: 8px; /* Adjust scrollbar height */
+}
+
+.setting-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #cccccc; /* Light gray thumb */
+  border-radius: 4px; /* Rounded thumb for aesthetics */
+}
+
+.setting-scrollbar::-webkit-scrollbar-track {
+  background-color: #f0f0f0; /* Lighter gray track */
+  border-radius: 4px; /* Rounded track */
+}
+
+
 /* Apply custom styling for webkit browsers (Chrome, Safari, Edge, etc.) */
 *::-webkit-scrollbar {
   width: 6px;
