@@ -75,7 +75,7 @@ const UserTasks: React.FC = () => {
           tableBgColor="bg-[#1A1D26]"
           headerTextColor="text-[#45F882]"
           searchPlaceholder="Search tasks..."
-          height="69vh"
+          height="66vh"
         />
         {/* Pagination Controls */}
         {/* <div className="flex justify-between items-center mt-4">

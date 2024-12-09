@@ -95,7 +95,7 @@ const UserTransactions: React.FC = () => {
                         headerTextColor="text-[#45F882]"
                         showSearchBar={true}
                         onSearch={handleSearch}
-                        height="68vh"
+                        height="66vh"
                         searchPlaceholder="Search transactions..."
                         title="Transaction History"
                     />
