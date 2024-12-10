@@ -98,7 +98,7 @@ const App: React.FC = () => {
                   <Route path="/tournament-history" element={<TournamentHistory />} />
                   <Route path="/user-info" element={<UserInfo />} />
                   <Route path="/activity-list" element={<ActivityList />} />
-                  <Route path="/user-list" element={<UserList />} />
+                  <Route path="/users" element={<UserList />} />
                   <Route path="/tournament-info" element={<TournamentInfo />} />
                   <Route path="/referrals" element={<Referrals />} />
                   <Route path="/user-tournaments" element={<UserTournamentTable />} />

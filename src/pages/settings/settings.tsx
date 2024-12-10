@@ -4,7 +4,7 @@ import { useSidebar } from "../../context/SidebarContext";
 import { getContainerClass } from "../../utils";
 import { FaWallet, FaDollarSign, FaTelegram, FaFacebook, FaInstagram, FaLinkedin, FaGooglePlay, FaTwitter, FaUserShield, FaKey } from "react-icons/fa";
 import StatusMessage from "../../components/StatusMessage";
-import { Box, Tab, Tabs } from "@mui/material";
+import { Box, Tab, Tabs, FormControlLabel, Switch } from "@mui/material";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -111,13 +111,13 @@ const SettingsComponent = () => {
 
   if (isLoading || isError) {
     return (
-      <div className={`${getContainerClass(sidebarActive)} p-6 text-black overflow-auto bg-[#1A1C26]`}>
+      <div className={`${getContainerClass(sidebarActive)} p-6 h-screen text-black overflow-auto`}>
         <StatusMessage
           isLoading={isLoading}
           error={error}
           loadingMessage="Fetching settings..."
           errorMessage="Failed to load settings."
-          className="flex justify-center items-center h-full text-white"
+          className="flex justify-center items-center h-full text-white bg-[#1A1C26]"
         />
       </div>
     );
@@ -128,73 +128,30 @@ const SettingsComponent = () => {
       <ToastContainer />
       <div className="m-4 bg-[#1A1C26] p-6 rounded-lg shadow-lg">
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={activeTab} onChange={handleTabChange} aria-label="settings tabs">
-            <Tab label="Module Settings" sx={{ color: "#45F882" }} />
+          <Tabs
+            value={activeTab}
+            onChange={handleTabChange}
+            aria-label="settings tabs"
+            sx={{
+              '.MuiTab-root': {
+                color: '#9e9e9e', // Default color of the tab text
+              },
+              '.MuiTab-root.Mui-selected': {
+                color: '#45F882', // Active tab text color
+                backgroundColor: '#2A2D3A', // Background color for active tab
+              },
+              '.MuiTabs-indicator': {
+                backgroundColor: '#45F882', // Indicator color (underline)
+              },
+            }}
+          >
             <Tab label="Project Settings" sx={{ color: "#45F882" }} />
+            <Tab label="Module Settings" sx={{ color: "#45F882" }} />
           </Tabs>
         </Box>
 
         <Box sx={{ p: 3, height: "78vh", overflow: "auto" }} className="setting-scrollbar">
           {activeTab === 0 && (
-            <section className="mb-8">
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleModuleSettingsSubmit();
-                }}
-                className="space-y-4"
-              >
-                {/* Admin 2FA */}
-                <div className="grid grid-cols-3 items-center gap-4">
-                  <label className="flex items-center gap-2 text-right text-gray-200">
-                    <FaKey className="text-gray-600" /> Admin 2FA:
-                  </label>
-                  <div className="col-span-2 flex items-center">
-                    <input
-                      id="admin2FA"
-                      type="checkbox"
-                      checked={moduleSettings.admin2FA}
-                      onChange={() =>
-                        setModuleSettings((prev) => ({
-                          ...prev,
-                          admin2FA: !prev.admin2FA,
-                        }))
-                      }
-                      className="text-[#45F882] border-gray-400"
-                    />
-                  </div>
-                </div>
-                {/* Affiliate 2FA */}
-                <div className="grid grid-cols-3 items-center gap-4">
-                  <label className="flex items-center gap-2 text-right text-gray-200">
-                    <FaUserShield className="text-gray-600" /> Affiliate 2FA:
-                  </label>
-                  <div className="col-span-2 flex items-center">
-                    <input
-                      id="affiliate2FA"
-                      type="checkbox"
-                      checked={moduleSettings.affiliate2FA}
-                      onChange={() =>
-                        setModuleSettings((prev) => ({
-                          ...prev,
-                          affiliate2FA: !prev.affiliate2FA,
-                        }))
-                      }
-                      className="text-[#45F882] border-gray-400"
-                    />
-                  </div>
-                </div>
-                <button
-                  type="submit"
-                  className="mt-4 px-6 py-2 bg-[#45F882] text-black rounded-lg hover:bg-green-600 transition duration-200"
-                >
-                  Save Settings
-                </button>
-              </form>
-            </section>
-          )}
-
-          {activeTab === 1 && (
             <section className="mb-4">
               <form
                 onSubmit={(e) => {
@@ -234,7 +191,72 @@ const SettingsComponent = () => {
               </form>
             </section>
           )}
+          {activeTab === 1 && (
+            <section className="mb-8">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleModuleSettingsSubmit();
+                }}
+                className="space-y-4"
+              >
+                {/* Admin 2FA */}
+                <div className="grid grid-cols-3 items-center gap-4">
+                  <label className="flex items-center gap-2 text-right text-gray-200">
+                    <FaKey className="text-gray-600" /> Admin 2FA:
+                  </label>
+                  <div className="col-span-2 flex items-center">
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={moduleSettings.admin2FA}
+                          onChange={() =>
+                            setModuleSettings((prev) => ({
+                              ...prev,
+                              admin2FA: !prev.admin2FA,
+                            }))
+                          }
+                          className="text-[#45F882]"
+                        />
+                      }
+                      label=""
+                    />
+                  </div>
+                </div>
 
+                {/* Affiliate 2FA */}
+                <div className="grid grid-cols-3 items-center gap-4">
+                  <label className="flex items-center gap-2 text-right text-gray-200">
+                    <FaUserShield className="text-gray-600" /> Affiliate 2FA:
+                  </label>
+                  <div className="col-span-2 flex items-center">
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={moduleSettings.affiliate2FA}
+                          onChange={() =>
+                            setModuleSettings((prev) => ({
+                              ...prev,
+                              affiliate2FA: !prev.affiliate2FA,
+                            }))
+                          }
+                          className="text-[#45F882]"
+                        />
+                      }
+                      label=""
+                    />
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="mt-4 px-6 py-2 bg-[#45F882] text-black rounded-lg hover:bg-green-600 transition duration-200"
+                >
+                  Save Settings
+                </button>
+              </form>
+            </section>
+          )}
         </Box>
       </div>
     </div>

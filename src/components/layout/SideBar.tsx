@@ -52,28 +52,68 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({
 
   // Set selected menu based on current path
   useEffect(() => {
-    console.log("Current location.pathname:", location.pathname);
-    const activeMenuItem = menuItems.find((item) => {
-      if (item.path) {
-        // Log the current menu item being checked
-        console.log("Checking item.path:", item.path);
-        // Prioritize exact matches
-        if (location.pathname === item.path) {
-          console.log("Exact match found for path:", item.path);
-          return true;
-        }
-        // Fallback to partial match
-        if (location.pathname.startsWith(item.path)) {
-          console.log("Partial match found for path:", item.path);
+    console.log("Current pathname:", location.pathname);
+    console.log("Available menu items:", menuItems);
+  
+    // Sort menu items by path length (descending)
+    const sortedMenuItems = [...menuItems].sort((a, b) => {
+      const aPathLength = a.path ? a.path.split('/').length : 0;
+      const bPathLength = b.path ? b.path.split('/').length : 0;
+      return bPathLength - aPathLength;
+    });
+  
+    console.log("Sorted menu items by path length:", sortedMenuItems);
+  
+    // Check for exact match first
+    const exactMatch = sortedMenuItems.find((item) => item.path === location.pathname);
+    if (exactMatch) {
+      console.log(`Exact match found: ${exactMatch.label} (path: ${exactMatch.path})`);
+      setSelectedMenu(exactMatch.label);
+      return;
+    }
+  
+    // Check for partial match
+    const partialMatch = sortedMenuItems.find((item) => {
+      if (!item.path) return false;
+  
+      const pathSegments = item.path.split('/').filter(Boolean);
+      const locationSegments = location.pathname.split('/').filter(Boolean);
+  
+      console.log(`Checking partial match for item: ${item.label} (path: ${item.path})`);
+      console.log("Path segments:", pathSegments);
+      console.log("Location segments:", locationSegments);
+  
+      // Check if the menu item's path can logically match the current path
+      if (pathSegments.length <= locationSegments.length) {
+        const match = pathSegments.every((segment, index) => {
+          if (segment.startsWith(":")) {
+            // For dynamic segments (e.g., :id), ensure there's a corresponding value
+            return locationSegments[index] && locationSegments[index].length > 0;
+          }
+          // For static segments, match exactly
+          return segment === locationSegments[index];
+        });
+  
+        if (match) {
+          console.log(`Partial match found for item: ${item.label} (path: ${item.path})`);
           return true;
         }
       }
+  
       return false;
     });
-    console.log("Active menu item based on path:", activeMenuItem);
-    setSelectedMenu(activeMenuItem?.label || null);
+  
+    if (partialMatch) {
+      console.log(`Matched item via partial match: ${partialMatch.label}`);
+      setSelectedMenu(partialMatch.label);
+    } else {
+      console.log("No match found.");
+      setSelectedMenu(null);
+    }
   }, [location.pathname, menuItems]);
-
+  
+  
+  
   const handleItemClick = (item: MenuItem) => {
     console.log("Item clicked:", item);
     console.log("Current selectedMenu:", selectedMenu);
