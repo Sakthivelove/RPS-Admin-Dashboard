@@ -100,7 +100,7 @@ const TournamentTable: React.FC = () => {
             <div className="m-4">
                 <Table
                     columns={columns}
-                    data={currentData?.map((row, index) => ({
+                    data={filteredData?.map((row, index) => ({
                         ...row,
                         'S.No': index + 1 + (currentPage - 1) * itemsPerPage, // Adjust S.No based on the current page
                     }))}
