@@ -55,7 +55,8 @@ const TournamentTable: React.FC = () => {
         'Banner Image': tournament.bannerImage || 'N/A',
         'Tournament Name': tournament.tournamentName || 'Unknown',
         'Primary Tournament ID': tournament.primaryTournamentId || 'N/A',
-        'Date & Time': tournament.dateTime ? new Date(tournament.dateTime).toLocaleString() : 'N/A',
+        // Assuming 'dateTime' is a string representing a Unix timestamp in seconds
+        'Date & Time': tournament.dateTime ? new Date(Number(tournament.dateTime) * 1000).toLocaleString() : 'N/A',
         'Type': tournament.type || 'N/A',
         'Entry Fee': tournament.entryFee || 'N/A',
         'Nominal Tournament': tournament.nominalTournament ? 'Yes' : 'No',
