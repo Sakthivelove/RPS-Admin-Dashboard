@@ -54,16 +54,16 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({
   useEffect(() => {
     console.log("Current pathname:", location.pathname);
     console.log("Available menu items:", menuItems);
-  
+
     // Sort menu items by path length (descending)
     const sortedMenuItems = [...menuItems].sort((a, b) => {
       const aPathLength = a.path ? a.path.split('/').length : 0;
       const bPathLength = b.path ? b.path.split('/').length : 0;
       return bPathLength - aPathLength;
     });
-  
+
     console.log("Sorted menu items by path length:", sortedMenuItems);
-  
+
     // Check for exact match first
     const exactMatch = sortedMenuItems.find((item) => item.path === location.pathname);
     if (exactMatch) {
@@ -71,18 +71,18 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({
       setSelectedMenu(exactMatch.label);
       return;
     }
-  
+
     // Check for partial match
     const partialMatch = sortedMenuItems.find((item) => {
       if (!item.path) return false;
-  
+
       const pathSegments = item.path.split('/').filter(Boolean);
       const locationSegments = location.pathname.split('/').filter(Boolean);
-  
+
       console.log(`Checking partial match for item: ${item.label} (path: ${item.path})`);
       console.log("Path segments:", pathSegments);
       console.log("Location segments:", locationSegments);
-  
+
       // Check if the menu item's path can logically match the current path
       if (pathSegments.length <= locationSegments.length) {
         const match = pathSegments.every((segment, index) => {
@@ -93,16 +93,16 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({
           // For static segments, match exactly
           return segment === locationSegments[index];
         });
-  
+
         if (match) {
           console.log(`Partial match found for item: ${item.label} (path: ${item.path})`);
           return true;
         }
       }
-  
+
       return false;
     });
-  
+
     if (partialMatch) {
       console.log(`Matched item via partial match: ${partialMatch.label}`);
       setSelectedMenu(partialMatch.label);
@@ -111,9 +111,9 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({
       setSelectedMenu(null);
     }
   }, [location.pathname, menuItems]);
-  
-  
-  
+
+
+
   const handleItemClick = (item: MenuItem) => {
     console.log("Item clicked:", item);
     console.log("Current selectedMenu:", selectedMenu);
@@ -267,6 +267,15 @@ const Sidebar: React.FC<SidebarProps> = ({
         {/* <div className="flex w-full justify-center">
           {profileCard(sidebarActive, username)}
         </div> */}
+        {/* Logo at the top of the sidebar */}
+        <div className="flex justify-center">
+          <img
+            src="/RockMainLogo.png" // Add the logo image path here
+            alt="Logo"
+            className={`transition-all duration-300 ${sidebarActive ? "h-12 w-auto" : "h-8 w-auto mx-auto"} cursor-pointer`} // Adjust size and positioning based on sidebar state
+            onClick={() => navigate('/dashboard')} // Navigate to dashboard without page refresh
+          />
+        </div>
 
         {sidebarActive ? (
           <div className="w-full my-[1rem]">

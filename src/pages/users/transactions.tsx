@@ -3,7 +3,7 @@ import { useTransactions } from '../../hooks/useTransactions';
 import Table from '../../components/common/Table';
 import { useSidebar } from '../../context/SidebarContext';
 import StatusMessage from '../../components/StatusMessage';
-import { EyeIcon } from '@heroicons/react/24/outline'
+import { EyeIcon } from '@heroicons/react/24/outline';
 import { truncateAddress } from '../../utils';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
@@ -37,11 +37,11 @@ const UserTransactions: React.FC = () => {
     // Transform the data into the format needed for the table rows
     const tableData = data?.transaction.map((txn, index) => ({
         id: txn.id,
-        walletId: truncateAddress(txn.walletId, 6),  // Truncate walletId here,
-        transactionId: txn.transactionId || 'N/A',
-        amount: txn.amount,
-        dateTime: new Date(txn.dateTime).toLocaleString(),
-        user: txn.user.name,
+        walletId: truncateAddress(txn.walletId || 'N/A', 6),  // Fallback walletId if missing
+        transactionId: txn.transactionId || 'N/A',  // Fallback transactionId if missing
+        amount: txn.amount || 'N/A',  // Fallback amount if missing
+        dateTime: txn.dateTime ? new Date(txn.dateTime).toLocaleString() : 'N/A',  // Fallback for date
+        user: txn.user?.name || 'N/A',  // Fallback user name if missing
         actions: (
             <div className="flex space-x-3 justify-center items-center">
                 <button
@@ -58,12 +58,12 @@ const UserTransactions: React.FC = () => {
                 <p>
                     <strong>Transaction Details:</strong>
                 </p>
-                <p>ID: {txn.id}</p>
-                <p>Wallet ID: {txn.walletId}</p>
-                <p>Transaction ID: {txn.transactionId || 'N/A'}</p>
-                <p>Amount: {txn.amount}</p>
-                <p>Date: {new Date(txn.dateTime).toLocaleString()}</p>
-                <p>User: {txn.user.name}</p>
+                <p>ID: {txn.id || 'N/A'}</p>  {/* Fallback for txn.id */}
+                <p>Wallet ID: {txn.walletId || 'N/A'}</p>  {/* Fallback for walletId */}
+                <p>Transaction ID: {txn.transactionId || 'N/A'}</p>  {/* Fallback for txn.transactionId */}
+                <p>Amount: {txn.amount || 'N/A'}</p>  {/* Fallback for txn.amount */}
+                <p>Date: {txn.dateTime ? new Date(txn.dateTime).toLocaleString() : 'N/A'}</p>  {/* Fallback for date */}
+                <p>User: {txn.user?.name || 'N/A'}</p>  {/* Fallback for txn.user.name */}
             </div>
         ),
     }));

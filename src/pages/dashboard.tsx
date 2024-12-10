@@ -26,14 +26,14 @@ const Dashboard: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {/* Metrics displayed using GradientCard */}
-                <GradientCard
+                {/* <GradientCard
                     title="Total Players"
                     value={data?.totalPlayers.toString()}
                     imageSrc=""
                     imageAlt="Total Players"
                     // linkTo="/players-list"  // Add the link for "Total Players"
                     linkTo="#"  // Add the link for "Total Players"
-                />
+                /> */}
                 <GradientCard
                     title="Tournaments"
                     value={data?.tournaments.toString()}
@@ -48,7 +48,7 @@ const Dashboard: React.FC = () => {
                     imageAlt="Upcoming"
                     linkTo="/users/registeredupcomingtournament"  // Link for "Upcoming"
                 />
-                <GradientCard
+                {/* <GradientCard
                     title="Wallet Connection"
                     value={data?.walletConnection.toString()}
                     imageSrc=""
@@ -79,7 +79,7 @@ const Dashboard: React.FC = () => {
                     imageAlt="Registered Tournaments"
                     linkTo="#"
                 // linkTo="/registered-tournaments"  // Link for "Registered Tournaments"
-                />
+                /> */}
             </div>
         </div>
     );

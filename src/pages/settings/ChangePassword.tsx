@@ -6,6 +6,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 import { AxiosError } from 'axios';
+import { useNavigate } from 'react-router-dom'; // if you're using React Router
 
 interface ErrorResponse {
   message: string;
@@ -26,26 +27,41 @@ const ChangePassword: React.FC = () => {
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
   const [snackbarMessage, setSnackbarMessage] = useState<string>("");
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">("success");
+  const navigate = useNavigate()
 
   const { mutate, isPending, error, isSuccess } = useChangePassword();
 
-  console.log(error,"error change password")
+  console.log(error, "error change password");
 
   useEffect(() => {
     if (isSuccess) {
+      // Clear the form after successful password change
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
-      setSnackbarMessage("Password changed successfully!");
+
+      // Display success message
+      setSnackbarMessage("Password changed successfully! Logging out...");
       setSnackbarSeverity("success");
       setOpenSnackbar(true);
+
+      // Set a timeout to display the success message first and perform the logout
+      setTimeout(() => {
+        // Clear the token from local storage
+        localStorage.removeItem("token");
+
+        // Redirect to the login page after logout
+        navigate("/login"); // Redirect to the login page
+      }, 2000); // Wait for 2 seconds before redirecting
     }
   }, [isSuccess]);
 
+
+
   useEffect(() => {
     if (error) {
-     // Handle AxiosError response structure
-     const errorMsg = (error as AxiosError<ErrorResponse>)?.response?.data?.message || "Failed to update password. Please try again.";
+      // Handle AxiosError response structure
+      const errorMsg = (error as AxiosError<ErrorResponse>)?.response?.data?.message || "Failed to update password. Please try again.";
       setSnackbarMessage(errorMsg);
       setSnackbarSeverity("error");
       setOpenSnackbar(true);
@@ -62,7 +78,7 @@ const ChangePassword: React.FC = () => {
       }, 6000); // 3000 ms = 3 seconds
       return false;
     }
-  
+
     // Check if the new password meets criteria (e.g., minimum length)
     const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
     if (!passwordPattern.test(newPassword)) {
@@ -73,13 +89,11 @@ const ChangePassword: React.FC = () => {
       }, 6000); // 3 seconds delay
       return false;
     }
-  
+
     // Reset error message if all validations pass
     setErrorMessage(null);
     return true;
   };
-  
-  
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -192,6 +206,7 @@ const ChangePassword: React.FC = () => {
         open={openSnackbar}
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
         <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity}>
           {snackbarMessage}

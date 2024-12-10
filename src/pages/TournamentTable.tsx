@@ -10,6 +10,10 @@ const TournamentTable: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const { sidebarActive } = useSidebar();
 
+    // Pagination states
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+
     // If loading or error occurs, render the StatusMessage
     if (isLoading || error) {
         return (
@@ -45,26 +49,25 @@ const TournamentTable: React.FC = () => {
         'Payment End',
     ];
 
-    // Map data to include all fields in the table
-    const tableData = data?.map((tournament,index) => ({
-        'S.No': index+1,
-        'Tournament ID': tournament.tournamentId,
-        'Banner Image': tournament.bannerImage,
-        'Tournament Name': tournament.tournamentName,
-        'Primary Tournament ID': tournament.primaryTournamentId,
-        'Date & Time': tournament.dateTime,
-        'Type': tournament.type,
-        'Entry Fee': tournament.entryFee,
+    // Map data to include all fields in the table with fallbacks
+    const tableData = data?.map((tournament, index) => ({
+        'Tournament ID': tournament.tournamentId || 'N/A',
+        'Banner Image': tournament.bannerImage || 'N/A',
+        'Tournament Name': tournament.tournamentName || 'Unknown',
+        'Primary Tournament ID': tournament.primaryTournamentId || 'N/A',
+        'Date & Time': tournament.dateTime ? new Date(tournament.dateTime).toLocaleString() : 'N/A',
+        'Type': tournament.type || 'N/A',
+        'Entry Fee': tournament.entryFee || 'N/A',
         'Nominal Tournament': tournament.nominalTournament ? 'Yes' : 'No',
-        'Nominal Fee': tournament.nominalFee,
+        'Nominal Fee': tournament.nominalFee || 'N/A',
         'Prize Pool': tournament.totalPrizePool ?? 'N/A',
-        'Winner': truncateAddress(tournament.winner, 6),
-        'Current Stage': tournament.currentStage,
-        'Status': tournament.status,
+        'Winner': tournament.winner ? truncateAddress(tournament.winner, 6) : 'N/A',
+        'Current Stage': tournament.currentStage || 'N/A',
+        'Status': tournament.status || 'N/A',
         'Payment Window': tournament.paymentWindow ? 'Open' : 'Closed',
-        'No. of Players': tournament.noOfPlayersRegistered,
-        'Payment Start': new Date(tournament.paymentWindowStart).toLocaleString(),
-        'Payment End': new Date(tournament.paymentWindowEnd).toLocaleString(),
+        'No. of Players': tournament.noOfPlayersRegistered || '0',
+        'Payment Start': tournament.paymentWindowStart ? new Date(tournament.paymentWindowStart).toLocaleString() : 'N/A',
+        'Payment End': tournament.paymentWindowEnd ? new Date(tournament.paymentWindowEnd).toLocaleString() : 'N/A',
     }));
 
     // Filter tournaments based on search query
@@ -79,20 +82,60 @@ const TournamentTable: React.FC = () => {
         setSearchQuery(searchTerm); // Update search query state
     };
 
+    // Get current page data for pagination
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentData = filteredData?.slice(indexOfFirstItem, indexOfLastItem);
+
+    // Handle page change
+    const handlePageChange = (newPage: number) => {
+        if (newPage >= 1 && newPage <= Math.ceil((filteredData?.length || 0) / itemsPerPage)) {
+            setCurrentPage(newPage);
+        }
+    };
+
     return (
         <div className={`${getContainerClass(sidebarActive)}`}>
-            <div className="m-4 overflow-auto h-[95vh]">
+            <div className="m-4">
                 <Table
                     columns={columns}
-                    data={filteredData}
+                    data={currentData?.map((row, index) => ({
+                        ...row,
+                        'S.No': index + 1 + (currentPage - 1) * itemsPerPage, // Adjust S.No based on the current page
+                    }))}
                     title="Tournament List"
                     rowColor="bg-[#0F1C23]"
                     tableBgColor="bg-[#1A1D26]"
                     headerTextColor="text-[#45F882]"
                     showSearchBar={true}
                     onSearch={handleSearch}
+                    height='67vh'
                 />
             </div>
+
+            {/* Pagination Controls */}
+            {/* Uncomment if needed for pagination */}
+            {/* {filteredData && filteredData.length > itemsPerPage && (
+                <div className="flex justify-between items-center m-4 text-[#45F882]">
+                    <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className="px-4 py-2 bg-transparent border-2 border-[#45F882] rounded-md hover:bg-[#45F882] hover:text-white"
+                    >
+                        Previous
+                    </button>
+
+                    <span>Page {currentPage} of {Math.ceil((filteredData?.length || 0) / itemsPerPage)}</span>
+
+                    <button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === Math.ceil((filteredData?.length || 0) / itemsPerPage)}
+                        className="px-4 py-2 bg-transparent border-2 border-[#45F882] rounded-md hover:bg-[#45F882] hover:text-white"
+                    >
+                        Next
+                    </button>
+                </div>
+            )} */}
         </div>
     );
 };
