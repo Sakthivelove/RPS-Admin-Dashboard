@@ -134,7 +134,7 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({
 
 
   return (
-    <div className="mt-[0.5rem] overflow-y-auto">
+    <div className="overflow-y-auto">
       <div className={window.innerHeight < 400 ? "h-[10rem]" : "h-full"}>
         <ul>
           {menuItems.map((item, index) => {
@@ -278,7 +278,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {sidebarActive ? (
-          <div className="w-full my-[1rem]">
+          <div className="w-full my-[0.5rem]">
             <button
               className="capitalize bg-[#45F882] rounded-[5px] w-full px-[0.5rem] py-[10px] flex items-center gap-[0.5rem] poppins-bold"
               onClick={() => navigate(actionPath)}

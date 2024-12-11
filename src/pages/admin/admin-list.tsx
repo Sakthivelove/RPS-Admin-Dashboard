@@ -40,7 +40,7 @@ const AdminList: React.FC = () => {
     const columns = ['S.No', 'Telegram ID'];
 
     return (
-        <div className={`absolute right-0 ${sidebarActive ? "w-[77%]" : "w-[94%]"} p-4 `}>
+        <div className={`absolute right-0 ${sidebarActive ? "w-[77%]" : "w-[94%]"} p-4`}>
             <Table
                 columns={columns}
                 data={tableData}
@@ -48,7 +48,7 @@ const AdminList: React.FC = () => {
                 headerTextColor="text-white"
                 showSearchBar={true}
                 searchPlaceholder="Search by Telegram ID"
-                height='67vh'
+                height='65vh'
             />
         </div>
     );

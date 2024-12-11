@@ -6,6 +6,7 @@ import { useSidebar } from '../context/SidebarContext';
 import StatusMessage from '../components/StatusMessage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { EyeIcon } from '@heroicons/react/24/outline';
 
 const UserList: React.FC = () => {
   const [page, setPage] = useState(1);  // Track the current page
@@ -49,7 +50,7 @@ const UserList: React.FC = () => {
           onClick={() => navigate(`/users/${user.id}`)}
           className="text-blue-500 hover:text-blue-700"
         >
-          <FontAwesomeIcon icon={faEye} />
+          <EyeIcon className="w-6 h-6" />
         </button>
       </div>
     ),
