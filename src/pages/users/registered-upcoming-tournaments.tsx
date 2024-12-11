@@ -28,14 +28,13 @@ const UpcomingTournaments: React.FC = () => {
         'Last Stage',
         'Status',
         'Date Time',
-        'Tournament Name',
-        'Winner',
-        // 'Actions',
+        'Tournament Name'
     ];
 
+
     const tableData = useMemo(() =>
-        data?.map((tournament,index) => ({
-            'S.No': index+1,
+        data?.map((tournament, index) => ({
+            'S.No': index + 1,
             'Wallet ID': truncateAddress(tournament.walletId, 6),
             'Tournament ID': tournament.tournamentId,
             'Entry Paid': tournament.entryPaid ? 'Yes' : 'No',

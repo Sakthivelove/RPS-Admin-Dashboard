@@ -27,7 +27,7 @@ const UserTournaments = () => {
 
     // Columns for the table (using the fields from UserTournament interface)
     const columns = [
-        'S.No',
+         'S.No',
         'Tournament ID',
         'Wallet ID',
         'Type',
@@ -39,14 +39,13 @@ const UserTournaments = () => {
         'Nominal Fee',
         'Default Move',
         'Registered At',
-        'User',
         'Last Stage',
         'Status',
         'Date Time',
         'Tournament Name',
-        'Winner',
-        'Actions' // New actions column
-    ];
+        'Actions'
+      ];
+      
 
     // Mapping API data to table rows
     const tableData = (data?.usertournament || []).map((item, index) => ({

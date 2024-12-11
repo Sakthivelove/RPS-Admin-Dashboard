@@ -41,16 +41,15 @@ const TournamentTable: React.FC = () => {
         'Nominal Fee',
         'Prize Pool',
         'Winner',
-        'Current Stage',
         'Status',
         'Payment Window',
-        'No. of Players',
-        'Payment Start',
-        'Payment End',
-    ];
+        'No. of Players'
+      ];
+      
 
     // Map data to include all fields in the table with fallbacks
     const tableData = data?.map((tournament, index) => ({
+        'S.No':index+1,
         'Tournament ID': tournament.tournamentId || 'N/A',
         'Banner Image': tournament.bannerImage || 'N/A',
         'Tournament Name': tournament.tournamentName || 'Unknown',
