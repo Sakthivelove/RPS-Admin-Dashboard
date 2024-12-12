@@ -21,6 +21,7 @@ interface TableProps {
   limit?: number; // Items per page
   onPageChange?: (newPage: number) => void; // Callback to handle page change
   totalItems?: number; // Total number of items for pagination
+  totalPages?: number, // Accept totalPages as a prop
   loadingMessage?: string; // Custom message for loading state
   errorMessage?: string; // Custom message for error state
   isLoading?: boolean; // Loading state from parent
@@ -47,6 +48,7 @@ const Table: React.FC<TableProps> = ({
   limit = 10,
   onPageChange,
   totalItems = 0,
+  totalPages = 1, // Accept totalPages as a prop
   loadingMessage = 'Loading data...',
   errorMessage = 'Error loading data, please try again.',
   isLoading = false, // Use the loading state from the parent
@@ -54,12 +56,6 @@ const Table: React.FC<TableProps> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>(''); // State for the search term
   const [filteredData, setFilteredData] = useState<any[]>(data || []); // Filtered data for table rows
-
-  const [totalPages, setTotalPages] = useState(Math.ceil(totalItems / limit)); // Initialize totalPages state
-
-  useEffect(() => {
-    setTotalPages(Math.ceil(totalItems / limit)); // Recalculate totalPages when totalItems or limit changes
-  }, [totalItems, limit]); 
 
   useEffect(() => {
     if (searchTerm) {
@@ -91,6 +87,15 @@ const Table: React.FC<TableProps> = ({
     }
   };
 
+  // Generate page numbers for pagination
+  const generatePageNumbers = (): number[] => {
+    const maxPageLinks = 5; // Adjust for how many links you want to show
+    const startPage = Math.max(1, page - Math.floor(maxPageLinks / 2));
+    const endPage = Math.min(totalPages, startPage + maxPageLinks - 1);
+
+    return Array.from({ length: endPage - startPage + 1 }, (_, idx) => startPage + idx);
+  };
+
   return (
     <div className={`${tableBgColor} h-full rounded-lg flex p-2 flex-col`}>
       {/* Title and SearchBar outside the scrollable content */}
@@ -110,21 +115,22 @@ const Table: React.FC<TableProps> = ({
         )}
       </div>
 
-      {/* Show loading message */}
-      {isLoading && <div className="text-center text-white">{loadingMessage}</div>}
-
-      {/* Show error message */}
-      {error && <div className="text-center text-red-500">{errorMessage}</div>}
-
-      {/* Show no data message */}
-      {(!isLoading && !error && filteredData.length === 0) && (
-        <div className="text-center text-white font-semibold flex justify-center items-center">
-          No data available
-        </div>
-      )}
-
       {/* Scrollable table content */}
       <div className={`overflow-x-${scrollX} overflow-y-${scrollY} flex-grow scrollbar-thin ${className} ${columns.length === 2 ? "flex justify-center items-start" : ""}`} style={{ height }}>
+        {/* Show loading message */}
+        {isLoading && <div className="text-center text-white flex justify-center items-center h-full">{loadingMessage}</div>}
+
+        {/* Show error message */}
+        {error && <div className="text-center text-red-500 flex justify-center items-center h-full">{errorMessage}</div>}
+
+        {/* Show no data message */}
+        {(!isLoading && !error && filteredData.length === 0) && (
+          <div className="text-center text-white font-semibold flex justify-center items-center h-full">
+            No data available
+          </div>
+        )}
+
+
         {(!isLoading && !error && filteredData.length !== 0) && <table className={`${columns.length === 2 ? "w-1/2" : "w-full"} table-auto ${tableBgColor} table-layout-auto`}>
           <thead className="sticky top-0 bg-[#1A1D26]">
             <tr>
@@ -184,40 +190,61 @@ const Table: React.FC<TableProps> = ({
         </table>}
       </div>
 
-      {/* Pagination controls */}
-      <div className="flex flex-wrap justify-between items-center p-4 text-[#45F882]">
-        <button
-          onClick={() => handlePageChange(page - 1)}
-          disabled={page === 1}
-          className="px-4 py-2 bg-transparent border-2 border-[#45F882] rounded-md hover:bg-[#45F882] hover:text-white"
-        >
-          Previous
-        </button>
+      {/* Traditional Pagination */}
+      <div className="flex justify-center items-center p-4">
+        {page > 1 && (
+          <>
+            <button
+              onClick={() => handlePageChange(1)}
+              disabled={page === 1 || isLoading}
+              className={`px-4 py-2 mx-1 ${isLoading ? 'bg-gray-400' : 'bg-[#1A1D26]'} text-white border border-[#45F882] rounded`}
+            >
+              First
+            </button>
+            <button
+              onClick={() => handlePageChange(page - 1)}
+              disabled={page === 1 || isLoading}
+              className={`px-4 py-2 mx-1 ${isLoading ? 'bg-gray-400' : 'bg-[#1A1D26]'} text-white border border-[#45F882] rounded`}
+            >
+              Previous
+            </button>
+          </>
+        )}
+        {totalPages > 1 && generatePageNumbers().map((pageNum) => (
+          <button
+            key={pageNum}
+            onClick={() => !isLoading && handlePageChange(pageNum)}
+            className={`px-4 py-2 mx-1 ${page === pageNum ? 'bg-[#45F882] text-white' : 'bg-[#1A1D26] text-white'
+              } border border-[#45F882] rounded ${isLoading ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
+            disabled={isLoading}
+          >
+            {pageNum}
+          </button>
+        ))}
+        {page < totalPages && (
 
-        <div className="flex items-center">
-          <span className="mr-2">Page</span>
-          <input
-            type="number"
-            min="1"
-            max={totalPages}
-            value={page}
-            onChange={(e) => {
-              const newPage = Math.max(1, Math.min(totalPages, Number(e.target.value)));
-              handlePageChange(newPage);
-            }}
-            className="w-16 px-2 py-1 text-center border-2 border-[#45F882] rounded-md bg-transparent text-white focus:outline-none"
-          />
-          <span className="ml-2">of {totalPages}</span>
-        </div>
-
-        <button
-          onClick={() => handlePageChange(page + 1)}
-          disabled={page === totalPages}
-          className="px-4 py-2 bg-transparent border-2 border-[#45F882] rounded-md hover:bg-[#45F882] hover:text-white"
-        >
-          Next
-        </button>
+          <>
+            <button
+              onClick={() => handlePageChange(page + 1)}
+              disabled={page === totalPages || isLoading}
+              className={`px-4 py-2 mx-1 ${isLoading ? 'bg-gray-400' : 'bg-[#1A1D26]'} text-white border border-[#45F882] rounded`}
+            >
+              Next
+            </button>
+            <button
+              onClick={() => handlePageChange(totalPages || 1)}
+              disabled={page === totalPages || isLoading}
+              className={`px-4 py-2 mx-1 ${isLoading ? 'bg-gray-400' : 'bg-[#1A1D26]'} text-white border border-[#45F882] rounded`}
+            >
+              Last
+            </button>
+          </>
+        )}
       </div>
+
+
+
     </div>
   );
 };

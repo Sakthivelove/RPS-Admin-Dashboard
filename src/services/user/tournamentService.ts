@@ -1,14 +1,14 @@
 import { api } from "../../api/api";
-import { Tournament } from '../../types/tournament';
+import { TournamentsResponse } from '../../types/tournament';
 
 export const fetchRegisteredUpcomingTournaments = async (
   page: number,
   limit: number
-): Promise<Tournament[]> => {
+): Promise<TournamentsResponse> => {
   const response = await api.get(`/users/registeredupcomingtournament`, {
     params: { page, limit },
   });
-  return response.data.userTournaments;
+  return response.data;
 };
 
 export interface UserTournamentDetails {

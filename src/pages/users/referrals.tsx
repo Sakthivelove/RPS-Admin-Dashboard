@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Table from '../../components/common/Table';
 import { useReferrals } from '../../hooks/useReferrals';
 import { useSidebar } from '../../context/SidebarContext';
@@ -10,13 +10,19 @@ const UserReferrals: React.FC = () => {
     const [page, setPage] = useState(1); // Track the current page
     const [limit, setLimit] = useState(10); // Track the number of items per page
     const { data, error, isLoading, isError } = useReferrals(page, limit);
-
+    const [totalPages, setTotalPages] = useState<number>(0);
     const { sidebarActive } = useSidebar();
     const navigate = useNavigate(); // Initialize navigate hook
 
     // Log the current page and limit when component renders
     console.log(`Rendering UserReferrals Component - Page: ${page}, Limit: ${limit}`);
 
+    // Update total pages when totalCount changes
+    useEffect(() => {
+        if (data?.total) {
+            setTotalPages(Math.ceil(data.total / limit));
+        }
+    }, [data?.total, limit]);
     // Handle page change
     const handlePageChange = (newPage: number) => {
         console.log(`Page changed from ${page} to ${newPage}`);
@@ -70,7 +76,7 @@ const UserReferrals: React.FC = () => {
                     page={page}
                     limit={limit}
                     onPageChange={handlePageChange}
-                    totalItems={data?.total || 0}
+                    totalPages={totalPages}
                     isLoading={isLoading}
                     error={isError}
                     loadingMessage="Loading referrals..."

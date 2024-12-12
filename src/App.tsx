@@ -79,7 +79,7 @@ const App: React.FC = () => {
                 <Route path="/change-password" element={<ChangePassword />} />
 
                 {/* Protected Routes */}
-                <Route element={<ProtectedRoute />}>
+                {/* <Route element={<ProtectedRoute />}> */}
                   <Route path="/affiliate-tournaments" element={<AffiliateTournaments />} />
                   <Route path="/create-new-rock-tournament" element={<CreateNewRockTournament />} />
                   <Route path="/project-details" element={<Dashboards />} />
@@ -133,7 +133,7 @@ const App: React.FC = () => {
                   {/* Catch-all route for non-existing paths */}
                   <Route path="/404" element={<NotFound />} />
                   <Route path="*" element={<Navigate to="/404" />} /> {/* Redirect invalid paths to 404 page */}
-                </Route>
+                {/* </Route> */}
               </Routes>
             </Layout>
           </SidebarProvider>

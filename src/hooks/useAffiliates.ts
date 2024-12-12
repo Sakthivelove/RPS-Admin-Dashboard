@@ -18,6 +18,6 @@ const fetchUserAffiliates = async () => {
 export const useUserAffiliates = () => {
     return useQuery<User[]>({
         queryKey: ['users'],
-        queryFn: fetchUserAffiliates
+        queryFn: fetchUserAffiliates,
     });
 };

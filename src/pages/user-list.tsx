@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Table from "../components/common/Table";
 import { useUsers } from '../hooks/useUsers';
@@ -9,6 +9,7 @@ const UserList: React.FC = () => {
   const [page, setPage] = useState(1);  // Track the current page
   const [limit, setLimit] = useState(10);  // Track the number of items per page
   const { data, error, isLoading, isError } = useUsers(page, limit); // Pass page and limit as parameters
+  const [totalPages, setTotalPages] = useState<number>(0);
   const { sidebarActive } = useSidebar();
   const navigate = useNavigate();
 
@@ -22,6 +23,13 @@ const UserList: React.FC = () => {
     'Total Win Amount',
     'Actions'
   ];
+
+  // Update total pages when totalCount changes
+  useEffect(() => {
+    if (data?.total) {
+      setTotalPages(Math.ceil(data.total / limit));
+    }
+  }, [data?.total, limit]);
 
   // Handle page change
   const handlePageChange = (newPage: number) => {
@@ -55,7 +63,7 @@ const UserList: React.FC = () => {
 
   // For pagination controls, check if there's a total number of pages or items:
   // Calculate total pages with a fallback if data or total is undefined
-  const totalPages = Math.ceil((data?.total || 0) / limit) || 1; // Calculate total pages
+  // const totalPages = Math.ceil((data?.total || 0) / limit) || 1; // Calculate total pages
 
   const isNextDisabled = page >= totalPages; // Disable "Next" when on the last page
   const isPreviousDisabled = page === 1; // Disable "Previous" on the first page
@@ -77,7 +85,8 @@ const UserList: React.FC = () => {
           page={page}
           limit={limit}
           onPageChange={handlePageChange}
-          totalItems={data?.total || 0}
+          totalPages={totalPages}
+          // totalItems={data?.total || 0}
           isLoading={isLoading}
           error={isError}
           loadingMessage="Loading user data..."

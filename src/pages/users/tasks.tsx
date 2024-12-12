@@ -11,6 +11,7 @@ const UserTasks: React.FC = () => {
   const limit = 10;
   const navigate = useNavigate(); // React Router hook to navigate
   const { sidebarActive } = useSidebar();
+  const [totalPages, setTotalPages] = useState<number>(0);
   const location = useLocation(); // To access the query parameters
 
   // Extract the 'filter' query parameter from the URL
@@ -20,6 +21,12 @@ const UserTasks: React.FC = () => {
   // Fetch tasks using the custom hook with the filter parameter
   const { data, isLoading, error, isError } = useUserTasks({ page, limit, filter });
 
+  // Update total pages when totalCount changes
+  useEffect(() => {
+    if (data?.total) {
+      setTotalPages(Math.ceil(data.total / limit));
+    }
+  }, [data?.total, limit]);
   // Handle page change
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -73,7 +80,8 @@ const UserTasks: React.FC = () => {
           page={page}
           limit={limit}
           onPageChange={handlePageChange}
-          totalItems={data?.total || 0}
+          totalPages={totalPages}
+          // totalItems={data?.total || 0}
           isLoading={isLoading}
           error={isError}
           loadingMessage="Loading tasks..."

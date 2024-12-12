@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useUserTournaments } from '../../hooks/useUserTournaments';
 import Table from '../../components/common/Table';
 import { useSidebar } from '../../context/SidebarContext';
@@ -11,8 +11,15 @@ const UserTournaments = () => {
     const limit = 10;
     const { data, error, isLoading, isError } = useUserTournaments(page, limit);  // Pagination (page 1, 10 items per page)
     const { sidebarActive } = useSidebar();
+    const [totalPages, setTotalPages] = useState<number>(0);
     const navigate = useNavigate();  // Initialize the navigate function
 
+    // Update total pages when totalCount changes
+    useEffect(() => {
+        if (data?.total) {
+            setTotalPages(Math.ceil(data.total / limit));
+        }
+    }, [data?.total, limit]);
 
     // Columns for the table (using the fields from UserTournament interface)
     const columns = [
@@ -116,7 +123,8 @@ const UserTournaments = () => {
                 page={page}
                 limit={limit}
                 onPageChange={handlePageChange}
-                totalItems={data?.total || 0}
+                totalPages={totalPages}
+                // totalItems={data?.total || 0}
                 isLoading={isLoading}
                 error={isError}
                 loadingMessage="Loading tournaments..."

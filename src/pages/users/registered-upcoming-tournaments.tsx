@@ -9,10 +9,17 @@ const UpcomingTournaments: React.FC = () => {
     const [page, setPage] = useState(1);
     const limit = 10;
     const { sidebarActive } = useSidebar();
+    const [totalPages, setTotalPages] = useState<number>(0);
     const navigate = useNavigate();
 
     const { data, isLoading, isError, error } = useRegisteredTournaments(page, limit);
 
+    // Update total pages when totalCount changes
+    useEffect(() => {
+        if (data?.total) {
+            setTotalPages(Math.ceil(data.total / limit));
+        }
+    }, [data?.total, limit]);
     const columns = [
         'S.No',
         'Tournament Name',
@@ -27,18 +34,18 @@ const UpcomingTournaments: React.FC = () => {
         'Registered At',
         'Last Stage',
         'Status',
-        'Date Time' 
+        'Date Time'
     ];
 
 
     const tableData = useMemo(() =>
-        data?.map((tournament, index) => ({
+        data?.userTournaments?.map((tournament, index) => ({
             'S.No': index + 1,
             'Wallet ID': truncateAddress(tournament.walletId, 6),
             // 'Tournament ID': tournament.tournamentId,
             'Entry Paid': tournament.entryPaid ? 'Yes' : 'No',
             'Nominal Paid': tournament.nominalPaid ? 'Yes' : 'No',
-            'Transaction ID': truncateAddress(tournament.transactionId, 6) || "N/A",
+            'Transaction ID': tournament.transactionId && truncateAddress(tournament.transactionId, 6) || "N/A",
             'Entry Fee': tournament.entryFee,
             'Nominal Fee': tournament.nominalFee,
             'Default Move': tournament.defaultMove,
@@ -105,6 +112,13 @@ const UpcomingTournaments: React.FC = () => {
         // Implement your logic for deleting a tournament (e.g., show a confirmation modal and delete via API)
     };
 
+      // Handle page change
+  const handlePageChange = (newPage: number) => {
+    if (newPage > 0 && newPage <= (totalPages || 0)) {
+      setPage(newPage);
+    }
+  };
+
     return (
         <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen text-white`}>
             <div className="relative z-10 h-full p-[2%]">
@@ -116,6 +130,8 @@ const UpcomingTournaments: React.FC = () => {
                     headerTextColor="text-[#45F882]"
                     showSearchBar={true}
                     onSearch={handleSearch}
+                    onPageChange={handlePageChange}
+                    totalPages={totalPages}
                     searchPlaceholder="Search tournaments..."
                     isLoading={isLoading}
                     error={isError}
