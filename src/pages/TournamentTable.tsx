@@ -18,9 +18,9 @@ const TournamentTable: React.FC = () => {
     // Define columns with all fields from the Tournament interface
     const columns = [
         'S.No',
-        // 'Tournament ID',
-        'Banner Image',
+        // 'Tournament ID',\
         'Tournament Name',
+        'Banner Image',
         // 'Primary Tournament ID',
         'Type',
         'Entry Fee',

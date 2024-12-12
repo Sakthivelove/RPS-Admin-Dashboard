@@ -28,9 +28,9 @@ const UserReferrals: React.FC = () => {
         'Referral Code',
         'Wallet ID',
         'Referral Count',
-        'Reward',
-        'Created On',
+        // 'Reward',
         'Actions',
+        'Created On'
     ]; // Add 'Actions' to columns
 
     const formattedData =
@@ -39,7 +39,7 @@ const UserReferrals: React.FC = () => {
             'Referral Code': referral.referralCode,
             'Wallet ID': truncateAddress(referral.walletId, 6), // Truncate walletId here
             'Referral Count': referral.referralCount,
-            'Reward': referral.reward,
+            // 'Reward': referral.reward,
             'Created On': new Date(
                 parseInt(referral.createdOn) * 1000
             ).toLocaleString(),
