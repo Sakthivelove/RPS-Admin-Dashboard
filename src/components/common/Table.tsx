@@ -17,6 +17,14 @@ interface TableProps {
   scrollX?: string;
   scrollY?: string;
   className?: string;
+  page?: number; // Current page
+  limit?: number; // Items per page
+  onPageChange?: (newPage: number) => void; // Callback to handle page change
+  totalItems?: number; // Total number of items for pagination
+  loadingMessage?: string; // Custom message for loading state
+  errorMessage?: string; // Custom message for error state
+  isLoading?: boolean; // Loading state from parent
+  error?: boolean; // Error state from parent
 }
 
 const Table: React.FC<TableProps> = ({
@@ -34,10 +42,24 @@ const Table: React.FC<TableProps> = ({
   searchPlaceholder = 'Search...',
   scrollX = 'auto',
   scrollY = 'auto',
-  className
+  className,
+  page = 1,
+  limit = 10,
+  onPageChange,
+  totalItems = 0,
+  loadingMessage = 'Loading data...',
+  errorMessage = 'Error loading data, please try again.',
+  isLoading = false, // Use the loading state from the parent
+  error = false,   // Use the error state from the parent
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>(''); // State for the search term
   const [filteredData, setFilteredData] = useState<any[]>(data || []); // Filtered data for table rows
+
+  const [totalPages, setTotalPages] = useState(Math.ceil(totalItems / limit)); // Initialize totalPages state
+
+  useEffect(() => {
+    setTotalPages(Math.ceil(totalItems / limit)); // Recalculate totalPages when totalItems or limit changes
+  }, [totalItems, limit]); 
 
   useEffect(() => {
     if (searchTerm) {
@@ -62,28 +84,48 @@ const Table: React.FC<TableProps> = ({
     }
   };
 
+  // Handle page change
+  const handlePageChange = (newPage: number) => {
+    if (onPageChange) {
+      onPageChange(newPage);
+    }
+  };
+
   return (
-    <div className={`${tableBgColor} h-full rounded-lg flex p-4 flex-col`}>
+    <div className={`${tableBgColor} h-full rounded-lg flex p-2 flex-col`}>
       {/* Title and SearchBar outside the scrollable content */}
       <div>
         {title && (
-          <h1 className={`text-3xl font-semibold text-[#45F882] sticky top-0 z-10 bg-[#1A1D26] p-4 ${columns.length === 2 ? 'text-center' : ""}`}>
+          <h1 className={`text-3xl font-semibold text-[#45F882] sticky top-0 z-10 bg-[#1A1D26] p-2 ${columns.length === 2 ? 'text-center' : ""}`}>
             {title}
           </h1>
         )}
 
         {showSearchBar && (
           <div className='flex justify-center'>
-            <div className={`sticky top-16 z-10 bg-[#1A1D26] p-4 ${columns.length === 2 ? "w-1/2" : "w-full"}`}>
+            <div className={`sticky top-16 z-10 bg-[#1A1D26] p-2 ${columns.length === 2 ? "w-1/2" : "w-full"}`}>
               <SearchBar placeholder={searchPlaceholder} onSearch={handleSearch} />
             </div>
           </div>
         )}
       </div>
 
+      {/* Show loading message */}
+      {isLoading && <div className="text-center text-white">{loadingMessage}</div>}
+
+      {/* Show error message */}
+      {error && <div className="text-center text-red-500">{errorMessage}</div>}
+
+      {/* Show no data message */}
+      {(!isLoading && !error && filteredData.length === 0) && (
+        <div className="text-center text-white font-semibold flex justify-center items-center">
+          No data available
+        </div>
+      )}
+
       {/* Scrollable table content */}
       <div className={`overflow-x-${scrollX} overflow-y-${scrollY} flex-grow scrollbar-thin ${className} ${columns.length === 2 ? "flex justify-center items-start" : ""}`} style={{ height }}>
-        <table className={`${columns.length === 2 ? "w-1/2" : "w-full"} table-auto ${tableBgColor} table-layout-auto`}>
+        {(!isLoading && !error && filteredData.length !== 0) && <table className={`${columns.length === 2 ? "w-1/2" : "w-full"} table-auto ${tableBgColor} table-layout-auto`}>
           <thead className="sticky top-0 bg-[#1A1D26]">
             <tr>
               {columns.map((col, idx) => (
@@ -139,7 +181,42 @@ const Table: React.FC<TableProps> = ({
               </tr>
             ))}
           </tbody>
-        </table>
+        </table>}
+      </div>
+
+      {/* Pagination controls */}
+      <div className="flex flex-wrap justify-between items-center p-4 text-[#45F882]">
+        <button
+          onClick={() => handlePageChange(page - 1)}
+          disabled={page === 1}
+          className="px-4 py-2 bg-transparent border-2 border-[#45F882] rounded-md hover:bg-[#45F882] hover:text-white"
+        >
+          Previous
+        </button>
+
+        <div className="flex items-center">
+          <span className="mr-2">Page</span>
+          <input
+            type="number"
+            min="1"
+            max={totalPages}
+            value={page}
+            onChange={(e) => {
+              const newPage = Math.max(1, Math.min(totalPages, Number(e.target.value)));
+              handlePageChange(newPage);
+            }}
+            className="w-16 px-2 py-1 text-center border-2 border-[#45F882] rounded-md bg-transparent text-white focus:outline-none"
+          />
+          <span className="ml-2">of {totalPages}</span>
+        </div>
+
+        <button
+          onClick={() => handlePageChange(page + 1)}
+          disabled={page === totalPages}
+          className="px-4 py-2 bg-transparent border-2 border-[#45F882] rounded-md hover:bg-[#45F882] hover:text-white"
+        >
+          Next
+        </button>
       </div>
     </div>
   );

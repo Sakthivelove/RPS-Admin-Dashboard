@@ -1,130 +1,129 @@
-import React, { useCallback, useMemo, useRef } from 'react';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import Table from '../../components/common/Table';
 import { api } from '../../api/api';
 import { useSidebar } from '../../context/SidebarContext';
-import StatusMessage from '../../components/StatusMessage';
 
 // Define the Activity interface
 interface Activity {
-    id: number;
-    telegramId: string;
-    action: string;
-    ip: string;
-    status: string;
-    device: string;
-    reason: string | null;
-    createdAt: string;
-    updatedAt: string;
+  id: number;
+  telegramId: string;
+  action: string;
+  ip: string;
+  status: string;
+  device: string;
+  reason: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 // Fetch activities function with pagination support
-const fetchActivities = async ({ pageParam = 1 }: { pageParam: number }) => {
-    const response = await api.get('/dev/activities', {
-        params: {
-            page: pageParam,
-            limit: 10, // Fixed limit for infinite scrolling
-        },
-    });
-    return response.data;
+const fetchActivities = async (page: number, limit: number): Promise<{ activities: Activity[]; totalCount: number }> => {
+  const response = await api.get('/dev/activities', {
+    params: {
+      page,
+      limit,
+    },
+  });
+  return response.data;
 };
 
 const Dashboard: React.FC = () => {
-    const { sidebarActive } = useSidebar();
-    const observer = useRef<IntersectionObserver | null>(null);
+  const { sidebarActive } = useSidebar();
 
-    // Fetch activities using useInfiniteQuery
-    const {
-        data,
-        error,
-        fetchNextPage,
-        hasNextPage,
-        isFetching,
-        isLoading,
-    } = useInfiniteQuery({
-        queryKey: ['activities'],
-        queryFn: ({ pageParam = 1 }) => fetchActivities({ pageParam }), // Default value for pageParam
-        getNextPageParam: (lastPage, allPages) => {
-            const currentPage = allPages.length;
-            const totalPages = Math.ceil((lastPage?.total || 0) / 10); // Calculate total pages
-            return currentPage < totalPages ? currentPage + 1 : undefined;
-        },
-        initialPageParam: 1, // Explicitly set the initial page parameter
-    });
-    
+  // Pagination state
+  const [page, setPage] = useState(1);  // Default to page 1
+  const [limit] = useState(10);  // Limit remains constant at 10
+  const [totalCount, setTotalCount] = useState<number | null>();
 
-    // Combine all pages of activities
-    const activities = useMemo(() => {
-        return data?.pages.flatMap((page: { activities: Activity[] }, pageIndex: number) =>
-            page.activities.map((activity: Activity, index: number) => ({
-                'S.No': index + 1 + pageIndex * 10,
-                'Telegram ID': activity.telegramId,
-                Action: activity.action,
-                IP: activity.ip,
-                Status: activity.status,
-                Device: activity.device,
-                Reason: activity.reason || 'N/A',
-                Date: new Date(activity.createdAt).toLocaleString(),
-            }))
-        );
-    }, [data]);
-    
+  // Fetch activity logs with pagination
+  const { data, error, isLoading, isError, refetch } = useQuery({
+    queryKey: ['activities', page, limit,],  // Query key should include page and limit
+    queryFn: () => fetchActivities(page, limit),
+  }
+  );
 
-    // Handle infinite scrolling
-    const lastElementRef = useCallback(
-        (node: HTMLDivElement) => {
-            if (isLoading || isFetching) return;
+  useEffect(() => {
+    setTotalCount(data?.totalCount); // Recalculate totalPages when totalItems or limit changes
+  }, [data?.totalCount,limit]); // Dependency array to run effect only when totalItems or limit change
 
-            if (observer.current) observer.current.disconnect();
+  const columns = ['S.No', 'Telegram ID', 'Action', 'IP', 'Status', 'Device', 'Reason', 'Date'];
 
-            observer.current = new IntersectionObserver((entries) => {
-                if (entries[0].isIntersecting && hasNextPage) {
-                    fetchNextPage();
-                }
-            });
+  // Prepare data for the table
+  const activities = data?.activities.map((activity, index) => ({
+    'S.No': index + 1 + (page - 1) * limit,  // Adjust index based on current page
+    'Telegram ID': activity.telegramId,
+    Action: activity.action,
+    IP: activity.ip,
+    Status: activity.status,
+    Device: activity.device,
+    Reason: activity.reason || 'N/A',
+    Date: new Date(activity.createdAt).toLocaleString(),
+  }));
 
-            if (node) observer.current.observe(node);
-        },
-        [fetchNextPage, hasNextPage, isLoading, isFetching]
-    );
+  // Handle page change
+  const handlePageChange = (newPage: number) => {
+    if (newPage > 0 && newPage <= Math.ceil((data?.totalCount || 0) / limit)) {
+      setPage(newPage);
+      refetch(); // Trigger refetch immediately when the page changes
+    }
+  };
 
-    return (
-        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen`}>
-            <StatusMessage
-                isLoading={isLoading}
-                error={error}
-                loadingMessage="Fetching activity logs. Please wait..."
-                errorMessage="Unable to retrieve activity logs. Please try again later."
-                className="h-screen"
-            />
+  return (
+    <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen`}>
 
-            {!isLoading && !error && (
-                <div className="m-[2%]">
-                    <Table
-                        columns={['S.No', 'Telegram ID', 'Action', 'IP', 'Status', 'Device', 'Reason', 'Date']}
-                        data={activities}
-                        title="Activity Log"
-                        showSearchBar={true}
-                        rowColor="bg-[#0F1C23]"
-                        tableBgColor="bg-[#1A1D26]"
-                        headerTextColor="text-[#45F882]"
-                        customCellTextColor={(row, col) =>
-                            col === 'Status'
-                                ? row['Status'] === 'success'
-                                    ? '#4CAF50'
-                                    : '#FF5722'
-                                : 'white'
-                        }
-                        height="67vh"
-                    />
+      <div className="relative z-10 overflow-auto h-full p-[2%]">
+        <Table
+          columns={columns}
+          data={activities}
+          title="Activity Log"
+          showSearchBar={true}
+          rowColor="bg-[#0F1C23]"
+          tableBgColor="bg-[#1A1D26]"
+          headerTextColor="text-[#45F882]"
+          customCellTextColor={(row, col) =>
+            col === 'Status'
+              ? row['Status'] === 'success'
+                ? '#4CAF50'
+                : '#FF5722'
+              : 'white'
+          }
+          height="60vh"
+          page={page}
+          limit={limit}
+          onPageChange={handlePageChange}
+          totalItems={totalCount || 0}
+          isLoading={isLoading}
+          error={isError}
+          errorMessage={error?.message}
+          loadingMessage="Fetching activity logs. Please wait..."
+        />
+      </div>
 
-                    {isFetching && <div className="text-center text-[#45F882]">Loading more activities...</div>}
+      {/* Pagination Controls */}
 
-                    <div ref={lastElementRef} className="h-4" /> {/* Trigger infinite scrolling */}
-                </div>
-            )}
-        </div>
-    );
+      {/* <div className="flex justify-between items-center p-4">
+                        <button
+                            onClick={() => handlePageChange(page - 1)}
+                            disabled={page === 1}
+                            className="btn text-[#45F882]"  // Change text color of the button
+                        >
+                            Previous
+                        </button>
+                        <span className="text-[#45F882]">Page {page}</span>   //Change page text color 
+                        <button
+                            onClick={() => handlePageChange(page + 1)}
+                            disabled={data && data.activities.length < limit}
+                            className="btn text-[#45F882]"  // Change text color of the button
+                        >
+                            Next
+                        </button>
+                    </div> */}
+
+    </div>
+
+  );
+
 };
 
 export default Dashboard;

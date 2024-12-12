@@ -14,7 +14,7 @@ interface GradientCardProps {
 }
 
 const iconMapping: { [key: string]: React.ReactNode } = {
-  'Total Players': <FontAwesomeIcon icon={faUsers} className="text-white text-3xl" />,
+  'Users': <FontAwesomeIcon icon={faUsers} className="text-white text-3xl" />,
   'Tournaments': <FontAwesomeIcon icon={faTrophy} className="text-white text-3xl" />,
   'Upcoming': <FontAwesomeIcon icon={faCalendarAlt} className="text-white text-3xl" />,
   'Wallet Connection': <FontAwesomeIcon icon={faWallet} className="text-white text-3xl" />,

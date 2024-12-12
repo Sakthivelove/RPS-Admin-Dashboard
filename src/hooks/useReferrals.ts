@@ -9,7 +9,7 @@ interface ReferralsResponse {
 
 export const useReferrals = (page: number, limit: number) => {
     return useQuery<ReferralsResponse, Error>({
-        queryKey: ['referrals'],
+        queryKey: ['referrals', page, limit],
         queryFn: () => getReferrals(page, limit)
     });
 };

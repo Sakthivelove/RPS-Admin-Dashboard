@@ -1,34 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useUserTournaments } from '../../hooks/useUserTournaments';
 import Table from '../../components/common/Table';
 import { useSidebar } from '../../context/SidebarContext';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import StatusMessage from '../../components/StatusMessage'; // Import StatusMessage
 import { EyeIcon } from '@heroicons/react/24/outline';
 import { truncateAddress } from '../../utils';
 
 const UserTournaments = () => {
-    const { data, error, isLoading } = useUserTournaments(1, 10);  // Pagination (page 1, 10 items per page)
+    const [page, setPage] = useState(1);  // Track the current page
+    const limit = 10;
+    const { data, error, isLoading, isError } = useUserTournaments(page, limit);  // Pagination (page 1, 10 items per page)
     const { sidebarActive } = useSidebar();
     const navigate = useNavigate();  // Initialize the navigate function
 
-    // Replace the loading and error handling sections with the StatusMessage component
-    if (isLoading || error) {
-        return (
-            <StatusMessage
-                isLoading={isLoading}
-                error={error}
-                loadingMessage="Loading tournaments..."
-                errorMessage={error?.message || 'Error fetching tournaments'}
-                className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen`}
-            />
-        );
-    }
 
     // Columns for the table (using the fields from UserTournament interface)
     const columns = [
-         'S.No',
-        'Tournament ID',
+        'S.No',
+        // 'Tournament ID',
+        'Tournament Name',
         'Wallet ID',
         'Type',
         'Entry Paid',
@@ -41,16 +31,15 @@ const UserTournaments = () => {
         'Registered At',
         'Last Stage',
         'Status',
-        'Date Time',
-        'Tournament Name',
-        'Actions'
-      ];
-      
+        'Actions',
+        'Date Time'
+    ];
+
 
     // Mapping API data to table rows
     const tableData = (data?.usertournament || []).map((item, index) => ({
-        'S.No': index + 1,
-        'Tournament ID': item.tournamentId || 'N/A',  // Fallback if tournamentId is missing
+        'S.No': (page - 1) * limit + index + 1, // Calculate serial number based on page
+        // 'Tournament ID': item.tournamentId || 'N/A',  // Fallback if tournamentId is missing
         'Wallet ID': truncateAddress(item.walletId || '', 6) || 'N/A',  // Fallback if walletId is missing
         'Type': item.type || 'N/A',  // Fallback if type is missing
         'Entry Paid': item.entryPaid ? 'Yes' : 'No',
@@ -110,6 +99,11 @@ const UserTournaments = () => {
         // Implement your logic for deleting a tournament (with confirmation)
     };
 
+    // Handle page change
+    const handlePageChange = (newPage: number) => {
+        setPage(newPage);
+    };
+
     return (
         <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen p-4 text-white`}>
             <Table
@@ -119,6 +113,14 @@ const UserTournaments = () => {
                 showSearchBar={true}
                 searchPlaceholder="Search tournaments..."
                 headerTextColor='text-[#45F882]'
+                page={page}
+                limit={limit}
+                onPageChange={handlePageChange}
+                totalItems={data?.total || 0}
+                isLoading={isLoading}
+                error={isError}
+                loadingMessage="Loading tournaments..."
+                errorMessage={error?.message}
             />
         </div>
     );

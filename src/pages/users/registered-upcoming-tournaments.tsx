@@ -3,7 +3,6 @@ import Table from '../../components/common/Table';
 import { useRegisteredTournaments } from '../../hooks/useRegisteredTournaments';
 import { useSidebar } from '../../context/SidebarContext';
 import { useNavigate } from 'react-router-dom';
-import StatusMessage from '../../components/StatusMessage';
 import { truncateAddress } from '../../utils';
 
 const UpcomingTournaments: React.FC = () => {
@@ -16,8 +15,9 @@ const UpcomingTournaments: React.FC = () => {
 
     const columns = [
         'S.No',
+        'Tournament Name',
         'Wallet ID',
-        'Tournament ID',
+        // 'Tournament ID',
         'Entry Paid',
         'Nominal Paid',
         'Transaction ID',
@@ -27,8 +27,7 @@ const UpcomingTournaments: React.FC = () => {
         'Registered At',
         'Last Stage',
         'Status',
-        'Date Time',
-        'Tournament Name'
+        'Date Time' 
     ];
 
 
@@ -36,7 +35,7 @@ const UpcomingTournaments: React.FC = () => {
         data?.map((tournament, index) => ({
             'S.No': index + 1,
             'Wallet ID': truncateAddress(tournament.walletId, 6),
-            'Tournament ID': tournament.tournamentId,
+            // 'Tournament ID': tournament.tournamentId,
             'Entry Paid': tournament.entryPaid ? 'Yes' : 'No',
             'Nominal Paid': tournament.nominalPaid ? 'Yes' : 'No',
             'Transaction ID': truncateAddress(tournament.transactionId, 6) || "N/A",
@@ -105,17 +104,6 @@ const UpcomingTournaments: React.FC = () => {
         console.log(`Deleting tournament with ID: ${id}`);
         // Implement your logic for deleting a tournament (e.g., show a confirmation modal and delete via API)
     };
-    if (isLoading || isError) {
-        return (
-            <StatusMessage
-                isLoading={isLoading}
-                error={isError ? error : null}
-                loadingMessage="Fetching Upcoming Tournaments..."
-                errorMessage="Error fetching Upcoming Tournaments!"
-                className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen`}
-            />
-        );
-    }
 
     return (
         <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen text-white`}>
@@ -129,6 +117,10 @@ const UpcomingTournaments: React.FC = () => {
                     showSearchBar={true}
                     onSearch={handleSearch}
                     searchPlaceholder="Search tournaments..."
+                    isLoading={isLoading}
+                    error={isError}
+                    loadingMessage="Fetching Upcoming Tournaments..."
+                    errorMessage={error?.message}
                 />
             </div>
         </div>

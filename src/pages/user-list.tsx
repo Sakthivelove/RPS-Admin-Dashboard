@@ -3,15 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import Table from "../components/common/Table";
 import { useUsers } from '../hooks/useUsers';
 import { useSidebar } from '../context/SidebarContext';
-import StatusMessage from '../components/StatusMessage';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { EyeIcon } from '@heroicons/react/24/outline';
 
 const UserList: React.FC = () => {
   const [page, setPage] = useState(1);  // Track the current page
   const [limit, setLimit] = useState(10);  // Track the number of items per page
-  const { data, error, isLoading } = useUsers(page, limit); // Pass page and limit as parameters
+  const { data, error, isLoading, isError } = useUsers(page, limit); // Pass page and limit as parameters
   const { sidebarActive } = useSidebar();
   const navigate = useNavigate();
 
@@ -68,25 +65,26 @@ const UserList: React.FC = () => {
 
   return (
     <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen flex flex-col`}>
-      <StatusMessage
-        isLoading={isLoading}
-        error={error}
-        loadingMessage="Loading user data..."
-        errorMessage="Failed to fetch user data."
-        className={`bg-black bg-opacity-50 h-full`}
-      />
-      {!isLoading && !error && (
-        <div className="flex-1 p-4 bg-opacity-80">
-          <Table
-            columns={userListColumns}
-            data={userListData || []}
-            title="User List"
-            headerTextColor="text-[#45F882]"
-            height='60vh'
-            showSearchBar={true}
-          />
-        </div>
-      )}
+
+      <div className="flex-1 p-4 bg-opacity-80">
+        <Table
+          columns={userListColumns}
+          data={userListData || []}
+          title="User List"
+          height='50vh'
+          headerTextColor='text-[#45F882]'
+          showSearchBar={true}
+          page={page}
+          limit={limit}
+          onPageChange={handlePageChange}
+          totalItems={data?.total || 0}
+          isLoading={isLoading}
+          error={isError}
+          loadingMessage="Loading user data..."
+          errorMessage="Failed to fetch user data."
+        />
+      </div>
+
 
       {/* Conditionally render pagination controls */}
       {/* {showPagination && (

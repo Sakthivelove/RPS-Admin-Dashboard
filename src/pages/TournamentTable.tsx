@@ -3,10 +3,10 @@ import useTournaments from '../hooks/useTournaments';
 import Table from '../components/common/Table';
 import { useSidebar } from '../context/SidebarContext';
 import { getContainerClass, truncateAddress } from '../utils';
-import StatusMessage from '../components/StatusMessage';
 
 const TournamentTable: React.FC = () => {
-    const { data, error, isLoading } = useTournaments();
+    const { data, error, isLoading,isError } = useTournaments();
+    const [page, setPage] = useState(1);  // Track the current page
     const [searchQuery, setSearchQuery] = useState('');
     const { sidebarActive } = useSidebar();
 
@@ -14,27 +14,14 @@ const TournamentTable: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
 
-    // If loading or error occurs, render the StatusMessage
-    if (isLoading || error) {
-        return (
-            <StatusMessage
-                isLoading={isLoading}
-                error={error}
-                loadingMessage="Loading tournament data..."
-                errorMessage={error?.message || 'Unable to fetch tournament data.'}
-                className={`absolute right-0 ${sidebarActive ? "w-[77%]" : "w-[94%]"} flex justify-center items-center h-full`}
-            />
-        );
-    }
 
     // Define columns with all fields from the Tournament interface
     const columns = [
         'S.No',
-        'Tournament ID',
+        // 'Tournament ID',
         'Banner Image',
         'Tournament Name',
-        'Primary Tournament ID',
-        'Date & Time',
+        // 'Primary Tournament ID',
         'Type',
         'Entry Fee',
         'Nominal Tournament',
@@ -43,17 +30,18 @@ const TournamentTable: React.FC = () => {
         'Winner',
         'Status',
         'Payment Window',
-        'No. of Players'
+        'No. of Players',
+        'Date & Time'
       ];
       
 
     // Map data to include all fields in the table with fallbacks
     const tableData = data?.map((tournament, index) => ({
         'S.No':index+1,
-        'Tournament ID': tournament.tournamentId || 'N/A',
-        'Banner Image': tournament.bannerImage || 'N/A',
+        // 'Tournament ID': tournament.tournamentId || 'N/A',
+        'Banner Image': tournament.bannerImage || '-',
         'Tournament Name': tournament.tournamentName || 'Unknown',
-        'Primary Tournament ID': tournament.primaryTournamentId || 'N/A',
+        // 'Primary Tournament ID': tournament.primaryTournamentId || 'N/A',
         // Assuming 'dateTime' is a string representing a Unix timestamp in seconds
         'Date & Time': tournament.dateTime ? new Date(Number(tournament.dateTime) * 1000).toLocaleString() : 'N/A',
         'Type': tournament.type || 'N/A',
@@ -95,8 +83,8 @@ const TournamentTable: React.FC = () => {
     };
 
     return (
-        <div className={`${getContainerClass(sidebarActive)}`}>
-            <div className="m-4">
+        <div className={`${getContainerClass(sidebarActive)} flex flex-col`}>
+     <div className="relative z-10 overflow-auto h-full p-[2%]">
                 <Table
                     columns={columns}
                     data={filteredData?.map((row, index) => ({
@@ -109,7 +97,11 @@ const TournamentTable: React.FC = () => {
                     headerTextColor="text-[#45F882]"
                     showSearchBar={true}
                     onSearch={handleSearch}
-                    height='67vh'
+                    height='60vh'
+                    isLoading={isLoading}
+                    error={isError}
+                    loadingMessage="Loading tournament data..."
+                    errorMessage={error?.message}
                 />
             </div>
 

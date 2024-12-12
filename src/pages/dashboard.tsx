@@ -26,14 +26,14 @@ const Dashboard: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {/* Metrics displayed using GradientCard */}
-                {/* <GradientCard
-                    title="Total Players"
+                <GradientCard
+                    title="Users"
                     value={data?.totalPlayers.toString()}
                     imageSrc=""
-                    imageAlt="Total Players"
+                    imageAlt="Users"
                     // linkTo="/players-list"  // Add the link for "Total Players"
-                    linkTo="#"  // Add the link for "Total Players"
-                /> */}
+                    linkTo="/users"  // Add the link for "Total Players"
+                />
                 <GradientCard
                     title="Tournaments"
                     value={data?.tournaments.toString()}
@@ -48,12 +48,12 @@ const Dashboard: React.FC = () => {
                     imageAlt="Upcoming"
                     linkTo="/users/registeredupcomingtournament"  // Link for "Upcoming"
                 />
-                {/* <GradientCard
+                <GradientCard
                     title="Wallet Connection"
                     value={data?.walletConnection.toString()}
                     imageSrc=""
                     imageAlt="Wallet Connection"
-                    linkTo="#"
+                    linkTo="/users/tasks?filter=wallet"  // Add filter query parameter here
                 // linkTo="/wallet-connection"  // Link for "Wallet Connection"
                 />
                 <GradientCard
@@ -61,7 +61,7 @@ const Dashboard: React.FC = () => {
                     value={data?.telegramConnection.toString()}
                     imageSrc=""
                     imageAlt="Telegram Connection"
-                    linkTo="#"
+                    linkTo="/users/tasks?filter=telegram"
                 // linkTo="/telegram-connection"  // Link for "Telegram Connection"
                 />
                 <GradientCard
@@ -69,10 +69,10 @@ const Dashboard: React.FC = () => {
                     value={data?.xConnection.toString()}
                     imageSrc=""
                     imageAlt="X Connection"
-                    linkTo="#"
+                    linkTo="/users/tasks?filter=x"
                 // linkTo="/x-connection"  // Link for "X Connection"
                 />
-                <GradientCard
+                {/* <GradientCard
                     title="Registered Tournaments"
                     value={data?.registeredTournament.toString()}
                     imageSrc=""
