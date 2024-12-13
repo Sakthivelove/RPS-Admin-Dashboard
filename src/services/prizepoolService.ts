@@ -9,3 +9,7 @@ export const getPrizePools = async ():Promise<PrizePool[]> => {
     throw new Error('Error fetching prize pools');
   }
 };
+
+export const updatePrizePool = async (id: number, percentage: number) => {
+  return api.put('/settings/prizepoolsettings', { id, percentage });
+};

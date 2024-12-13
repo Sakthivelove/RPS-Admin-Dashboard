@@ -1,48 +1,158 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react'; 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { usePrizePools } from '../hooks/usePrizePools';
 import { useSidebar } from '../context/SidebarContext';
 import { getContainerClass } from '../utils';
 import { PrizePool } from '../types';
 import Table from '../components/common/Table';
+import { FiEdit } from 'react-icons/fi';
+import { updatePrizePool } from '../services/prizepoolService';
 
 const PrizePools: React.FC = () => {
-    const { data, error, isLoading } = usePrizePools();
+    const { data, error, isLoading, refetch } = usePrizePools();
     const { sidebarActive } = useSidebar();
 
-    const columns = ['S.No', 'Position', 'Percentage']; // Define the column names for your table
+    const [editingRow, setEditingRow] = useState<number | null>(null);
+    const [updatedPercentage, setUpdatedPercentage] = useState<string>('');
+    const [updateError, setUpdateError] = useState<string | null>(null);
+    const inputRef = useRef<HTMLInputElement | null>(null);
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+    const columns = ['S.No', 'Position', 'Percentage', 'Actions'];
 
-    if (error instanceof Error) {
-        return <div>Error: {error.message}</div>;
-    }
+    useEffect(() => {
+        const handleClickOutside = () => {
+            setEditingRow(null);
+        };
 
-    // Map the data to match the table's format
+        const handleEsc = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                setEditingRow(null);
+            }
+        };
+
+        document.addEventListener('click', handleClickOutside);
+        document.addEventListener('keydown', handleEsc);
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+            document.removeEventListener('keydown', handleEsc);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (editingRow !== null) {
+            setTimeout(() => {
+                inputRef.current?.focus();
+            }, 0);
+        }
+    }, [editingRow]);
+
+    const validatePercentage = (value: string) => {
+        const num = parseFloat(value);
+        // Ensure the value is a valid number between 0 and 100
+        if (isNaN(num) || num < 0 || num > 100) {
+            return false;
+        }
+        return true;
+    };
+
+    const handleEdit = (index: number, currentPercentage: string, event: React.MouseEvent) => {
+        event.stopPropagation();
+        setEditingRow(index);
+        setUpdatedPercentage(currentPercentage);
+        setUpdateError(null);
+    };
+
+    const handleUpdate = async (id: number) => {
+        // Remove non-numeric characters except for the decimal point
+        const sanitizedPercentage = updatedPercentage.trim().replace(/[^0-9.]/g, '');
+    
+        // Check if the sanitized input is empty or contains invalid characters
+        if (sanitizedPercentage !== updatedPercentage) {
+            toast.error('Please enter a valid number with no extra characters!');
+            return;
+        }
+    
+        // Validate percentage
+        if (!validatePercentage(sanitizedPercentage)) {
+            toast.error('Invalid percentage! Enter a value between 0 and 100.');
+            return;
+        }
+    
+        try {
+            await updatePrizePool(id, parseFloat(sanitizedPercentage));
+            toast.success(`Prize pool percentage updated to ${sanitizedPercentage}% successfully!`);
+            setEditingRow(null);
+            refetch();
+        } catch {
+            toast.error('Failed to update prize pool. Please try again.');
+        }
+    };
+    
+
+    const handleKeyDown = async (event: React.KeyboardEvent, id: number) => {
+        if (event.key === 'Enter') {
+            await handleUpdate(id);
+        }
+    };
+
     const mappedData = data?.map((prizePool: PrizePool, index) => ({
-        // Id: prizePool.id,
         'S.No': index + 1,
         Position: prizePool.position,
-        Percentage: prizePool.percentage,
+        Percentage:
+            editingRow === index ? (
+                <input
+                    type="text"
+                    ref={inputRef}
+                    value={updatedPercentage}
+                    onChange={(e) => setUpdatedPercentage(e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(e, prizePool.id)}
+                    onClick={(e) => e.stopPropagation()}
+                    className="bg-gray-800 text-white px-2 py-1 rounded w-[35%] text-center"
+                />
+            ) : (
+                `${prizePool.percentage}%`
+            ),
+        Actions:
+            editingRow === index ? (
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        handleUpdate(prizePool.id);
+                    }}
+                    className="text-green-500 hover:text-green-700"
+                >
+                    Save
+                </button>
+            ) : (
+                <div className="flex justify-center">
+                    <FiEdit
+                        className="text-yellow-500 cursor-pointer hover:text-yellow-700"
+                        onClick={(e) => handleEdit(index, prizePool.percentage.toString(), e)}
+                    />
+                </div>
+            ),
     })) || [];
 
     return (
         <div className={`${getContainerClass(sidebarActive)} text-white`}>
-            {/* Render the Table component with the mapped data */}
+            <ToastContainer position="top-right" autoClose={3000} />
             <Table
-                title='PrizePools'
+                title="Prize Pools"
                 columns={columns}
-                data={mappedData} // Pass the mapped prize pool data to the table
-                rowColor="bg-[#0F1C23]" // Optional row color
-                tableBgColor="bg-[#1A1D26]" // Optional table background color
-                headerTextColor="text-white" // Optional header text color
-                isLoading={isLoading} // Pass loading state to the table
-                error={error !== null} // Pass error state to the table
-                loadingMessage="Loading prize pools..." // Custom loading message
-                errorMessage="Error loading prize pools, please try again." // Custom error message
+                data={mappedData}
+                rowColor="bg-[#0F1C23]"
+                tableBgColor="bg-[#1A1D26]"
+                headerTextColor="text-white"
+                isLoading={isLoading}
+                error={error !== null}
+                loadingMessage="Loading prize pools..."
+                errorMessage="Error loading prize pools, please try again."
                 showSearchBar={true}
+                width="50%"
             />
+            {updateError && <div className="text-red-500 mt-4">{updateError}</div>}
         </div>
     );
 };

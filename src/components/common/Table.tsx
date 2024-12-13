@@ -13,6 +13,7 @@ interface TableProps {
   customCellTextColor?: (row: any, col: string) => string; // Optional custom text color for cells
   alternateColumnTextColors?: (column: string) => string[]; // Optional logic for alternate column text colors
   height?: string; // Optional height for the table
+  width?: string; // Optional width for the table
   searchPlaceholder?: string; // Optional prop to customize the search bar placeholder
   scrollX?: string;
   scrollY?: string;
@@ -26,6 +27,7 @@ interface TableProps {
   errorMessage?: string; // Custom message for error state
   isLoading?: boolean; // Loading state from parent
   error?: boolean; // Error state from parent
+  customTextPosition?: string;
 }
 
 const Table: React.FC<TableProps> = ({
@@ -48,11 +50,13 @@ const Table: React.FC<TableProps> = ({
   limit = 10,
   onPageChange,
   totalItems = 0,
+  width = '', // Default width
   totalPages = 1,
   loadingMessage = 'Loading data...',
   errorMessage = 'Error loading data, please try again.',
   isLoading = false,
   error = false,
+  customTextPosition
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [filteredData, setFilteredData] = useState<any[]>(data || []);
@@ -87,7 +91,8 @@ const Table: React.FC<TableProps> = ({
   };
 
   return (
-    <div className={`${tableBgColor} h-full rounded-lg flex p-2 flex-col text-sm`}>
+    <div className={`${tableBgColor} h-full rounded-lg flex p-2 flex-col text-sm`} 
+    >
       <div>
         {title && (
           <h1 className={`text-2xl font-semibold text-[#45F882] sticky top-0 z-10 bg-[#1A1D26] p-2 ${columns.length === 2 || 3 ? 'text-center' : ""}`}>
@@ -97,14 +102,14 @@ const Table: React.FC<TableProps> = ({
 
         {showSearchBar && (
           <div className='flex justify-center'>
-            <div className={`sticky top-16 z-10 bg-[#1A1D26] p-2 ${columns.length === 2 ? "w-1/2" : columns.length === 3 ? "w-1/2" : "w-full"}`}>
+            <div className={`sticky top-16 z-10 bg-[#1A1D26] p-2 ${(columns.length <= 4) ? "w-1/2" : "w-full"}`}>
               <SearchBar placeholder={searchPlaceholder} onSearch={handleSearch} />
             </div>
           </div>
         )}
       </div>
 
-      <div className={`overflow-x-${scrollX} overflow-y-${scrollY} flex-grow scrollbar-thin ${className} ${columns.length === 2 ? "flex justify-center items-start" : columns.length === 3  ? "flex justify-center items-start" : ""}`} style={{ height }}>
+      <div className={`overflow-x-${scrollX} overflow-y-${scrollY} flex-grow scrollbar-thin ${className} ${(columns.length <= 4) ? "flex justify-center items-start" : ""}`} style={{ height }}>
         {isLoading && <div className="text-center text-white flex justify-center items-center h-full">{loadingMessage}</div>}
         {error && <div className="text-center text-red-500 flex justify-center items-center h-full">{errorMessage}</div>}
         {(!isLoading && !error && filteredData.length === 0) && (
@@ -114,13 +119,15 @@ const Table: React.FC<TableProps> = ({
         )}
 
         {(!isLoading && !error && filteredData.length !== 0) && (
-          <table className={`${columns.length === 2 ? "w-1/2" : columns.length === 3 ? "w-1/2" : "w-full"} table-auto ${tableBgColor} table-layout-auto`}>
+          <table className={`${columns.length === 2 ? "w-1/2" : columns.length === 3 ? "w-1/2" : "w-full"} table-auto ${tableBgColor} table-layout-auto`}
+          style={{ width }} // Apply dynamic width
+          >
             <thead className="sticky top-0 bg-[#1A1D26]">
               <tr>
                 {columns.map((col, idx) => (
                   <th
                     key={idx}
-                    className={`px-4 py-2 text-sm ${idx === 0 ? 'text-center' : idx === columns.length - 1 || columns.length === 3 ? 'text-center' : 'text-left'} ${headerTextColor} break-words whitespace-normal`}
+                    className={`px-4 py-2 text-sm ${idx === 0 ? 'text-center' : idx === columns.length - 1 || columns.length <= 4 ? 'text-center' : `${customTextPosition ? customTextPosition :'text-left'}`} ${headerTextColor} break-words whitespace-normal`}
                   >
                     {col}
                   </th>
@@ -141,7 +148,7 @@ const Table: React.FC<TableProps> = ({
                     return (
                       <td
                         key={colIndex}
-                        className={`px-4 py-2 text-sm ${colIndex === 0 ? 'text-center' : colIndex === columns.length - 1 || columns.length === 3 ? 'text-center' : 'text-left'} break-words whitespace-normal`}
+                        className={`px-4 py-2 text-sm ${colIndex === 0 ? 'text-center' : colIndex === columns.length - 1 || columns.length <= 4 ? 'text-center' : `${customTextPosition ? customTextPosition :'text-left'}`} break-words whitespace-normal`}
                         style={{ color: textColor }}
                       >
                         {row[col]}

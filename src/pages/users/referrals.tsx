@@ -81,6 +81,7 @@ const UserReferrals: React.FC = () => {
                     error={isError}
                     loadingMessage="Loading referrals..."
                     errorMessage={error?.message}
+                    customTextPosition='text-center'
                 />
             </div>
         </div>
