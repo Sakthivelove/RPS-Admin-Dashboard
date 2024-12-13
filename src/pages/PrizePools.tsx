@@ -138,6 +138,7 @@ const PrizePools: React.FC = () => {
     return (
         <div className={`${getContainerClass(sidebarActive)} text-white`}>
             <ToastContainer position="top-right" autoClose={3000} />
+            <div className="relative z-10 overflow-auto h-full p-[2%]">
             <Table
                 title="Prize Pools"
                 columns={columns}
@@ -152,6 +153,7 @@ const PrizePools: React.FC = () => {
                 showSearchBar={true}
                 width="50%"
             />
+            </div>
             {updateError && <div className="text-red-500 mt-4">{updateError}</div>}
         </div>
     );
