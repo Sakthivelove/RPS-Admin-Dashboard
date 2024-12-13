@@ -145,7 +145,7 @@ const PrizePools: React.FC = () => {
                 data={mappedData}
                 rowColor="bg-[#0F1C23]"
                 tableBgColor="bg-[#1A1D26]"
-                headerTextColor="text-white"
+                headerTextColor="text-[#45F882]"
                 isLoading={isLoading}
                 error={error !== null}
                 loadingMessage="Loading prize pools..."

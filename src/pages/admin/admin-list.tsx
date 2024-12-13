@@ -26,7 +26,7 @@ const AdminList: React.FC = () => {
                     columns={columns}
                     data={tableData}
                     title="Admin List"
-                    headerTextColor="text-white"
+                    headerTextColor="text-[#45F882]"
                     showSearchBar={true}
                     searchPlaceholder="Search by Telegram ID"
                     height='60vh'

@@ -36,7 +36,7 @@ const Table: React.FC<TableProps> = ({
   rowColor = 'bg-[#0F1C23]',
   tableBgColor = 'bg-[#1A1D26]',
   title,
-  headerTextColor = 'text-white',
+  headerTextColor = 'text-[#45F882]',
   showSearchBar = false,
   onSearch,
   customCellTextColor,
@@ -127,7 +127,7 @@ const Table: React.FC<TableProps> = ({
                 {columns.map((col, idx) => (
                   <th
                     key={idx}
-                    className={`px-4 py-2 text-sm ${idx === 0 ? 'text-center' : idx === columns.length - 1 || columns.length <= 4 ? 'text-center' : `${customTextPosition ? customTextPosition :'text-left'}`} ${headerTextColor} break-words whitespace-normal`}
+                    className={`px-4 py-2 text-sm ${idx === 0 ? 'text-center' : idx === columns.length - 1 || columns.length <= 4 ? 'text-center' : `${customTextPosition ? customTextPosition :'text-left'} ${headerTextColor}`} ${headerTextColor} break-words whitespace-normal`}
                   >
                     {col}
                   </th>
