@@ -57,6 +57,7 @@ import Dashboard from "./pages/dashboard"
 import TournamentTable from "./pages/TournamentTable";
 import SettingsComponent from "./pages/settings/settings";
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import PrizePools from "./pages/PrizePools";
 
 
 const App: React.FC = () => {
@@ -103,6 +104,7 @@ const App: React.FC = () => {
                   <Route path="/referrals" element={<Referrals />} />
                   <Route path="/user-tournaments" element={<UserTournamentTable />} />
                   <Route path="/tournament-list" element={<TournamentTable />} />
+                  <Route path="/prize-pool" element={<PrizePools />} />
 
 
                   {/* New Routes for Settings */}

@@ -85,7 +85,7 @@ import { FiLogOut } from 'react-icons/fi';
 
 
 export const sidebarMenuItems = [
-  { label: "Rock Tournaments", icon: <StarIcon   className="w-6 h-6" />, path: "/create-new-rock-tournament" },
+  { label: "Rock Tournaments", icon: <StarIcon className="w-6 h-6" />, path: "/create-new-rock-tournament" },
   // { label: "VIP Tournaments", icon: <StarIcon className="w-6 h-6" />, path: "/create-new-vip-tournament" },
   // { label: "User Info", icon: <UserIcon className="w-6 h-6" />, path: "/user-info" },
   { label: "Admin List", icon: <UserGroupIcon className="w-6 h-6" />, path: "/admin-list" },
@@ -104,15 +104,18 @@ export const sidebarMenuItems = [
   // { label: "Project Settings", icon: <CogIcon className="w-6 h-6" />, path: "/project-details" },
   // { label: "Change Password", icon: <LockClosedIcon className="w-6 h-6" />, path: "/change-password" },
 
+  // New Prize Pool Route
+  { label: "Prize Pool", icon: <CurrencyDollarIcon className="w-6 h-6" />, path: "/prize-pool" },
+
   // New Routes for Activities
-  { label: "Activities", icon: <ClipboardIcon  className="w-6 h-6" />, path: "/activities" },
+  { label: "Activities", icon: <ClipboardIcon className="w-6 h-6" />, path: "/activities" },
 
   // New Routes for Users
   { label: "User Affiliates", icon: <DevicePhoneMobileIcon className="w-6 h-6" />, path: "/users/affiliates" },
-  { label: "User Referrals", icon: <ShareIcon  className="w-6 h-6" />, path: "/users/referrals" },
+  { label: "User Referrals", icon: <ShareIcon className="w-6 h-6" />, path: "/users/referrals" },
   { label: "User Tasks", icon: <BriefcaseIcon className="w-6 h-6" />, path: "/users/tasks" },
   // { label: "User Transactions", icon: <CurrencyDollarIcon className="w-6 h-6" />, path: "/users/transactions" },
-  { label: "User Tournaments", icon: <TrophyIcon  className="w-6 h-6" />, path: "/users/usertournaments" },
+  { label: "User Tournaments", icon: <TrophyIcon className="w-6 h-6" />, path: "/users/usertournaments" },
   { label: "User Registered Upcoming Tournaments", icon: <CalendarIcon className="w-6 h-6" />, path: "/users/registeredupcomingtournament" },
   // { label: "User Win/Loss History", icon: <ChartBarIcon className="w-6 h-6" />, path: "/users/winlosshistory" },
 

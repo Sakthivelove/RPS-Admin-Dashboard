@@ -86,34 +86,53 @@ const UserDetailTabs = () => {
           </Card>
         );
 
-        case 1: // Referrals
+      case 1: // Referrals
         return (
-          <TableContainer component={Paper} sx={{ height: '86vh', bgcolor: "#0F1C23", color: "white", padding: 2 }}>
-            <Table stickyHeader sx={{ width:"40%",bgcolor: "#0F1C23", color: "white", borderCollapse: 'collapse',  }}>
+          <TableContainer
+            component={Paper}
+            sx={{
+              height: '86vh',  // Keep the height
+              bgcolor: "#0F1C23", // Table container background
+              color: "white",
+              padding: 2,
+              display: 'flex',
+              justifyContent: 'center', // Only horizontal centering
+              alignItems: "start",
+            }}
+          >
+            <Table
+              stickyHeader
+              sx={{
+                width: "35%",  // Adjust the width as needed
+                color: "white",
+                borderCollapse: 'collapse',
+                textAlign: 'center', // Center content inside cells
+              }}
+            >
               <TableHead>
-                <TableRow sx={{ bgcolor: "#0F1C23" }}>
-                  <TableCell sx={{ bgcolor: "#0F1C23", color: "#FFD700", border: 'none' }}>
+                <TableRow sx={{ bgcolor: "#2D3748" }}>  {/* New background for the header row */}
+                  <TableCell sx={{ color: "#FFD700", border: 'none', bgcolor: "#2D3748" }} align="center">
                     <Typography variant="body1">Referral Code</Typography>
                   </TableCell>
-                  <TableCell sx={{ bgcolor: "#0F1C23", color: "#FFD700", border: 'none' }}>
+                  <TableCell sx={{ color: "#FFD700", border: 'none', bgcolor: "#2D3748" }} align="center">
                     <Typography variant="body1">Count</Typography>
                   </TableCell>
                   {/* Removed third column */}
                 </TableRow>
               </TableHead>
-              <TableBody>
+              <TableBody sx={{ bgcolor: "#1F2937" }}>  {/* Set background for the table body */}
                 {data.userReferralCode ? (
-                  <TableRow sx={{ bgcolor: "#0F1C23" }}>
-                    <TableCell sx={{ color: "white", border: 'none' }}>
+                  <TableRow sx={{ bgcolor: "#1F2937" }}> {/* Set background for each table row */}
+                    <TableCell sx={{ color: "white", border: 'none' }} align="center">
                       <Typography variant="body1">{data.userReferralCode.referralCode || 'Not available'}</Typography>
                     </TableCell>
-                    <TableCell sx={{ color: "white", border: 'none' }}>
+                    <TableCell sx={{ color: "white", border: 'none' }} align="center">
                       <Typography variant="body1">{data.userReferralCode.referralCount || '0'}</Typography>
                     </TableCell>
                     {/* Removed third column */}
                   </TableRow>
                 ) : (
-                  <TableRow sx={{ bgcolor: "#0F1C23" }}>
+                  <TableRow sx={{ bgcolor: "#1F2937" }}>
                     <TableCell colSpan={2} align="center" sx={{ color: "white", border: 'none' }}>
                       <Typography variant="body1">No referral data available.</Typography>
                     </TableCell>
@@ -123,7 +142,12 @@ const UserDetailTabs = () => {
             </Table>
           </TableContainer>
         );
-      
+
+
+
+
+
+
 
       case 2: // Tasks
         return (
