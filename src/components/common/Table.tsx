@@ -92,7 +92,7 @@ const Table: React.FC<TableProps> = ({
   };
 
   return (
-    <div className={`${tableBgColor} h-full rounded-lg flex p-2 flex-col text-sm`} 
+    <div className={`${tableBgColor} h-full rounded-lg flex p-2 flex-col text-sm`}
     >
       <div>
         {title && (
@@ -121,14 +121,14 @@ const Table: React.FC<TableProps> = ({
 
         {(!isLoading && !error && filteredData.length !== 0) && (
           <table className={`${columns.length === 2 ? "w-1/2" : columns.length === 3 ? "w-1/2" : "w-full"} table-auto ${tableBgColor} table-layout-auto`}
-          style={{ width }} // Apply dynamic width
+            style={{ width }} // Apply dynamic width
           >
             <thead className="sticky top-0 bg-[#1A1D26]">
               <tr>
                 {columns.map((col, idx) => (
                   <th
                     key={idx}
-                    className={`px-4 py-2 text-sm ${idx === 0 ? 'text-center' : idx === columns.length - 1 || columns.length <= 4 ? 'text-center' : `${customTextPosition ? customTextPosition :'text-left'} ${headerTextColor}`} ${headerTextColor} break-words whitespace-normal`}
+                    className={`px-4 py-2 text-sm ${idx === 0 ? 'text-center' : idx === columns.length - 1 || columns.length <= 4 ? 'text-center' : `${customTextPosition ? customTextPosition : 'text-left'} ${headerTextColor}`} ${headerTextColor} break-words whitespace-normal`}
                   >
                     {col}
                   </th>
@@ -149,7 +149,7 @@ const Table: React.FC<TableProps> = ({
                     return (
                       <td
                         key={colIndex}
-                        className={`px-4 py-2 text-sm ${colIndex === 0 ? 'text-center' : colIndex === columns.length - 1 || columns.length <= 4 ? 'text-center' : `${customTextPosition ? customTextPosition :'text-left'}`} break-words whitespace-normal`}
+                        className={`px-4 py-2 text-sm ${colIndex === 0 ? 'text-center' : colIndex === columns.length - 1 || columns.length <= 4 ? 'text-center' : `${customTextPosition ? customTextPosition : 'text-left'}`} break-words whitespace-normal`}
                         style={{ color: textColor }}
                       >
                         {row[col]}
@@ -220,33 +220,29 @@ const Table: React.FC<TableProps> = ({
             count={totalPages} // Total number of pages
             page={page} // Current page
             onChange={(_, newPage) => handlePageChange(newPage)} // Handle page changes
-            // color="success" // Customize color (can be "secondary", "standard", etc.)
             size="medium" // Adjust size (small, medium, large)
-            shape="rounded" // Choose shape (rounded or default)
+            shape="rounded" // Ensures rounded shape
             disabled={isLoading} // Disable during loading state
             sx={{
               '& .MuiPaginationItem-root': {
-                color: 'white', // Default color
-                // borderColor: '#45F882', // Border color
-                // border: '1px solid #45F882', // Border for each box
-                // borderRadius: '8px', // Optional: round the corners
+                backgroundColor: '#1A1D26 !important',
+                color: '#FFF !important', // Ensure the styles are applied
+                borderColor: '#1A1D26',
+                borderRadius: '16px',
               },
               '& .Mui-selected': {
-                backgroundColor: '#45F882', // Background color for selected page
-                color: '#fff', // Text color for selected page
-                // borderColor: '#45F882', // Ensure border matches background color
+                backgroundColor: '#45F882 !important', // Bright green for selection
+                color: '#FFF !important', // White text
+                borderRadius: '16px',
+                borderColor: '#45F882',
               },
               '& .MuiPaginationItem-root:hover': {
-                backgroundColor: 'rgba(69, 248, 130, 0.2)', // Hover effect
-              },             
+                backgroundColor: 'rgba(69, 248, 130, 0.2) !important',
+              },
             }}
           />
         )}
       </div>
-
-
-
-
     </div>
   );
 };
