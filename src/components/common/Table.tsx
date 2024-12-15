@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SearchBar from '../SearchBar';
+import Pagination from '@mui/material/Pagination';
 
 interface TableProps {
   columns: string[]; // Column names
@@ -162,7 +163,8 @@ const Table: React.FC<TableProps> = ({
         )}
       </div>
 
-      <div className="text-sm flex justify-center items-center p-4">
+      {/* Traditional Pagination */}
+      {/* <div className="flex justify-center items-center p-4">
         {page > 1 && (
           <>
             <button
@@ -209,7 +211,42 @@ const Table: React.FC<TableProps> = ({
             </button>
           </>
         )}
+      </div> */}
+
+      {/* MUI Pagination */}
+      <div className="flex justify-center items-center p-4">
+        {totalPages > 1 && (
+          <Pagination
+            count={totalPages} // Total number of pages
+            page={page} // Current page
+            onChange={(_, newPage) => handlePageChange(newPage)} // Handle page changes
+            // color="success" // Customize color (can be "secondary", "standard", etc.)
+            size="medium" // Adjust size (small, medium, large)
+            shape="rounded" // Choose shape (rounded or default)
+            disabled={isLoading} // Disable during loading state
+            sx={{
+              '& .MuiPaginationItem-root': {
+                color: 'white', // Default color
+                // borderColor: '#45F882', // Border color
+                // border: '1px solid #45F882', // Border for each box
+                // borderRadius: '8px', // Optional: round the corners
+              },
+              '& .Mui-selected': {
+                backgroundColor: '#45F882', // Background color for selected page
+                color: '#fff', // Text color for selected page
+                // borderColor: '#45F882', // Ensure border matches background color
+              },
+              '& .MuiPaginationItem-root:hover': {
+                backgroundColor: 'rgba(69, 248, 130, 0.2)', // Hover effect
+              },             
+            }}
+          />
+        )}
       </div>
+
+
+
+
     </div>
   );
 };
