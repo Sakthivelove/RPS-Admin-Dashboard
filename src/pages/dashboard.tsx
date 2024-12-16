@@ -41,13 +41,13 @@ const Dashboard: React.FC = () => {
                     imageAlt="Tournaments"
                     linkTo="/tournament-list"  // Link for "Tournaments"
                 />
-                <GradientCard
+                {/* <GradientCard
                     title="Upcoming"
                     value={data?.upcoming.toString()}
                     imageSrc=""
                     imageAlt="Upcoming"
                     linkTo="/users/registeredupcomingtournament"  // Link for "Upcoming"
-                />
+                /> */}
                 <GradientCard
                     title="Wallet Connection"
                     value={data?.walletConnection.toString()}
