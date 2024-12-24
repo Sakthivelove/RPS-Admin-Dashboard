@@ -3,7 +3,7 @@ import CreateTournamentInput from "./CreateTournamentInput";
 import AdminButton from "./common/AdminButton";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { IoIosCloseCircle } from "react-icons/io";
+import ImageUpload from "./imageuplaod";
 
 interface CreateTournamentFormProps {
   title: string;
@@ -138,11 +138,6 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
   };
 
 
-  // Reset the banner image to allow the user to upload a new image
-  const handleRemoveImage = () => {
-    setBannerImage(""); // Clear the current image
-  };
-
 
   // Function to get the size of the base64 string
   const getBase64Size = (base64String: string) => {
@@ -222,53 +217,7 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
           {title}
         </h1>
       </section>
-
-
-      <section className="mt-[0.5rem]">
-        <div className="w-full h-[15rem] lg:h-[20rem] bg-gradient-to-r from-[#45F882] to-[#FFBE18] rounded-[1.5rem] p-[0.1rem]">
-          <div className="bg-[#0B0D13] rounded-[1.5rem] w-full h-full flex justify-center items-center">
-            {bannerImage ? (
-              <div className="w-full h-full flex justify-center items-center rounded-[1.5rem] relative">
-                <img
-                  src={bannerImage}
-                  alt="Banner Preview"
-                  className="max-w-full max-h-full object-contain rounded-[1.5rem] shadow-lg"
-                />
-                {/* Close icon button */}
-                <button
-                  onClick={handleRemoveImage}
-                  className="absolute top-2 right-2 text-white bg-red-500 p-2 rounded-full hover:bg-red-700"
-                >
-                  <IoIosCloseCircle className="h-6 w-6" />
-                </button>
-              </div>
-            ) : (
-              <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-full rounded-[1.5rem] cursor-pointer bg-[#1A1D26]">
-                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                  <img
-                    src="/create-tournament/file_upload.png"
-                    alt="Upload"
-                    className="h-[5rem] w-[5rem] lg:h-[10rem] lg:w-[10rem]"
-                  />
-                  <p className="text-center text-white rajdhani-bold text-[1rem] md:text-[1.875rem]">
-                    440*255 <span className="text-[#45F882]">Below 1 MB</span>
-                  </p>
-                </div>
-                <input
-                  id="dropzone-file"
-                  type="file"
-                  className="hidden"
-                  onChange={handleFileChange}
-                />
-              </label>
-            )}
-          </div>
-        </div>
-        {formErrors.bannerImage && <p className="text-red-500">{formErrors.bannerImage}</p>} {/* Display error */}
-      </section>
-
-
-
+      <ImageUpload bannerImage={bannerImage} setBannerImage={setBannerImage} />
       {error && <div className="text-red-500 mt-2">{error.message}</div>}
       {isLoading && <div className="text-green-500 mt-2">Creating tournament...</div>}
 

@@ -105,6 +105,7 @@ const App: React.FC = () => {
                   <Route path="/user-tournaments" element={<UserTournamentTable />} />
                   <Route path="/tournament-list" element={<TournamentTable />} />
                   <Route path="/prize-pool" element={<PrizePools />} />
+                  {/* <Route path="/image-uplaod" element={<ImageUpload  bannerImage={bannerImage} setBannerImage={setBannerImage} />} /> */}
 
 
                   {/* New Routes for Settings */}
