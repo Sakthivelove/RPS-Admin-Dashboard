@@ -71,16 +71,63 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file && file.size <= 1 * 1024 * 1024) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setBannerImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      toast.error("File size exceeds the 1MB limit."); // This shows the toast error message
+  
+    if (file) {
+      // Check file size (<= 1MB)
+      if (file.size <= 1 * 1024 * 1024) {
+        const img = new Image();
+        const reader = new FileReader();
+        
+        reader.onloadend = () => {
+          img.src = reader.result as string;
+          
+          img.onload = () => {
+            // Check if the image resolution is correct
+            const maxWidth = 440;
+            const maxHeight = 255;
+  
+            let width = img.width;
+            let height = img.height;
+  
+            // Calculate the new width and height while maintaining the aspect ratio
+            if (width > maxWidth || height > maxHeight) {
+              const aspectRatio = width / height;
+              if (width > height) {
+                width = maxWidth;
+                height = Math.round(maxWidth / aspectRatio);
+              } else {
+                height = maxHeight;
+                width = Math.round(maxHeight * aspectRatio);
+              }
+            }
+  
+            // Resize the image using a canvas
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+  
+            if (ctx) {
+              canvas.width = width;
+              canvas.height = height;
+              ctx.drawImage(img, 0, 0, width, height);
+              const resizedImage = canvas.toDataURL("image/jpeg");
+  
+              setBannerImage(resizedImage); // Set the resized image as banner image
+            }
+          };
+  
+          img.onerror = () => {
+            toast.error("Failed to load image.");
+          };
+        };
+  
+        reader.readAsDataURL(file); // Read the file as base64 data
+      } else {
+        toast.error("File size exceeds the 1MB limit.");
+      }
     }
   };
+  
+  
 
   const handleReset = () => {
     setTournamentName("");
@@ -169,7 +216,7 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
                     alt="Upload"
                     className="h-[5rem] w-[5rem] lg:h-[10rem] lg:w-[10rem]" />
                   <p className="text-center text-white rajdhani-bold text-[1rem] md:text-[1.875rem]">
-                    100*100 <span className="text-[#45F882]">Below 1 MB</span>
+                    440*255 <span className="text-[#45F882]">Below 1 MB</span>
                   </p>
                 </div>
                 <input
