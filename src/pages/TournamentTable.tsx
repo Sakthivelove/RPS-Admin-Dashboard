@@ -5,7 +5,7 @@ import { useSidebar } from '../context/SidebarContext';
 import { getContainerClass, truncateAddress } from '../utils';
 
 const TournamentTable: React.FC = () => {
-    const { data, error, isLoading,isError } = useTournaments();
+    const { data, error, isLoading, isError } = useTournaments();
     const [page, setPage] = useState(1);  // Track the current page
     const [searchQuery, setSearchQuery] = useState('');
     const { sidebarActive } = useSidebar();
@@ -32,14 +32,17 @@ const TournamentTable: React.FC = () => {
         'Payment Window',
         'No. of Players',
         'Date & Time'
-      ];
-      
+    ];
+
 
     // Map data to include all fields in the table with fallbacks
     const tableData = data?.map((tournament, index) => ({
-        'S.No':index+1,
+        'S.No': index + 1,
         // 'Tournament ID': tournament.tournamentId || 'N/A',
-        'Banner Image': tournament.bannerImage || '-',
+        'Banner Image': tournament.bannerImage ? (
+            <img src={`${tournament.bannerImage}`} alt="Tournament Banner" className="w-20 h-20 object-cover" />
+        ) : '-',
+
         'Tournament Name': tournament.tournamentName || 'Unknown',
         // 'Primary Tournament ID': tournament.primaryTournamentId || 'N/A',
         // Assuming 'dateTime' is a string representing a Unix timestamp in seconds
@@ -84,7 +87,7 @@ const TournamentTable: React.FC = () => {
 
     return (
         <div className={`${getContainerClass(sidebarActive)} flex flex-col`}>
-     <div className="relative z-10 overflow-auto h-full p-[2%]">
+            <div className="relative z-10 overflow-auto h-full p-[2%]">
                 <Table
                     columns={columns}
                     data={filteredData?.map((row, index) => ({
