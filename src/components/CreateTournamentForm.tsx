@@ -3,6 +3,7 @@ import CreateTournamentInput from "./CreateTournamentInput";
 import AdminButton from "./common/AdminButton";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { IoIosCloseCircle } from "react-icons/io";
 
 interface CreateTournamentFormProps {
   title: string;
@@ -71,63 +72,83 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-  
+
     if (file) {
-      // Check file size (<= 1MB)
-      if (file.size <= 1 * 1024 * 1024) {
-        const img = new Image();
-        const reader = new FileReader();
-        
-        reader.onloadend = () => {
-          img.src = reader.result as string;
-          
-          img.onload = () => {
-            // Check if the image resolution is correct
-            const maxWidth = 440;
-            const maxHeight = 255;
-  
-            let width = img.width;
-            let height = img.height;
-  
-            // Calculate the new width and height while maintaining the aspect ratio
-            if (width > maxWidth || height > maxHeight) {
-              const aspectRatio = width / height;
-              if (width > height) {
-                width = maxWidth;
-                height = Math.round(maxWidth / aspectRatio);
-              } else {
-                height = maxHeight;
-                width = Math.round(maxHeight * aspectRatio);
-              }
-            }
-  
-            // Resize the image using a canvas
-            const canvas = document.createElement("canvas");
-            const ctx = canvas.getContext("2d");
-  
-            if (ctx) {
-              canvas.width = width;
-              canvas.height = height;
-              ctx.drawImage(img, 0, 0, width, height);
-              const resizedImage = canvas.toDataURL("image/jpeg");
-  
-              setBannerImage(resizedImage); // Set the resized image as banner image
-            }
-          };
-  
-          img.onerror = () => {
-            toast.error("Failed to load image.");
-          };
-        };
-  
-        reader.readAsDataURL(file); // Read the file as base64 data
-      } else {
-        toast.error("File size exceeds the 1MB limit.");
+      let resizedImage = "";
+
+      // Check if the file size exceeds 1MB
+      if (file.size > 1 * 1024 * 1024) {
+        toast.info("File size exceeds 1MB. The image will be automatically resized to fit the required dimensions.");
       }
+
+      const img = new Image();
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        img.src = reader.result as string;
+
+        img.onload = () => {
+          // Check if the image resolution is correct
+          const maxWidth = 440;
+          const maxHeight = 255;
+
+          let width = img.width;
+          let height = img.height;
+
+          // Calculate the new width and height while maintaining the aspect ratio
+          if (width > maxWidth || height > maxHeight) {
+            const aspectRatio = width / height;
+            if (width > height) {
+              width = maxWidth;
+              height = Math.round(maxWidth / aspectRatio);
+            } else {
+              height = maxHeight;
+              width = Math.round(maxHeight * aspectRatio);
+            }
+          }
+
+          // Resize the image using a canvas
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+
+          if (ctx) {
+            canvas.width = width;
+            canvas.height = height;
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // Reduce the image quality if the file size is larger than 1MB
+            resizedImage = canvas.toDataURL("image/jpeg", 0.7); // Adjust the quality here (0.7 means 70% quality)
+
+            // Check the size of the resized image
+            while (getBase64Size(resizedImage) > 1 * 1024 * 1024) {
+              resizedImage = canvas.toDataURL("image/jpeg", 0.5); // Reduce quality further if necessary
+            }
+
+            setBannerImage(resizedImage); // Set the resized image as banner image
+          }
+        };
+
+        img.onerror = () => {
+          toast.error("Failed to load image.");
+        };
+      };
+
+      reader.readAsDataURL(file); // Read the file as base64 data
     }
   };
-  
-  
+
+
+  // Reset the banner image to allow the user to upload a new image
+  const handleRemoveImage = () => {
+    setBannerImage(""); // Clear the current image
+  };
+
+
+  // Function to get the size of the base64 string
+  const getBase64Size = (base64String: string) => {
+    return Math.round((base64String.length * 3) / 4);
+  };
+
 
   const handleReset = () => {
     setTournamentName("");
@@ -156,6 +177,11 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
 
     if (nominalTournament && nominalFee <= 0) {
       errors.nominalFee = "Nominal Fee must be a positive value.";
+    }
+
+    // Check if banner image is selected
+    if (!bannerImage) {
+      errors.bannerImage = "Banner image is required.";
     }
 
     setFormErrors(errors);
@@ -197,16 +223,24 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
         </h1>
       </section>
 
+
       <section className="mt-[0.5rem]">
         <div className="w-full h-[15rem] lg:h-[20rem] bg-gradient-to-r from-[#45F882] to-[#FFBE18] rounded-[1.5rem] p-[0.1rem]">
           <div className="bg-[#0B0D13] rounded-[1.5rem] w-full h-full flex justify-center items-center">
             {bannerImage ? (
-              <div className="w-full h-full flex justify-center items-center rounded-[1.5rem]">
+              <div className="w-full h-full flex justify-center items-center rounded-[1.5rem] relative">
                 <img
                   src={bannerImage}
                   alt="Banner Preview"
                   className="max-w-full max-h-full object-contain rounded-[1.5rem] shadow-lg"
                 />
+                {/* Close icon button */}
+                <button
+                  onClick={handleRemoveImage}
+                  className="absolute top-2 right-2 text-white bg-red-500 p-2 rounded-full hover:bg-red-700"
+                >
+                  <IoIosCloseCircle className="h-6 w-6" />
+                </button>
               </div>
             ) : (
               <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-full rounded-[1.5rem] cursor-pointer bg-[#1A1D26]">
@@ -214,7 +248,8 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
                   <img
                     src="/create-tournament/file_upload.png"
                     alt="Upload"
-                    className="h-[5rem] w-[5rem] lg:h-[10rem] lg:w-[10rem]" />
+                    className="h-[5rem] w-[5rem] lg:h-[10rem] lg:w-[10rem]"
+                  />
                   <p className="text-center text-white rajdhani-bold text-[1rem] md:text-[1.875rem]">
                     440*255 <span className="text-[#45F882]">Below 1 MB</span>
                   </p>
@@ -229,7 +264,10 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
             )}
           </div>
         </div>
+        {formErrors.bannerImage && <p className="text-red-500">{formErrors.bannerImage}</p>} {/* Display error */}
       </section>
+
+
 
       {error && <div className="text-red-500 mt-2">{error.message}</div>}
       {isLoading && <div className="text-green-500 mt-2">Creating tournament...</div>}
