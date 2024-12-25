@@ -5,6 +5,8 @@ import CreateTournamentForm from '../../components/CreateTournamentForm';
 import { TournamentData } from '../../services/tournamentService';
 import { useSidebar } from '../../context/SidebarContext'
 import Modal from "../../components/common/Modal"
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CreateRockTournament: React.FC = () => {
   const { mutateAsync, isPending, isError, error } = useCreateTournament();
@@ -15,14 +17,18 @@ const CreateRockTournament: React.FC = () => {
 
   // Submit handler for the form
   const handleCreateRockTournament = async (data: TournamentData) => {
+    toast.info("Creating tournament, please wait..."); // Notify user about the process
     try {
       await mutateAsync(data); // Await the mutation promise
       setIsModalOpen(true); // Open success modal
+      toast.success("Tournament created successfully!"); // Notify success
     } catch (err) {
       console.error("Error creating tournament:", err);
       setIsErrorModalOpen(true); // Open error modal on failure
+      toast.error("Failed to create tournament. Please try again."); // Notify failure
     }
   };
+
 
   // Close modal and navigate
   const handleCloseModal = () => {

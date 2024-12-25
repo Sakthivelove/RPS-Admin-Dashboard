@@ -1,63 +1,88 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoIosCloseCircle } from 'react-icons/io';
-import { useUploadImage } from '../hooks/useUploadImage';  // Import the hook
-import { toast } from 'react-toastify';
 
-type ImageUploadProps = {
-    bannerImage: string;
-    setBannerImage: React.Dispatch<React.SetStateAction<string>>;
+interface ImagePreviewProps {
+  file: File | null; // The file object passed from the parent component
+  onRemove: () => void; // Function to remove the image
+  onFileChange: (file: File) => void; // Callback to pass the validated file to the parent component
+}
+
+const ImagePreview: React.FC<ImagePreviewProps> = ({ file, onRemove, onFileChange }) => {
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null); // State for the preview URL
+  const [validationError, setValidationError] = useState<string>(''); // State to handle validation errors
+
+  useEffect(() => {
+    // Generate preview URL when file changes
+    if (file) {
+      const objectUrl = URL.createObjectURL(file);
+      setPreviewUrl(objectUrl);
+
+      // Clean up the preview URL to prevent memory leaks
+      return () => URL.revokeObjectURL(objectUrl);
+    } else {
+      setPreviewUrl(null); // Clear preview URL if file is removed
+    }
+  }, [file]);
+
+  // Validate the image resolution and size
+  const validateImage = (file: File): Promise<boolean> => {
+    const image = new Image();
+    return new Promise<boolean>((resolve, reject) => {
+      image.onload = () => {
+        if (image.width === 440 && image.height === 255 && file.size <= 1024 * 1024) {
+          resolve(true); // Valid image
+        } else {
+          reject('Image must be 440x255 and less than 1MB');
+        }
+      };
+      image.onerror = () => reject('Invalid image');
+      image.src = URL.createObjectURL(file); // Trigger image loading
+    });
   };
 
-const ImageUpload = ({ bannerImage, setBannerImage }: ImageUploadProps) => {
-//   const [bannerImage, setBannerImage] = useState<string>('');  // Holds the image URL after upload
-  const { uploadImage, mutation } = useUploadImage(setBannerImage);  // Use the custom hook
-
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];  // Get the selected file
-    if (file) {
-      const formData = new FormData();  // Create FormData to send the file
-      formData.append('Banner', file);  // Append the image file to the FormData object
-
+    const selectedFile = e.target.files ? e.target.files[0] : null;
+    if (selectedFile) {
       try {
-        // Call the uploadImage function from the custom hook and upload the file
-        await uploadImage(formData);
+        await validateImage(selectedFile); // Validate the selected file
+        onFileChange(selectedFile); // Pass the validated file to the parent component
+        setValidationError(''); // Clear validation error
       } catch (error) {
-        toast.error('Error uploading the image');
+        setValidationError(error as string); // Set validation error message
       }
     }
   };
 
-  const handleRemoveImage = () => {
-    setBannerImage('');  // Remove the image
-  };
-
   return (
-    <section className="mt-[0.5rem]">
-      <div className="w-full h-[15rem] lg:h-[20rem] bg-gradient-to-r from-[#45F882] to-[#FFBE18] rounded-[1.5rem] p-[0.1rem]">
-        <div className="bg-[#0B0D13] rounded-[1.5rem] w-full h-full flex justify-center items-center">
-          {bannerImage ? (
-            <div className="w-full h-full flex justify-center items-center rounded-[1.5rem] relative">
+    <section className="mt-2">
+      <div className="w-full h-60 lg:h-80 bg-gradient-to-r from-[#45F882] to-[#FFBE18] rounded-xl p-1">
+        <div className="bg-[#0B0D13] rounded-xl w-full h-full flex justify-center items-center">
+          {file && previewUrl ? (
+            <div className="relative w-full h-full flex justify-center items-center rounded-xl">
               <img
-                src={bannerImage}
-                alt="Banner Preview"
-                className="max-w-full max-h-full object-contain rounded-[1.5rem] shadow-lg"
+                src={previewUrl}
+                alt={`Preview of ${file.name}`}
+                className="max-w-full max-h-full object-contain rounded-xl shadow-lg"
               />
               <button
-                onClick={handleRemoveImage}
+                onClick={onRemove}
                 className="absolute top-2 right-2 text-white bg-red-500 p-2 rounded-full hover:bg-red-700"
               >
                 <IoIosCloseCircle className="h-6 w-6" />
               </button>
             </div>
           ) : (
-            <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-full rounded-[1.5rem] cursor-pointer bg-[#1A1D26]">
+            <label
+              htmlFor="dropzone-file"
+              className="flex flex-col items-center justify-center w-full h-full rounded-xl cursor-pointer bg-[#1A1D26]"
+            >
               <div className="flex flex-col items-center justify-center pt-5 pb-6">
                 <img
                   src="/create-tournament/file_upload.png"
-                  alt="Upload"
-                  className="h-[5rem] w-[5rem] lg:h-[10rem] lg:w-[10rem]"
+                  alt="Upload Icon"
+                  className="h-20 w-20 lg:h-40 lg:w-40"
                 />
-                <p className="text-center text-white text-[1rem] md:text-[1.875rem]">
+                <p className="text-center text-white text-base lg:text-lg">
                   440*255 <span className="text-[#45F882]">Below 1 MB</span>
                 </p>
               </div>
@@ -65,15 +90,21 @@ const ImageUpload = ({ bannerImage, setBannerImage }: ImageUploadProps) => {
                 id="dropzone-file"
                 type="file"
                 className="hidden"
-                onChange={handleFileChange}  // Handle file change
+                onChange={handleFileChange} // Handle file change with validation
               />
             </label>
           )}
         </div>
       </div>
-      {/* Error handling (if any) can be added here */}
+
+      {/* Display validation error message */}
+      {validationError && (
+        <div className="text-red-500 text-center mt-2">
+          {validationError}
+        </div>
+      )}
     </section>
   );
 };
 
-export default ImageUpload;
+export default ImagePreview;
