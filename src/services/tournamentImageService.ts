@@ -1,8 +1,8 @@
-import demoapi from '../api/demoServerApi';
+import api from '../api/demoServerApi';
 
 export const uploadImageToServer = async (formData: FormData) => {
   try {
-    const response = await demoapi.post('tournament/upload', formData, {
+    const response = await api.post('tournament/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

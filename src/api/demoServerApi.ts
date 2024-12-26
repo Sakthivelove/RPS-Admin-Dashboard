@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an instance of Axios
 const demoapi = axios.create({
-    baseURL: 'http://84.247.170.127:3003/', // Your API base URL
+    baseURL: 'https://rpsadmin.stsblockchain.xyz', // Your API base URL
 });
 
 // Add an interceptor to include the token in the request headers
