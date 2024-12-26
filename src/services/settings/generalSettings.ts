@@ -5,6 +5,9 @@ export interface Settings {
   admin2FA: boolean;
   affiliate2FA: boolean;
   adminWallet: string;
+  adminSecret: string;
+  contractAddress: string; // Added missing field
+  rpc: string; // Added missing field
   rockUSDPrice: number;
   telegramLink: string | null;
   XLink: string | null;
@@ -15,6 +18,7 @@ export interface Settings {
   createdAt?: string;
   updatedAt?: string;
 }
+
 
 // Fetch general settings
 export const fetchGeneralSettings = async (): Promise<Settings[]> => {
