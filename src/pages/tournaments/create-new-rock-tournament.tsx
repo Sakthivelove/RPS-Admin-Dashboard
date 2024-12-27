@@ -48,7 +48,7 @@ const CreateRockTournament: React.FC = () => {
       <CreateTournamentForm
         title="Create New Rock Tournament"
         tournamentPlaceholder="Enter Rock Tournament Name"
-        buttonLabel={isPending ? "Creating tournament..." : "Create Rock Tournament"}
+        buttonLabel={isPending ? "Creating tournament..." : "Create Tournament"}
         onSubmit={handleCreateRockTournament}
         onSuccess={() => console.log("Tournament successfully created!")} // Optional success callback
         isDisabled={isPending} // Disable the form while submitting

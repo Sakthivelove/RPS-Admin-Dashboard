@@ -36,7 +36,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       onClick={(e) => onClick(e)}  // Pass event to the onClick handler
-      className={`flex justify-center items-center border-none cursor-pointer bg-cover bg-center ${width} ${height} ${fontSize} ${fontWeight} ${textAlign} ${textColor}`}
+      className={`flex justify-center items-center border-none cursor-pointer bg-cover bg-center font-rajdhani ${width} ${height} ${fontSize} ${fontWeight} ${textAlign} ${textColor}`}
       style={{
         backgroundImage: `url(${backgroundImage})`,
       }}

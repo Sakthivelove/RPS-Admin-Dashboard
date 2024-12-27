@@ -296,6 +296,7 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
                 width="sm:w-32 lg:w-48"
                 height="sm:h-12 lg:h-16"
                 onClick={handleReset}
+                fontWeight="font-[700]"
               />
               <AdminButton
                 image={"green"}
@@ -303,6 +304,7 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
                 width="sm:w-32 lg:w-48"
                 height="sm:h-12 lg:h-16"
                 onClick={handleCreateTournament}
+                fontWeight="font-[700]"
               />
             </div>
           </form>
