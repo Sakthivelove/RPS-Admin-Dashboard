@@ -14,6 +14,7 @@ interface CreateTournamentFormProps {
   onSuccess: () => void;
   isDisabled?: boolean;
   errorMessage?: string;
+  tournamentType: string;
 }
 
 export interface TournamentData {
@@ -32,12 +33,13 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
   buttonLabel,
   onSubmit,
   onSuccess,
+  tournamentType
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<{ message: string } | null>(null);
   const [tournamentName, setTournamentName] = useState<string>("");
   const [dateTime, setDateTime] = useState<Date | string>(new Date()); // Ensure it's a Date object
-  const [type, setType] = useState<string>("rock");
+  const [type, setType] = useState<string>(tournamentType);
   const [entryFee, setEntryFee] = useState<number>(5);
   const [nominalTournament, setNominalTournament] = useState<boolean>(true);
   const [nominalFee, setNominalFee] = useState<number>(5);
@@ -74,7 +76,7 @@ const CreateTournamentForm: React.FC<CreateTournamentFormProps> = ({
   const handleReset = () => {
     setTournamentName("");
     setDateTime(new Date());
-    setType("rock");
+    setType(tournamentType);
     setEntryFee(0);
     setNominalTournament(true);
     setNominalFee(0);

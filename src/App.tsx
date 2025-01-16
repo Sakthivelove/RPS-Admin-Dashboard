@@ -5,6 +5,7 @@ import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRou
 import AdminLogin from "./pages/auth/login";
 import ForgotPassword from "./pages/auth/forgot-password";
 import CreateNewRockTournament from "./pages/tournaments/create-new-rock-tournament";
+import CreateVIPTournament from "./pages/tournaments/create-new-vip-tournament";
 import AdminList from "./pages/admin/admin-list";
 import AdminScreen from "./pages/admin/admin-screen";
 import AddAdmin from "./pages/admin/add-admin";
@@ -83,6 +84,7 @@ const App: React.FC = () => {
                 {/* <Route element={<ProtectedRoute />}> */}
                   <Route path="/affiliate-tournaments" element={<AffiliateTournaments />} />
                   <Route path="/create-new-rock-tournament" element={<CreateNewRockTournament />} />
+                  <Route path="/create-new-vip-tournament" element={<CreateVIPTournament />} />
                   <Route path="/project-details" element={<Dashboards />} />
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/admin-list" element={<AdminList />} />

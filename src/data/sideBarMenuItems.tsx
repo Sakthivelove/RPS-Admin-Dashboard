@@ -82,11 +82,13 @@ import {
   CheckBadgeIcon
 } from '@heroicons/react/24/outline';
 import { FiLogOut } from 'react-icons/fi';
+import { FaCrown } from 'react-icons/fa';
+import { AiOutlineCrown } from 'react-icons/ai';
 
 
 export const sidebarMenuItems = [
   { label: "Rock Tournaments", icon: <StarIcon className="w-6 h-6" />, path: "/create-new-rock-tournament" },
-  // { label: "VIP Tournaments", icon: <StarIcon className="w-6 h-6" />, path: "/create-new-vip-tournament" },
+  { label: "VIP Tournaments", icon: <AiOutlineCrown className="w-6 h-6" />, path: "/create-new-vip-tournament" },
   // { label: "User Info", icon: <UserIcon className="w-6 h-6" />, path: "/user-info" },
   { label: "Admin List", icon: <UserGroupIcon className="w-6 h-6" />, path: "/admin-list" },
   { label: "User List", icon: <UserGroupIcon className="w-6 h-6" />, path: "/users" },
