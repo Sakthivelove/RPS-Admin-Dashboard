@@ -1,6 +1,10 @@
 import { api } from "../api/api";
 
-export const updateAdminWalletSettings = async (data: { adminWallet: string; adminSecret: string }) => {
+export const updateAdminWalletSettings = async (data:
+  {
+    adminWallet: string
+    //  adminSecret: string 
+  }) => {
   const response = await api.put('/settings/adminwalletsettings', data);
   return response.data;
 };

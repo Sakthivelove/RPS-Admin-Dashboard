@@ -12,7 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 // Define the types for projectSettings keys
 type ProjectSettings = {
   adminWallet: string;
-  adminSecret: string;
+  // adminSecret: string;
   contractAddress: string; // Added missing field
   rpc: string; // Added missing field
   rockUSDPrice: number;
@@ -26,7 +26,7 @@ type ProjectSettings = {
 
 type AdminWalletSettings = {
   adminWallet: string;
-  adminSecret: string
+  // adminSecret: string
 }
 
 type ModuleSettings = {
@@ -49,7 +49,7 @@ const SettingsComponent = () => {
   // Define projectSettings with the appropriate type
   const [projectSettings, setProjectSettings] = useState<ProjectSettings>({
     adminWallet: "",
-    adminSecret: "", // Added missing field
+    // adminSecret: "", // Added missing field
     contractAddress: "", // Added missing field
     rpc: "", // Added missing field
     rockUSDPrice: 0,
@@ -62,7 +62,7 @@ const SettingsComponent = () => {
   });
 
   const [adminWalletSettings, setAdminWalletSettings] = useState<AdminWalletSettings>({
-    adminSecret: "",
+    // adminSecret: "",
     adminWallet: ""
   })
 
@@ -73,7 +73,7 @@ const SettingsComponent = () => {
       const generalSettings = settings[0];
       setProjectSettings({
         adminWallet: generalSettings.adminWallet || "",
-        adminSecret: generalSettings.adminSecret || "",
+        // adminSecret: generalSettings.adminSecret || "",
         contractAddress: generalSettings.contractAddress || "",
         rpc: generalSettings.rpc || "",
         rockUSDPrice: generalSettings.rockUSDPrice || 0,
@@ -90,7 +90,7 @@ const SettingsComponent = () => {
         affiliate2FA: generalSettings.affiliate2FA,
       });
       setAdminWalletSettings({
-        adminSecret: generalSettings.adminSecret,
+        // adminSecret: generalSettings.adminSecret,
         adminWallet: generalSettings.adminWallet
       })
     }
@@ -207,7 +207,7 @@ const SettingsComponent = () => {
             >
               {[
                 { label: "Admin Wallet", key: "adminWallet", icon: <FaWallet /> }, // Wallet icon for Admin Wallet
-                { label: "Admin Secret", key: "adminSecret", icon: <FaLock /> }, // Lock icon for Admin Secret
+                // { label: "Admin Secret", key: "adminSecret", icon: <FaLock /> }, // Lock icon for Admin Secret
                 { label: "RockUSD Price", key: "rockUSDPrice", icon: <FaDollarSign /> }, // Dollar sign for RockUSD Price
                 { label: "Contract Address", key: "contractAddress", icon: <FaFileContract /> }, // Contract icon for Contract Address
                 { label: "RPC URL", key: "rpc", icon: <FaNetworkWired /> }, // Network icon for RPC URL
@@ -260,7 +260,10 @@ const SettingsComponent = () => {
 
           {activeTab === 2 && (
             <form onSubmit={handleAdminWalletSubmit} className="space-y-6">
-              {[{ label: "Admin Wallet", key: "adminWallet", icon: <FaWallet /> }, { label: "Admin Secret", key: "adminSecret", icon: <FaLock /> }].map(({ label, key, icon }) => (
+              {[
+                { label: "Admin Wallet", key: "adminWallet", icon: <FaWallet /> },
+                // { label: "Admin Secret", key: "adminSecret", icon: <FaLock /> }
+              ].map(({ label, key, icon }) => (
                 <div key={key} className="grid grid-cols-4 items-center gap-4">
                   <label className="col-span-1 flex items-center gap-2 text-right text-gray-200">
                     {icon}{label}:

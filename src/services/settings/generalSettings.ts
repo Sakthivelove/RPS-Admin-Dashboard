@@ -5,7 +5,7 @@ export interface Settings {
   admin2FA: boolean;
   affiliate2FA: boolean;
   adminWallet: string;
-  adminSecret: string;
+  // adminSecret: string;
   contractAddress: string; // Added missing field
   rpc: string; // Added missing field
   rockUSDPrice: number;
