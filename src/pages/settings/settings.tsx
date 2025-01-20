@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 // Define the types for projectSettings keys
 type ProjectSettings = {
-  adminWallet: string;
+  // adminWallet: string;
   // adminSecret: string;
   contractAddress: string; // Added missing field
   rpc: string; // Added missing field
@@ -48,7 +48,7 @@ const SettingsComponent = () => {
 
   // Define projectSettings with the appropriate type
   const [projectSettings, setProjectSettings] = useState<ProjectSettings>({
-    adminWallet: "",
+    // adminWallet: "",
     // adminSecret: "", // Added missing field
     contractAddress: "", // Added missing field
     rpc: "", // Added missing field
@@ -72,7 +72,7 @@ const SettingsComponent = () => {
     if (settings && settings.length > 0) {
       const generalSettings = settings[0];
       setProjectSettings({
-        adminWallet: generalSettings.adminWallet || "",
+        // adminWallet: generalSettings.adminWallet || "",
         // adminSecret: generalSettings.adminSecret || "",
         contractAddress: generalSettings.contractAddress || "",
         rpc: generalSettings.rpc || "",
@@ -192,7 +192,7 @@ const SettingsComponent = () => {
           >
             <Tab label="Project Settings" />
             <Tab label="Module Settings" />
-            <Tab label="Admin Wallet Settings" />
+            {/* <Tab label="Admin Wallet Settings" /> */}
           </Tabs>
         </Box>
 
@@ -206,7 +206,7 @@ const SettingsComponent = () => {
               className="space-y-6"
             >
               {[
-                { label: "Admin Wallet", key: "adminWallet", icon: <FaWallet /> }, // Wallet icon for Admin Wallet
+                // { label: "Admin Wallet", key: "adminWallet", icon: <FaWallet /> }, // Wallet icon for Admin Wallet
                 // { label: "Admin Secret", key: "adminSecret", icon: <FaLock /> }, // Lock icon for Admin Secret
                 { label: "RockUSD Price", key: "rockUSDPrice", icon: <FaDollarSign /> }, // Dollar sign for RockUSD Price
                 { label: "Contract Address", key: "contractAddress", icon: <FaFileContract /> }, // Contract icon for Contract Address
@@ -258,7 +258,7 @@ const SettingsComponent = () => {
             </form>
           )}
 
-          {activeTab === 2 && (
+          {/* {activeTab === 2 && (
             <form onSubmit={handleAdminWalletSubmit} className="space-y-6">
               {[
                 { label: "Admin Wallet", key: "adminWallet", icon: <FaWallet /> },
@@ -279,7 +279,7 @@ const SettingsComponent = () => {
               ))}
               <button type="submit" className={buttonStyles}>Save Settings</button>
             </form>
-          )}
+          )} */}
         </Box>
       </div>
     </div>
