@@ -3,7 +3,7 @@ import { useUserTournaments } from '../../hooks/useUserTournaments';
 import Table from '../../components/common/Table';
 import { useSidebar } from '../../context/SidebarContext';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import { EyeIcon } from '@heroicons/react/24/outline';
+import { InformationCircleIcon  } from '@heroicons/react/24/outline';
 import { truncateAddress } from '../../utils';
 
 const UserTournaments = () => {
@@ -38,7 +38,7 @@ const UserTournaments = () => {
         'Registered At',
         'Last Stage',
         'Status',
-        'Actions',
+        'More Info',
         'Date Time'
     ];
 
@@ -66,13 +66,13 @@ const UserTournaments = () => {
         'Tournament Name': item.tournamentName || 'N/A',  // Fallback if tournamentName is missing
         'Winner': item.winner || 'N/A',  // Fallback if winner is missing
         // Action buttons (View, Edit, Delete)
-        'Actions': (
+        'More Info': (
             <div className="flex space-x-3 justify-center items-center">
                 <button
                     onClick={() => handleView(item.id)}  // Pass tournamentId to handleView
                     className="text-blue-500 hover:text-blue-700"
                 >
-                    <EyeIcon className="w-6 h-6" />
+                    <InformationCircleIcon  className="w-6 h-6" />
                 </button>
                 {/* <button
                     onClick={() => handleEdit(item.tournamentId)}

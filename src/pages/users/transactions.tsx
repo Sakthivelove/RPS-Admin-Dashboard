@@ -3,7 +3,7 @@ import { useTransactions } from '../../hooks/useTransactions';
 import Table from '../../components/common/Table';
 import { useSidebar } from '../../context/SidebarContext';
 import StatusMessage from '../../components/StatusMessage';
-import { EyeIcon } from '@heroicons/react/24/outline';
+import { InformationCircleIcon  } from '@heroicons/react/24/outline';
 import { truncateAddress } from '../../utils';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
@@ -48,7 +48,7 @@ const UserTransactions: React.FC = () => {
                     className="text-blue-500 hover:text-blue-700"
                     onClick={() => handleView(txn.id)}  // Pass transactionId to handleView
                 >
-                    <EyeIcon className="w-6 h-6" />
+                    <InformationCircleIcon  className="w-6 h-6" />
                 </button>
             </div>
         ),

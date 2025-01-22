@@ -3,7 +3,7 @@ import Table from '../../components/common/Table';
 import { useUserTasks } from '../../hooks/useUserTasks';
 import { useSidebar } from '../../context/SidebarContext';
 import { useNavigate, useLocation } from 'react-router-dom'; // React Router hook
-import { EyeIcon } from '@heroicons/react/24/outline';
+import { InformationCircleIcon  } from '@heroicons/react/24/outline';
 import { truncateAddress } from '../../utils';
 
 const UserTasks: React.FC = () => {
@@ -40,7 +40,7 @@ const UserTasks: React.FC = () => {
     'X Connection',
     'Registered Tournament',
     'Friends Invited',
-    'Action', // Added Action column for View, Edit, Delete
+    'More Info', // Added Action column for View, Edit, Delete
   ];
 
   const tableData = data?.tasks.map((task: any, index: number) => ({
@@ -51,14 +51,14 @@ const UserTasks: React.FC = () => {
     'X Connection': task.xConnection ? 'Yes' : 'No',
     'Registered Tournament': task.registeredTournament ? 'Yes' : 'No',
     'Friends Invited': task.friendsInvited,
-    Action: (
+    'More Info': (
       <div className="flex space-x-3 justify-center items-center">
         {/* View Icon */}
         <button
           className="text-blue-500 hover:text-blue-700"
           onClick={() => navigate(`/users/tasks/${task.id}`)}
         >
-          <EyeIcon className="w-6 h-6" />
+          <InformationCircleIcon  className="w-6 h-6" />
         </button>
       </div>
     ),

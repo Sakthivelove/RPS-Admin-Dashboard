@@ -4,7 +4,7 @@ import { useReferrals } from '../../hooks/useReferrals';
 import { useSidebar } from '../../context/SidebarContext';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 import { truncateAddress } from '../../utils';
-import { EyeIcon } from '@heroicons/react/24/outline';
+import { InformationCircleIcon  } from '@heroicons/react/24/outline';
 
 const UserReferrals: React.FC = () => {
     const [page, setPage] = useState(1); // Track the current page
@@ -35,7 +35,7 @@ const UserReferrals: React.FC = () => {
         'Wallet ID',
         'Referral Count',
         // 'Reward',
-        'Actions',
+        'More Info',
         'Created On'
     ]; // Add 'Actions' to columns
 
@@ -49,13 +49,13 @@ const UserReferrals: React.FC = () => {
             'Created On': new Date(
                 parseInt(referral.createdOn) * 1000
             ).toLocaleString(),
-            'Actions': (
+            'More Info': (
                 <div className="flex space-x-3 justify-center items-center">
                     <button
                         onClick={() => navigate(`/users/referrals/${referral.id}`)} // Redirect to /users/referral/:id
                         className="text-blue-500 hover:text-blue-700"
                     >
-                        <EyeIcon className="w-6 h-6" />
+                        <InformationCircleIcon  className="w-6 h-6" />
                     </button>
                 </div>
             ),

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Table from "../components/common/Table";
 import { useUsers } from '../hooks/useUsers';
 import { useSidebar } from '../context/SidebarContext';
-import { EyeIcon } from '@heroicons/react/24/outline';
+import { InformationCircleIcon  } from '@heroicons/react/24/outline';
 
 const UserList: React.FC = () => {
   const [page, setPage] = useState(1);  // Track the current page
@@ -19,9 +19,9 @@ const UserList: React.FC = () => {
     'Avatar Gender',
     'Avatar Name',
     'Player Level',
-    'External Username',
+    'XUsername',
     'Total Win Amount',
-    'Actions'
+    'More Info'
   ];
 
   // Update total pages when totalCount changes
@@ -47,15 +47,15 @@ const UserList: React.FC = () => {
     'Avatar Gender': user.avatarGender || 'N/A',
     'Avatar Name': user.avatarName || 'N/A',
     'Player Level': user.playerLevel || 'N/A',
-    'External Username': user.xUserName || 'N/A',
+    'XUsername': user.xUserName || 'N/A',
     'Total Win Amount': user.totalWinAmount || 0,
-    'Actions': (
+    'More Info': (
       <div className="flex space-x-3 justify-center items-center">
         <button
           onClick={() => navigate(`/users/${user.id}`)}
           className="text-blue-500 hover:text-blue-700"
         >
-          <EyeIcon className="w-6 h-6" />
+          <InformationCircleIcon  className="w-6 h-6" />
         </button>
       </div>
     ),

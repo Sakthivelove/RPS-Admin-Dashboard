@@ -47,13 +47,13 @@ const Dashboard: React.FC = () => {
     }
   }, [data?.totalCount, limit]);
 
-  const columns = ['S.No', 'Telegram ID', 'Action', 'IP', 'Status', 'Device', 'Reason', 'Date'];
+  const columns = ['S.No', 'Telegram ID', 'More Info', 'IP', 'Status', 'Device', 'Reason', 'Date'];
 
   // Prepare data for the table
   const activities = data?.activities.map((activity, index) => ({
     'S.No': index + 1 + (page - 1) * limit,
     'Telegram ID': activity.telegramId,
-    Action: activity.action,
+    'More Info': activity.action,
     IP: activity.ip,
     Status: activity.status,
     Device: activity.device,
