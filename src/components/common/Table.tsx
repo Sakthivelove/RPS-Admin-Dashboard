@@ -96,7 +96,7 @@ const Table: React.FC<TableProps> = ({
     >
       <div>
         {title && (
-          <h1 className={`text-2xl font-semibold text-[#45F882] sticky top-0 z-10 bg-[#1A1D26] p-2 ${columns.length === 2 || 3 ? 'text-center' : ""}`}>
+          <h1 className={`text-2xl font-semibold text-[#45F882] sticky top-0 z-10 bg-[#1A1D26] p-2 ${columns.length === 2 || 3 ? 'text-center' : ""} ${!showSearchBar && "mb-5"}`}>
             {title}
           </h1>
         )}

@@ -28,8 +28,8 @@ const UserTournaments = () => {
         'Tournament Name',
         'Wallet ID',
         'Type',
-        'Entry Paid',
-        'Nominal Paid',
+        'Entry Fee Paid',
+        'Nominal Fee Paid',
         'Transaction ID',
         'Entry Fee',
         'Nominal Tournament',
@@ -49,8 +49,8 @@ const UserTournaments = () => {
         // 'Tournament ID': item.tournamentId || 'N/A',  // Fallback if tournamentId is missing
         'Wallet ID': truncateAddress(item.walletId || '', 6) || 'N/A',  // Fallback if walletId is missing
         'Type': item.type || 'N/A',  // Fallback if type is missing
-        'Entry Paid': item.entryPaid ? 'Yes' : 'No',
-        'Nominal Paid': item.nominalPaid ? 'Yes' : 'No',
+        'Entry Fee Paid': item.entryPaid ? 'Yes' : 'No',
+        'Nominal Fee Paid': item.nominalPaid ? 'Yes' : 'No',
         'Transaction ID': truncateAddress(item.transactionId || '', 6) || 'N/A',  // Fallback if transactionId is missing
         'Entry Fee': item.entryFee || 'N/A',  // Fallback if entryFee is missing
         'Nominal Tournament': item.nominalTournament ? 'Yes' : 'No',
