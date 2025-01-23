@@ -7,6 +7,7 @@ import StatusMessage from '../../components/StatusMessage';
 const WinLossRatio: React.FC = () => {
     const [page, setPage] = useState(1);
     const limit = 10;
+    const [search, setSearch] = useState<string>(''); // State for search query
     const { sidebarActive } = useSidebar();
 
     const { data, isLoading, isError, error, refetch } = useWinLossHistory(page, limit);
@@ -39,13 +40,13 @@ const WinLossRatio: React.FC = () => {
 
     const [filteredData, setFilteredData] = useState(tableData);
 
-    const handleSearch = (searchTerm: string) => {
-        const filtered = tableData.filter((row) =>
+    const handleSearch = (searchTerm: string | undefined) => {
+        const filtered = searchTerm ? tableData.filter((row) =>
             Object.values(row)
                 .join(' ')
                 .toLowerCase()
-                .includes(searchTerm.toLowerCase())
-        );
+                .includes(searchTerm?.toLowerCase())
+        ) : [];
         setFilteredData(filtered);
     };
 

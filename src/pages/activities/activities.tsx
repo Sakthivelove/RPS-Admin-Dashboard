@@ -3,27 +3,9 @@ import { useQuery } from '@tanstack/react-query';
 import Table from '../../components/common/Table';
 import { api } from '../../api/api';
 import { useSidebar } from '../../context/SidebarContext';
+import { useActivities } from '../../hooks/useActivities';
 
-// Define the Activity interface
-interface Activity {
-  id: number;
-  telegramId: string;
-  action: string;
-  ip: string;
-  status: string;
-  device: string;
-  reason: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
 
-// Fetch activities function with pagination support
-const fetchActivities = async (page: number, limit: number): Promise<{ activities: Activity[]; totalCount: number }> => {
-  const response = await api.get('/dev/activities', {
-    params: { page, limit },
-  });
-  return response.data;
-};
 
 const Dashboard: React.FC = () => {
   const { sidebarActive } = useSidebar();
@@ -31,21 +13,22 @@ const Dashboard: React.FC = () => {
   // Pagination state
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
+  const [search, setSearch] = useState<string | undefined>(undefined)
   const [totalPages, setTotalPages] = useState<number>(0);
-
-  // Fetch activity logs with pagination
-  const { data, error, isLoading, isError, refetch } = useQuery({
-    queryKey: ['activities', page, limit],
-    queryFn: () => fetchActivities(page, limit),
-
-  });
+  const { data, isLoading, error, isError } = useActivities(page, limit, search)
 
   // Update total pages when totalCount changes
   useEffect(() => {
     if (data?.totalCount) {
       setTotalPages(Math.ceil(data.totalCount / limit));
     }
-  }, [data?.totalCount, limit]);
+  }, [data, limit]);
+
+
+  const handleSearch = (term: string | undefined) => {
+    setSearch(term);
+    setPage(1); // Reset to the first page on search
+  };
 
   const columns = ['S.No', 'Telegram ID', 'More Info', 'IP', 'Status', 'Device', 'Reason', 'Date'];
 
@@ -54,6 +37,7 @@ const Dashboard: React.FC = () => {
     'S.No': index + 1 + (page - 1) * limit,
     'Telegram ID': activity.telegramId,
     'More Info': activity.action,
+
     IP: activity.ip,
     Status: activity.status,
     Device: activity.device,
@@ -62,12 +46,19 @@ const Dashboard: React.FC = () => {
   }));
 
   // Handle page change
+  // const handlePageChange = (newPage: number) => {
+  //   if (newPage > 0 && newPage <= (totalPages || 0)) {
+  //     setPage(newPage);
+  //   }
+  // };
+
+  // Handle page change
   const handlePageChange = (newPage: number) => {
-    if (newPage > 0 && newPage <= (totalPages || 0)) {
-      setPage(newPage);
-      refetch(); // Trigger refetch immediately when the page changes
-    }
+    setPage(newPage);
   };
+
+  console.log("onSearch userlist", handleSearch, search);
+
 
 
   return (
@@ -78,6 +69,7 @@ const Dashboard: React.FC = () => {
           data={activities}
           title="Activity Log"
           showSearchBar={true}
+          onSearch={handleSearch}
           rowColor="bg-[#0F1C23]"
           tableBgColor="bg-[#1A1D26]"
           headerTextColor="text-[#45F882]"

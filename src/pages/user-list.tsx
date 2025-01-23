@@ -8,10 +8,13 @@ import { InformationCircleIcon  } from '@heroicons/react/24/outline';
 const UserList: React.FC = () => {
   const [page, setPage] = useState(1);  // Track the current page
   const [limit, setLimit] = useState(10);  // Track the number of items per page
-  const { data, error, isLoading, isError } = useUsers(page, limit); // Pass page and limit as parameters
+  const [search, setSearch] = useState<string | undefined>(undefined);
+
+  const { data, error, isLoading, isError } = useUsers(page, limit, search); // Pass page and limit as parameters
   const [totalPages, setTotalPages] = useState<number>(0);
   const { sidebarActive } = useSidebar();
   const navigate = useNavigate();
+
 
   const userListColumns = [
     'S.No',
@@ -30,6 +33,15 @@ const UserList: React.FC = () => {
       setTotalPages(Math.ceil(data.total / limit));
     }
   }, [data?.total, limit]);
+
+  // Handle search input and trigger the search query
+  const handleSearch = (term: string | undefined) => {
+    setSearch(term); // Set to undefined when cleared
+    if (term?.trim() === '') {
+      setPage(1); // Optionally reset to the first page
+    }
+  };
+
 
   // Handle page change
   const handlePageChange = (newPage: number) => {
@@ -82,6 +94,7 @@ const UserList: React.FC = () => {
           height='50vh'
           headerTextColor='text-[#45F882]'
           showSearchBar={true}
+          onSearch={handleSearch}
           page={page}
           limit={limit}
           onPageChange={handlePageChange}

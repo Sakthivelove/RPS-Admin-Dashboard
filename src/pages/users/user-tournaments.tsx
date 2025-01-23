@@ -9,6 +9,7 @@ import { truncateAddress } from '../../utils';
 const UserTournaments = () => {
     const [page, setPage] = useState(1);  // Track the current page
     const limit = 10;
+    const [search, setSearch] = useState<string | undefined>(); // State for search query
     const { data, error, isLoading, isError } = useUserTournaments(page, limit);  // Pagination (page 1, 10 items per page)
     const { sidebarActive } = useSidebar();
     const [totalPages, setTotalPages] = useState<number>(0);
@@ -20,6 +21,12 @@ const UserTournaments = () => {
             setTotalPages(Math.ceil(data.total / limit));
         }
     }, [data?.total, limit]);
+
+    // Handle search input and trigger the search query
+    const handleSearch = (term: string | undefined) => {
+        setSearch(term); // Update the search state
+        setPage(1); // Reset to the first page when search changes
+    };
 
     // Columns for the table (using the fields from UserTournament interface)
     const columns = [
@@ -118,6 +125,7 @@ const UserTournaments = () => {
                 data={tableData}
                 title="User Tournament Data"
                 showSearchBar={true}
+                onSearch={handleSearch}
                 searchPlaceholder="Search tournaments..."
                 headerTextColor='text-[#45F882]'
                 page={page}

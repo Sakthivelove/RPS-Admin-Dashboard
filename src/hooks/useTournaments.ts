@@ -22,15 +22,26 @@ interface Tournament {
   paymentWindowEnd: number;
 }
 
-const fetchTournaments = async () => {
-  const response = await api.get('/tournament');
+interface TournamentResponse {
+  tournaments: Tournament[];
+  total: number;
+}
+
+const fetchTournaments = async (page?: number, limit?: number, search?: string) => {
+  const response = await api.get('/tournament', {
+    params: {
+      page,      // Page number
+      limit,     // Number of items per page
+      search,    // Search term
+    },
+  });
   return response.data;
 };
 
-const useTournaments = () => {
-  return useQuery<Tournament[]>({
-    queryKey: ['tournaments'],
-    queryFn: fetchTournaments,
+const useTournaments = (page?: number, limit?: number, search?: string) => {
+  return useQuery<TournamentResponse>({
+    queryKey: ['tournaments', page, limit, search],  // Including page, limit, and search in the query key for caching and refetching
+    queryFn: () => fetchTournaments(page, limit, search),
   });
 };
 

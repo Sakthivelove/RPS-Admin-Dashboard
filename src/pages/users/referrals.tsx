@@ -9,7 +9,8 @@ import { InformationCircleIcon  } from '@heroicons/react/24/outline';
 const UserReferrals: React.FC = () => {
     const [page, setPage] = useState(1); // Track the current page
     const [limit, setLimit] = useState(10); // Track the number of items per page
-    const { data, error, isLoading, isError } = useReferrals(page, limit);
+    const [search, setSearch] = useState<string | undefined>(undefined)
+    const { data, error, isLoading, isError } = useReferrals(page, limit, search);
     const [totalPages, setTotalPages] = useState<number>(0);
     const { sidebarActive } = useSidebar();
     const navigate = useNavigate(); // Initialize navigate hook
@@ -28,6 +29,10 @@ const UserReferrals: React.FC = () => {
         console.log(`Page changed from ${page} to ${newPage}`);
         setPage(newPage);
     };
+
+    const handleSearch = (term: string | undefined) => {
+        setSearch(term)
+    }
 
     const columns = [
         'S.No',
@@ -73,6 +78,7 @@ const UserReferrals: React.FC = () => {
                     title="Referral List"
                     headerTextColor="text-[#45F882]"
                     showSearchBar={true}
+                    onSearch={handleSearch}
                     page={page}
                     limit={limit}
                     onPageChange={handlePageChange}

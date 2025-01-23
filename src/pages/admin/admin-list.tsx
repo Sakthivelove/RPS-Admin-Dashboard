@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Table from '../../components/common/Table';
 import { useAdminList } from '../../hooks/useAdminList';
 import { DataRow } from '../../types/admintypes';
 import { useSidebar } from '../../context/SidebarContext';
 
 const AdminList: React.FC = () => {
-    const { data, error, isLoading, isError } = useAdminList();
+    const [page, setPage] = useState<number>(1)
+    const limit = 10
+    const [search, setSearch] = useState<string | undefined>()
+    const { data, error, isLoading, isError } = useAdminList(page, limit, search);
     const { sidebarActive } = useSidebar()
 
     // Log after the data is available
     console.log("Admin list data", data);
+
+    const handleSearch = (term: string | undefined) => {
+        setSearch(term)
+        setPage(1)
+    }
 
     // Data mapping to match table columns
     const tableData = data?.map((item: DataRow, index: number) => ({
@@ -28,6 +36,7 @@ const AdminList: React.FC = () => {
                     title="Admin List"
                     headerTextColor="text-[#45F882]"
                     showSearchBar={false}
+                    onSearch={handleSearch}
                     searchPlaceholder="Search by Telegram ID"
                     height='60vh'
                     isLoading={isLoading}

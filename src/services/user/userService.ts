@@ -37,14 +37,20 @@ export interface UsersResponse {
 }
 
 // Fetch users from the API with pagination parameters (page and limit)
-export const fetchUsers = async (page: number = 1, limit: number = 10): Promise<UsersResponse> => {
+// Updated fetchUsers function to include the search query parameter
+export const fetchUsers = async (
+  page?: number,
+  limit?: number,
+  search?: string
+): Promise<UsersResponse> => {
   try {
-    // Make the API call using the Axios instance (`api`)
+    // Make the API call with pagination and optional search query parameters
     const response = await api.get<UsersResponse>('/users', {
-      params: {       // Include pagination params in the query string
+      params: {
         page,
-        limit
-      }
+        limit,
+        ...(search && { search }), // Include search parameter if provided
+      },
     });
 
     // Return the data received from the API response
@@ -54,3 +60,4 @@ export const fetchUsers = async (page: number = 1, limit: number = 10): Promise<
     throw new Error('Error fetching users: ' + (error instanceof Error ? error.message : 'Unknown error'));
   }
 };
+

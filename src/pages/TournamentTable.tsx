@@ -1,20 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useTournaments from '../hooks/useTournaments';
 import Table from '../components/common/Table';
 import { useSidebar } from '../context/SidebarContext';
 import { getContainerClass, truncateAddress } from '../utils';
 
 const TournamentTable: React.FC = () => {
-    const { data, error, isLoading, isError } = useTournaments();
-    console.log("tournament data", data);
-
     const [page, setPage] = useState(1);  // Track the current page
-    const [searchQuery, setSearchQuery] = useState('');
+    const [limit] = useState(10);  // Number of items per page
+    const [searchQuery, setSearchQuery] = useState<string | undefined>('');
+    const [debouncedSearch, setDebouncedSearch] = useState<string | undefined>('');
     const { sidebarActive } = useSidebar();
 
+    // If search exists, make page and limit undefined, else use default values
+    const currentPage = searchQuery ? undefined : page; // If search exists, set page to undefined
+    const currentLimit = searchQuery ? undefined : limit; // If search exists, set limit to undefined
+
+    // Fetch tournaments with pagination and search query
+    const { data, error, isLoading, isError } = useTournaments(currentPage, currentLimit, debouncedSearch);
+
+    console.log("tournament data", data);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(searchQuery); // Update debounced search after delay
+        }, 500); // Delay in ms
+
+        return () => clearTimeout(timer); // Clean up the timer on each render
+    }, [searchQuery]);
+
     // Pagination states
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+    // const [currentPage, setCurrentPage] = useState(1);
+    // const itemsPerPage = 10;
 
 
     // Define columns with all fields from the Tournament interface
@@ -25,20 +41,20 @@ const TournamentTable: React.FC = () => {
         'Banner Image',
         // 'Primary Tournament ID',
         'Type',
-        'Entry Fee',
+        // 'Entry Fee',
         'Nominal Tournament',
-        'Nominal Fee',
-        'Prize Pool',
+        // 'Nominal Fee',
+        // 'Prize Pool',
         'Winner',
         'Status',
-        'Payment Window',
-        'No. of Players',
-        'Date & Time'
+        // 'Payment Window',
+        // 'No. of Players',
+        // 'Date & Time'
     ];
 
 
     // Map data to include all fields in the table with fallbacks
-    const tableData = data?.map((tournament, index) => ({
+    const tableData = Array.isArray(data?.tournaments) ? data.tournaments.map((tournament, index) => ({
         'S.No': index + 1,
         // 'Tournament ID': tournament.tournamentId || 'N/A',
         'Banner Image': tournament.bannerImage ? (
@@ -48,56 +64,56 @@ const TournamentTable: React.FC = () => {
         'Tournament Name': tournament.tournamentName || 'Unknown',
         // 'Primary Tournament ID': tournament.primaryTournamentId || 'N/A',
         // Assuming 'dateTime' is a string representing a Unix timestamp in seconds
-        'Date & Time': tournament.dateTime && tournament.dateTime !== "0"
-            ? new Date(Number(tournament.dateTime) * 1000).toLocaleString()
-            : '-',
+        // 'Date & Time': tournament.dateTime && tournament.dateTime !== "0"
+        //     ? new Date(Number(tournament.dateTime) * 1000).toLocaleString()
+        //     : '-',
 
         'Type': tournament.type || 'N/A',
-        'Entry Fee': tournament.entryFee || 'N/A',
+        // 'Entry Fee': tournament.entryFee || 'N/A',
         'Nominal Tournament': tournament.nominalTournament ? 'Yes' : 'No',
-        'Nominal Fee': tournament.nominalFee || 'N/A',
-        'Prize Pool': tournament.totalPrizePool ?? 'N/A',
+        // 'Nominal Fee': tournament.nominalFee || 'N/A',
+        // 'Prize Pool': tournament.totalPrizePool ?? 'N/A',
         'Winner': tournament.winner ? truncateAddress(tournament.winner, 6) : 'N/A',
-        'Current Stage': tournament.currentStage || 'N/A',
+        // 'Current Stage': tournament.currentStage || 'N/A',
         'Status': tournament.status || 'N/A',
-        'Payment Window': tournament.paymentWindow ? 'Open' : 'Closed',
-        'No. of Players': tournament.noOfPlayersRegistered || '0',
-        'Payment Start': tournament.paymentWindowStart ? new Date(tournament.paymentWindowStart).toLocaleString() : 'N/A',
-        'Payment End': tournament.paymentWindowEnd ? new Date(tournament.paymentWindowEnd).toLocaleString() : 'N/A',
-    }));
+        // 'Payment Window': tournament.paymentWindow ? 'Open' : 'Closed',
+        // 'No. of Players': tournament.noOfPlayersRegistered || '0',
+        // 'Payment Start': tournament.paymentWindowStart ? new Date(tournament.paymentWindowStart).toLocaleString() : 'N/A',
+        // 'Payment End': tournament.paymentWindowEnd ? new Date(tournament.paymentWindowEnd).toLocaleString() : 'N/A',
+    })) : [];
 
     // Filter tournaments based on search query
-    const filteredData = tableData?.filter((row) =>
-        Object.values(row).some((value) =>
-            String(value).toLowerCase().includes(searchQuery.toLowerCase())
-        )
-    );
+    // const filteredData = tableData?.filter((row) =>
+    //     Object.values(row).some((value) =>
+    //         String(value).toLowerCase().includes(searchQuery.toLowerCase())
+    //     )
+    // );
 
     // Handle search functionality
-    const handleSearch = (searchTerm: string) => {
+    const handleSearch = (searchTerm: string | undefined) => {
         setSearchQuery(searchTerm); // Update search query state
     };
 
     // Get current page data for pagination
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentData = filteredData?.slice(indexOfFirstItem, indexOfLastItem);
+    // const indexOfLastItem = currentPage * itemsPerPage;
+    // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    // const currentData = filteredData?.slice(indexOfFirstItem, indexOfLastItem);
 
     // Handle page change
-    const handlePageChange = (newPage: number) => {
-        if (newPage >= 1 && newPage <= Math.ceil((filteredData?.length || 0) / itemsPerPage)) {
-            setCurrentPage(newPage);
-        }
-    };
+    // const handlePageChange = (newPage: number) => {
+    //     if (newPage >= 1 && newPage <= Math.ceil((filteredData?.length || 0) / itemsPerPage)) {
+    //         setCurrentPage(newPage);
+    //     }
+    // };
 
     return (
         <div className={`${getContainerClass(sidebarActive)} flex flex-col`}>
             <div className="relative z-10 overflow-auto h-full p-[2%]">
                 <Table
                     columns={columns}
-                    data={filteredData?.map((row, index) => ({
+                    data={tableData?.map((row, index) => ({
                         ...row,
-                        'S.No': index + 1 + (currentPage - 1) * itemsPerPage, // Adjust S.No based on the current page
+                        'S.No': index + 1 + (page - 1) * limit, // Adjust S.No based on the current page
                     }))}
                     title="Tournament List"
                     rowColor="bg-[#0F1C23]"

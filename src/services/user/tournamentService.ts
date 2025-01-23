@@ -3,10 +3,11 @@ import { TournamentsResponse } from '../../types/tournament';
 
 export const fetchRegisteredUpcomingTournaments = async (
   page: number,
-  limit: number
+  limit: number,
+  search?: string
 ): Promise<TournamentsResponse> => {
   const response = await api.get(`/users/registeredupcomingtournament`, {
-    params: { page, limit },
+    params: { page, limit, search },
   });
   return response.data;
 };
@@ -41,5 +42,5 @@ export const fetchUserTournamentDetails = async (id: string): Promise<UserTourna
   return response.data;  // Assuming the response contains { usertournament: [...], total: ... }
 };
 
-  
+
 

@@ -10,14 +10,18 @@ interface User {
     ResetExpiry: string;
 }
 
-const fetchUserAffiliates = async () => {
-    const { data } = await api.get('users/affiliates?page=1&limit=10');
+const fetchUserAffiliates = async (page: number, limit: number, search?: string): Promise<User[]> => {
+    const { data } = await api.get('users/affiliates', {
+        params: {
+            page, limit, search
+        }
+    });
     return data.users; // The structure may vary based on your API
 };
 
-export const useUserAffiliates = () => {
+export const useUserAffiliates = (page: number, limit: number, search?: string) => {
     return useQuery<User[]>({
-        queryKey: ['users'],
-        queryFn: fetchUserAffiliates,
+        queryKey: ['users', page, limit, search],
+        queryFn: () => fetchUserAffiliates(page, limit, search),
     });
 };

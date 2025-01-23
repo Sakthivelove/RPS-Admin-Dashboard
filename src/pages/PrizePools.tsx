@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'; 
+import React, { useState, useEffect, useRef } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { usePrizePools } from '../hooks/usePrizePools';
@@ -18,7 +18,29 @@ const PrizePools: React.FC = () => {
     const [updateError, setUpdateError] = useState<string | null>(null);
     const inputRef = useRef<HTMLInputElement | null>(null);
 
+    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [filteredData, setFilteredData] = useState<any[]>(data || []);
     const columns = ['S.No', 'Position', 'Percentage', 'Actions'];
+
+    useEffect(() => {
+        if (searchTerm) {
+            const filtered = data?.filter((row) =>
+                Object.values(row).some((value) =>
+                    String(value).toLowerCase().includes(searchTerm.toLowerCase())
+                )
+            );
+            setFilteredData(filtered || []);
+        } else {
+            setFilteredData(data || []);
+        }
+    }, [searchTerm, data]);
+
+    const handleSearch = (term: string) => {
+        setSearchTerm(term);
+    };
+
+
+
 
     useEffect(() => {
         const handleClickOutside = () => {
@@ -67,19 +89,19 @@ const PrizePools: React.FC = () => {
     const handleUpdate = async (id: number) => {
         // Remove non-numeric characters except for the decimal point
         const sanitizedPercentage = updatedPercentage.trim().replace(/[^0-9.]/g, '');
-    
+
         // Check if the sanitized input is empty or contains invalid characters
         if (sanitizedPercentage !== updatedPercentage) {
             toast.error('Please enter a valid number with no extra characters!');
             return;
         }
-    
+
         // Validate percentage
         if (!validatePercentage(sanitizedPercentage)) {
             toast.error('Invalid percentage! Enter a value between 0 and 100.');
             return;
         }
-    
+
         try {
             await updatePrizePool(id, parseFloat(sanitizedPercentage));
             toast.success(`Prize pool percentage updated to ${sanitizedPercentage}% successfully!`);
@@ -89,7 +111,7 @@ const PrizePools: React.FC = () => {
             toast.error('Failed to update prize pool. Please try again.');
         }
     };
-    
+
 
     const handleKeyDown = async (event: React.KeyboardEvent, id: number) => {
         if (event.key === 'Enter') {
@@ -97,7 +119,7 @@ const PrizePools: React.FC = () => {
         }
     };
 
-    const mappedData = data?.map((prizePool: PrizePool, index) => ({
+    const mappedData = filteredData?.map((prizePool: PrizePool, index) => ({
         'S.No': index + 1,
         Position: prizePool.position,
         Percentage:
@@ -139,20 +161,21 @@ const PrizePools: React.FC = () => {
         <div className={`${getContainerClass(sidebarActive)} text-white`}>
             <ToastContainer position="top-right" autoClose={3000} />
             <div className="relative z-10 overflow-auto h-full p-[2%]">
-            <Table
-                title="Prize Pools"
-                columns={columns}
-                data={mappedData}
-                rowColor="bg-[#0F1C23]"
-                tableBgColor="bg-[#1A1D26]"
-                headerTextColor="text-[#45F882]"
-                isLoading={isLoading}
-                error={error !== null}
-                loadingMessage="Loading prize pools..."
-                errorMessage="Error loading prize pools, please try again."
-                showSearchBar={true}
-                width="50%"
-            />
+                <Table
+                    title="Prize Pools"
+                    columns={columns}
+                    data={mappedData}
+                    rowColor="bg-[#0F1C23]"
+                    tableBgColor="bg-[#1A1D26]"
+                    headerTextColor="text-[#45F882]"
+                    isLoading={isLoading}
+                    error={error !== null}
+                    loadingMessage="Loading prize pools..."
+                    errorMessage="Error loading prize pools, please try again."
+                    showSearchBar={true}
+                    onSearch={handleSearch}
+                    width="50%"
+                />
             </div>
             {updateError && <div className="text-red-500 mt-4">{updateError}</div>}
         </div>

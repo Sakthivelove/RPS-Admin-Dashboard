@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Table from '../../components/common/Table';
 import { useUserAffiliates } from '../../hooks/useAffiliates';
 import { useSidebar } from '../../context/SidebarContext';
 
 const UserAffiliates: React.FC = () => {
-  const { data, error, isLoading, isError } = useUserAffiliates(); // Fetch user data
+  const [search, setSearch] = useState<string | undefined>('')
+  const [page, setPage] = useState(1);  // Track the current page
+  const limit = 10;  // Track the number of items per page
+  const { data, error, isLoading, isError } = useUserAffiliates(page, limit, search); // Fetch user data
   const { sidebarActive } = useSidebar(); // Sidebar state
+  console.log("Affiliates", data);
+
+  const handleSearch = (term: string | undefined) => {
+    setSearch(term)
+  }
+
+  // Handle page change
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
 
   // Define columns for the table
   const userListColumns = [
@@ -16,12 +29,12 @@ const UserAffiliates: React.FC = () => {
   ];
 
   // Transform API data into the format expected by the table
-  const userListData = data?.map((user, index) => ({
+  const userListData = Array.isArray(data) ? data?.map((user, index) => ({
     'S.No': index + 1,
     'Telegram ID': user.telegramId, // Display the Telegram ID
     // ID: `U00${user.id}`, // Format user ID as needed
     // 'Reset Expiry': user.ResetExpiry, // Show the Reset Expiry date
-  }));
+  })) : [];
 
   return (
     <div
@@ -41,10 +54,12 @@ const UserAffiliates: React.FC = () => {
             title="User Affiliates"
             headerTextColor="text-[#45F882]"
             showSearchBar={true}
+            onSearch={handleSearch}
             isLoading={isLoading}
             error={isError}
             loadingMessage="Fetching User Affiliates..."
             errorMessage={error?.message}
+            onPageChange={handlePageChange}
           />
         </div>
 

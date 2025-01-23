@@ -8,11 +8,12 @@ import { truncateAddress } from '../../utils';
 const UpcomingTournaments: React.FC = () => {
     const [page, setPage] = useState(1);
     const limit = 10;
+    const [search, setSearch] = useState<string | undefined>()
     const { sidebarActive } = useSidebar();
     const [totalPages, setTotalPages] = useState<number>(0);
     const navigate = useNavigate();
 
-    const { data, isLoading, isError, error } = useRegisteredTournaments(page, limit);
+    const { data, isLoading, isError, error } = useRegisteredTournaments(page, limit, search);
 
     // Update total pages when totalCount changes
     useEffect(() => {
@@ -81,21 +82,25 @@ const UpcomingTournaments: React.FC = () => {
         [data]
     );
 
-    const [filteredData, setFilteredData] = useState(tableData);
+    const handleSearch = (term: string | undefined) => {
+        setSearch(term)
+    }
 
-    useEffect(() => {
-        setFilteredData(tableData); // Sync filteredData with tableData when tableData changes
-    }, [tableData]);
+    // const [filteredData, setFilteredData] = useState(tableData);
 
-    const handleSearch = (searchTerm: string) => {
-        const filtered = tableData.filter((row) =>
-            Object.values(row)
-                .join(' ')
-                .toLowerCase()
-                .includes(searchTerm.toLowerCase())
-        );
-        setFilteredData(filtered);
-    };
+    // useEffect(() => {
+    //     setFilteredData(tableData); // Sync filteredData with tableData when tableData changes
+    // }, [tableData]);
+
+    // const handleSearch = (searchTerm: string) => {
+    //     const filtered = tableData.filter((row) =>
+    //         Object.values(row)
+    //             .join(' ')
+    //             .toLowerCase()
+    //             .includes(searchTerm.toLowerCase())
+    //     );
+    //     setFilteredData(filtered);
+    // };
 
     const handleView = (id: string) => {
         console.log(`Viewing tournament with ID: ${id}`);
@@ -112,19 +117,19 @@ const UpcomingTournaments: React.FC = () => {
         // Implement your logic for deleting a tournament (e.g., show a confirmation modal and delete via API)
     };
 
-      // Handle page change
-  const handlePageChange = (newPage: number) => {
-    if (newPage > 0 && newPage <= (totalPages || 0)) {
-      setPage(newPage);
-    }
-  };
+    // Handle page change
+    const handlePageChange = (newPage: number) => {
+        if (newPage > 0 && newPage <= (totalPages || 0)) {
+            setPage(newPage);
+        }
+    };
 
     return (
         <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen text-white`}>
             <div className="relative z-10 h-full p-[2%]">
                 <Table
                     columns={columns}
-                    data={filteredData}
+                    data={tableData}
                     rowColor="bg-gray-800"
                     title="Registered Upcoming Tournaments"
                     headerTextColor="text-[#45F882]"

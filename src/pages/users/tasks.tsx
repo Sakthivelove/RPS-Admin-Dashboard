@@ -9,6 +9,7 @@ import { truncateAddress } from '../../utils';
 const UserTasks: React.FC = () => {
   const [page, setPage] = useState(1); // Track the current page
   const limit = 10;
+  const [search, setSearch] = useState<string | undefined>(undefined)
   const navigate = useNavigate(); // React Router hook to navigate
   const { sidebarActive } = useSidebar();
   const [totalPages, setTotalPages] = useState<number>(0);
@@ -19,7 +20,7 @@ const UserTasks: React.FC = () => {
   const filter = searchParams.get('filter') || '';
 
   // Fetch tasks using the custom hook with the filter parameter
-  const { data, isLoading, error, isError } = useUserTasks({ page, limit, filter });
+  const { data, isLoading, error, isError } = useUserTasks({ page, limit, filter, search });
 
   // Update total pages when totalCount changes
   useEffect(() => {
@@ -31,6 +32,11 @@ const UserTasks: React.FC = () => {
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
+
+  const handleSearch = (term: string | undefined) => {
+    setSearch(term)
+    setPage(1)
+  }
 
   const columns = [
     'S.No',
@@ -72,6 +78,7 @@ const UserTasks: React.FC = () => {
           columns={columns}
           data={tableData || []}
           showSearchBar
+          onSearch={handleSearch}
           rowColor="bg-[#0F1C23]"
           tableBgColor="bg-[#1A1D26]"
           headerTextColor="text-[#45F882]"

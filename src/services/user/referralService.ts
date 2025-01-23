@@ -1,7 +1,7 @@
 import { api } from "../../api/api";
 
 export interface Referral {
-    id:string;
+    id: string;
     referralCode: string;
     walletId: string;
     referralCount: number;
@@ -9,10 +9,10 @@ export interface Referral {
     createdOn: string; // Assume this is a timestamp in seconds
 }
 
-export const getReferrals = async (page: number, limit: number) => {
+export const getReferrals = async (page: number, limit: number, search?: string) => {
     try {
         const response = await api.get(`/users/referrals`, {
-            params: { page, limit },
+            params: { page, limit, search },
         });
         return response.data;
     } catch (error) {
@@ -27,10 +27,10 @@ export interface ReferralCode {
     referralCount: number;
     reward: number;
     createdOn: number;
-  }
-  
-  export const fetchReferralCode = async (id: string): Promise<ReferralCode> => {
+}
+
+export const fetchReferralCode = async (id: string): Promise<ReferralCode> => {
     const response = await api.get(`/users/referral/${id}`);
     return response.data;
-  };
-  
+};
+

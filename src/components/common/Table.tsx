@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SearchBar from '../SearchBar';
 import Pagination from '@mui/material/Pagination';
+import { useTableData } from '../../hooks/useTableData';
 
 interface TableProps {
   columns: string[]; // Column names
@@ -10,7 +11,8 @@ interface TableProps {
   title?: string; // Optional title for the table
   headerTextColor?: string; // Optional customizable header text color
   showSearchBar?: boolean; // Whether to show the search bar
-  onSearch?: (searchTerm: string) => void; // Search functionality handler
+  onSearch?: (searchTerm: string|undefined) => void; // Search functionality handler
+  onFetchData?: (params: { search?: string; page: number; limit: number }) => void; // Fetch handler for search and pagination
   customCellTextColor?: (row: any, col: string) => string; // Optional custom text color for cells
   alternateColumnTextColors?: (column: string) => string[]; // Optional logic for alternate column text colors
   height?: string; // Optional height for the table
@@ -19,8 +21,6 @@ interface TableProps {
   scrollX?: string;
   scrollY?: string;
   className?: string;
-  page?: number; // Current page
-  limit?: number; // Items per page
   onPageChange?: (newPage: number) => void; // Callback to handle page change
   totalItems?: number; // Total number of items for pagination
   totalPages?: number, // Accept totalPages as a prop
@@ -29,6 +29,11 @@ interface TableProps {
   isLoading?: boolean; // Loading state from parent
   error?: boolean; // Error state from parent
   customTextPosition?: string;
+  apiEndpoint?: string;
+  page?: number; // Current page
+  limit?: number; // Items per page
+  search?: string;
+  dataKey?: string; // Dynamic key to extract array data
 }
 
 const Table: React.FC<TableProps> = ({
@@ -57,31 +62,51 @@ const Table: React.FC<TableProps> = ({
   errorMessage = 'Error loading data, please try again.',
   isLoading = false,
   error = false,
-  customTextPosition
+  customTextPosition,
+  onFetchData,
+  apiEndpoint,
+  search,
+  dataKey // Dynamic key to extract array data
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [filteredData, setFilteredData] = useState<any[]>(data || []);
+  const [currentPage, setCurrentPage] = useState<number>(page);
+  const [currentLimit, setCurrentLimit] = useState<number>(limit);
+  // const [filteredData, setFilteredData] = useState<any[]>(data || []);
+
+  // useEffect(() => {
+  //   if (searchTerm) {
+  //     const filtered = data?.filter(row =>
+  //       columns.some(col =>
+  //         String(row[col])?.toLowerCase().includes(searchTerm.toLowerCase())
+  //       )
+  //     );
+  //     setFilteredData(filtered || []);
+  //   } else {
+  //     setFilteredData(data || []);
+  //   }
+  // }, [searchTerm, data, columns]);
+
+  // const { data, error, isLoading } = useTableData(apiEndpoint, { page, limit, search }, dataKey);
 
   useEffect(() => {
-    if (searchTerm) {
-      const filtered = data?.filter(row =>
-        columns.some(col =>
-          String(row[col])?.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      );
-      setFilteredData(filtered || []);
-    } else {
-      setFilteredData(data || []);
+    if (onFetchData) {
+      onFetchData({ search: searchTerm, page: currentPage, limit: currentLimit });
     }
-  }, [searchTerm, data, columns]);
+  }, [searchTerm, currentPage, currentLimit, onFetchData]);
 
+  // Handle search functionality (triggering API calls via the parent handler)
   const handleSearch = (term: string) => {
     setSearchTerm(term);
-    if (onSearch) onSearch(term);
+    if (onSearch) {
+      onSearch(term); // Pass the search term to the parent to fetch API results
+    }
   };
 
   const handlePageChange = (newPage: number) => {
-    if (onPageChange) onPageChange(newPage);
+    setCurrentPage(newPage);
+    if (onPageChange) {
+      onPageChange(newPage);
+    }
   };
 
   const generatePageNumbers = (): number[] => {
@@ -90,6 +115,9 @@ const Table: React.FC<TableProps> = ({
     const endPage = Math.min(totalPages, startPage + maxPageLinks - 1);
     return Array.from({ length: endPage - startPage + 1 }, (_, idx) => startPage + idx);
   };
+
+  console.log("onSearch in table",onSearch);
+  
 
   return (
     <div className={`${tableBgColor} h-full rounded-lg flex p-2 flex-col text-sm`}
@@ -104,7 +132,7 @@ const Table: React.FC<TableProps> = ({
         {showSearchBar && (
           <div className='flex justify-center'>
             <div className={`sticky top-16 z-10 bg-[#1A1D26] p-2 ${(columns.length <= 4) ? "w-1/2" : "w-full"}`}>
-              <SearchBar placeholder={searchPlaceholder} onSearch={handleSearch} />
+              <SearchBar placeholder={searchPlaceholder} onSearch={onSearch} />
             </div>
           </div>
         )}
@@ -113,13 +141,13 @@ const Table: React.FC<TableProps> = ({
       <div className={`overflow-x-${scrollX} overflow-y-${scrollY} flex-grow scrollbar-thin ${className} ${(columns.length <= 4) ? "flex justify-center items-start" : ""}`} style={{ height }}>
         {isLoading && <div className="text-center text-white flex justify-center items-center h-full">{loadingMessage}</div>}
         {error && <div className="text-center text-red-500 flex justify-center items-center h-full">{errorMessage}</div>}
-        {(!isLoading && !error && filteredData.length === 0) && (
+        {(!isLoading && !error && data?.length === 0) && (
           <div className="text-center text-white font-semibold flex justify-center items-center h-full">
             No data available
           </div>
         )}
 
-        {(!isLoading && !error && filteredData.length !== 0) && (
+        {(!isLoading && !error && data?.length !== 0) && (
           <table className={`${columns.length === 2 ? "w-1/2" : columns.length === 3 ? "w-1/2" : "w-full"} table-auto ${tableBgColor} table-layout-auto`}
             style={{ width }} // Apply dynamic width
           >
@@ -136,7 +164,7 @@ const Table: React.FC<TableProps> = ({
               </tr>
             </thead>
             <tbody>
-              {filteredData?.map((row, rowIndex) => (
+              {data?.map((row: any, rowIndex: number) => (
                 <tr key={rowIndex} className={`${rowIndex % 2 === 0 ? `${rowColor}` : 'bg-transparent'}`}>
                   {columns.map((col, colIndex) => {
                     const alternateTextColors = alternateColumnTextColors ? alternateColumnTextColors(col) : [];
