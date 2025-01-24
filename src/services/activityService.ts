@@ -14,7 +14,7 @@ interface Activity {
 }
 
 
-export const fetchActivities = async (page?: number, limit?: number, search?: string): Promise<{ activities: Activity[]; totalCount: number }> => {
+export const fetchActivities = async (page?: number, limit?: number, search?: string): Promise<{ activities: Activity[]; total: number }> => {
   const response = await api.get('/dev/activities', {
     params: { page, limit, search },
   });

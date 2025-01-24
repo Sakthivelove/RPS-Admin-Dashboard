@@ -19,8 +19,8 @@ const Dashboard: React.FC = () => {
 
   // Update total pages when totalCount changes
   useEffect(() => {
-    if (data?.totalCount) {
-      setTotalPages(Math.ceil(data.totalCount / limit));
+    if (data?.total) {
+      setTotalPages(Math.ceil(data.total / limit));
     }
   }, [data, limit]);
 
