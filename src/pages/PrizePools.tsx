@@ -10,6 +10,7 @@ import { FiEdit } from 'react-icons/fi';
 import { updatePrizePool } from '../services/prizepoolService';
 
 const PrizePools: React.FC = () => {
+    const [page, setPage] = useState(1)
     const { data, error, isLoading, refetch } = usePrizePools();
     const { sidebarActive } = useSidebar();
 
@@ -18,7 +19,7 @@ const PrizePools: React.FC = () => {
     const [updateError, setUpdateError] = useState<string | null>(null);
     const inputRef = useRef<HTMLInputElement | null>(null);
 
-    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [searchTerm, setSearchTerm] = useState<string | undefined>();
     const [filteredData, setFilteredData] = useState<any[]>(data || []);
     const columns = ['S.No', 'Position', 'Percentage', 'Actions'];
 
@@ -35,8 +36,11 @@ const PrizePools: React.FC = () => {
         }
     }, [searchTerm, data]);
 
-    const handleSearch = (term: string) => {
+    const handleSearch = (term: string | undefined) => {
         setSearchTerm(term);
+        if (term?.trim() === '') {
+            setPage(1); // Optionally reset to the first page
+        }
     };
 
 

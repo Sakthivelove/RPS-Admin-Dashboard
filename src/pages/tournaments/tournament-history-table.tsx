@@ -5,181 +5,181 @@ import { FaInfoCircle, FaTrashAlt } from 'react-icons/fa';
 import { useSidebar } from '../../context/SidebarContext';
 
 const TournamentHistory: React.FC = () => {
-  const {sidebarActive} =useSidebar()
-// Table Columns and Data
-const tournamentHistoryColumns = [
-  'S.No',
-  'Tournament Name',
-  'Prize Pool',
-  'Tournament Fee',
-  'Winner',
-  'Game History',
-  'Actions',
-];
+  const { sidebarActive } = useSidebar()
+  // Table Columns and Data
+  const tournamentHistoryColumns = [
+    'S.No',
+    'Tournament Name',
+    'Prize Pool',
+    'Tournament Fee',
+    'Winner',
+    'Game History',
+    'Actions',
+  ];
 
-const tournamentHistoryData = [
-  {
-    "S.No": 1,
-    "Tournament Name": 'Global Championship',
-    "Prize Pool": '$100,000',
-    "Tournament Fee": '$20',
-    "Winner": 'Team Alpha',
-    "Game History": 'View',
-    "Actions": (
-      <div className="flex space-x-2">
-        <button className="text-white">
-          <FaInfoCircle size={20} />
-        </button>
-        <button className="bg-[#45F882] text-white px-3 py-1 rounded">Edit</button>
-        <button className="text-white">
-          <FaTrashAlt size={20} />
-        </button>
-      </div>
-    ),
-  },
-  {
-    "S.No": 2,
-    "Tournament Name": 'City League',
-    "Prize Pool": '$50,000',
-    "Tournament Fee": '$10',
-    "Winner": 'Team Beta',
-    "Game History": 'View',
-    "Actions": (
-      <div className="flex space-x-2">
-        <button className="text-white">
-          <FaInfoCircle size={20} />
-        </button>
-        <button className="bg-[#45F882] text-white px-3 py-1 rounded">Edit</button>
-        <button className="text-white">
-          <FaTrashAlt size={20} />
-        </button>
-      </div>
-    ),
-  },
-  {
-    "S.No": 3,
-    "Tournament Name": 'Amateur Cup',
-    "Prize Pool": '$25,000',
-    "Tournament Fee": '$5',
-    "Winner": 'Team Gamma',
-    "Game History": 'View',
-    "Actions": (
-      <div className="flex space-x-2">
-        <button className="text-white">
-          <FaInfoCircle size={20} />
-        </button>
-        <button className="bg-[#45F882] text-white px-3 py-1 rounded">Edit</button>
-        <button className="text-white">
-          <FaTrashAlt size={20} />
-        </button>
-      </div>
-    ),
-  },
-  {
-    "S.No": 4,
-    "Tournament Name": 'Elite Showdown',
-    "Prize Pool": '$200,000',
-    "Tournament Fee": '$50',
-    "Winner": 'Team Delta',
-    "Game History": 'View',
-    "Actions": (
-      <div className="flex space-x-2">
-        <button className="text-white">
-          <FaInfoCircle size={20} />
-        </button>
-        <button className="bg-[#45F882] text-white px-3 py-1 rounded">Edit</button>
-        <button className="text-white">
-          <FaTrashAlt size={20} />
-        </button>
-      </div>
-    ),
-  },
-  {
-    "S.No": 5,
-    "Tournament Name": 'Battle Royale Series',
-    "Prize Pool": '$150,000',
-    "Tournament Fee": '$30',
-    "Winner": 'Team Zeta',
-    "Game History": 'View',
-    "Actions": (
-      <div className="flex space-x-2">
-        <button className="text-white">
-          <FaInfoCircle size={20} />
-        </button>
-        <button className="bg-[#45F882] text-white px-3 py-1 rounded">Edit</button>
-        <button className="text-white">
-          <FaTrashAlt size={20} />
-        </button>
-      </div>
-    ),
-  },
-  {
-    "S.No": 6,
-    "Tournament Name": 'Champion’s Arena',
-    "Prize Pool": '$75,000',
-    "Tournament Fee": '$15',
-    "Winner": 'Team Omega',
-    "Game History": 'View',
-    "Actions": (
-      <div className="flex space-x-2">
-        <button className="text-white">
-          <FaInfoCircle size={20} />
-        </button>
-        <button className="bg-[#45F882] text-white px-3 py-1 rounded">Edit</button>
-        <button className="text-white">
-          <FaTrashAlt size={20} />
-        </button>
-      </div>
-    ),
-  },
-  // {
-  //   "S.No": 7,
-  //   "Tournament Name": 'Legends Cup',
-  //   "Prize Pool": '$120,000',
-  //   "Tournament Fee": '$25',
-  //   "Winner": 'Team Sigma',
-  //   "Game History": 'View',
-  //   "Actions": (
-  //     <div className="flex space-x-2">
-  //       <button className="text-white">
-  //         <FaInfoCircle size={20} />
-  //       </button>
-  //       <button className="bg-[#45F882] text-white px-3 py-1 rounded">Edit</button>
-  //       <button className="text-white">
-  //         <FaTrashAlt size={20} />
-  //       </button>
-  //     </div>
-  //   ),
-  // },
-  // {
-  //   "S.No": 8,
-  //   "Tournament Name": 'Ultimate Battle League',
-  //   "Prize Pool": '$300,000',
-  //   "Tournament Fee": '$100',
-  //   "Winner": 'Team Kappa',
-  //   "Game History": 'View',
-  //   "Actions": (
-  //     <div className="flex space-x-2">
-  //       <button className="text-white">
-  //         <FaInfoCircle size={20} />
-  //       </button>
-  //       <button className="bg-[#45F882] text-white px-3 py-1 rounded">Edit</button>
-  //       <button className="text-white">
-  //         <FaTrashAlt size={20} />
-  //       </button>
-  //     </div>
-  //   ),
-  // },
-];
+  const tournamentHistoryData = [
+    {
+      "S.No": 1,
+      "Tournament Name": 'Global Championship',
+      "Prize Pool": '$100,000',
+      "Tournament Fee": '$20',
+      "Winner": 'Team Alpha',
+      "Game History": 'View',
+      "Actions": (
+        <div className="flex space-x-2">
+          <button className="text-white">
+            <FaInfoCircle size={20} />
+          </button>
+          <button className="bg-[#45F882] text-white px-3 py-1 rounded">Edit</button>
+          <button className="text-white">
+            <FaTrashAlt size={20} />
+          </button>
+        </div>
+      ),
+    },
+    {
+      "S.No": 2,
+      "Tournament Name": 'City League',
+      "Prize Pool": '$50,000',
+      "Tournament Fee": '$10',
+      "Winner": 'Team Beta',
+      "Game History": 'View',
+      "Actions": (
+        <div className="flex space-x-2">
+          <button className="text-white">
+            <FaInfoCircle size={20} />
+          </button>
+          <button className="bg-[#45F882] text-white px-3 py-1 rounded">Edit</button>
+          <button className="text-white">
+            <FaTrashAlt size={20} />
+          </button>
+        </div>
+      ),
+    },
+    {
+      "S.No": 3,
+      "Tournament Name": 'Amateur Cup',
+      "Prize Pool": '$25,000',
+      "Tournament Fee": '$5',
+      "Winner": 'Team Gamma',
+      "Game History": 'View',
+      "Actions": (
+        <div className="flex space-x-2">
+          <button className="text-white">
+            <FaInfoCircle size={20} />
+          </button>
+          <button className="bg-[#45F882] text-white px-3 py-1 rounded">Edit</button>
+          <button className="text-white">
+            <FaTrashAlt size={20} />
+          </button>
+        </div>
+      ),
+    },
+    {
+      "S.No": 4,
+      "Tournament Name": 'Elite Showdown',
+      "Prize Pool": '$200,000',
+      "Tournament Fee": '$50',
+      "Winner": 'Team Delta',
+      "Game History": 'View',
+      "Actions": (
+        <div className="flex space-x-2">
+          <button className="text-white">
+            <FaInfoCircle size={20} />
+          </button>
+          <button className="bg-[#45F882] text-white px-3 py-1 rounded">Edit</button>
+          <button className="text-white">
+            <FaTrashAlt size={20} />
+          </button>
+        </div>
+      ),
+    },
+    {
+      "S.No": 5,
+      "Tournament Name": 'Battle Royale Series',
+      "Prize Pool": '$150,000',
+      "Tournament Fee": '$30',
+      "Winner": 'Team Zeta',
+      "Game History": 'View',
+      "Actions": (
+        <div className="flex space-x-2">
+          <button className="text-white">
+            <FaInfoCircle size={20} />
+          </button>
+          <button className="bg-[#45F882] text-white px-3 py-1 rounded">Edit</button>
+          <button className="text-white">
+            <FaTrashAlt size={20} />
+          </button>
+        </div>
+      ),
+    },
+    {
+      "S.No": 6,
+      "Tournament Name": 'Champion’s Arena',
+      "Prize Pool": '$75,000',
+      "Tournament Fee": '$15',
+      "Winner": 'Team Omega',
+      "Game History": 'View',
+      "Actions": (
+        <div className="flex space-x-2">
+          <button className="text-white">
+            <FaInfoCircle size={20} />
+          </button>
+          <button className="bg-[#45F882] text-white px-3 py-1 rounded">Edit</button>
+          <button className="text-white">
+            <FaTrashAlt size={20} />
+          </button>
+        </div>
+      ),
+    },
+    // {
+    //   "S.No": 7,
+    //   "Tournament Name": 'Legends Cup',
+    //   "Prize Pool": '$120,000',
+    //   "Tournament Fee": '$25',
+    //   "Winner": 'Team Sigma',
+    //   "Game History": 'View',
+    //   "Actions": (
+    //     <div className="flex space-x-2">
+    //       <button className="text-white">
+    //         <FaInfoCircle size={20} />
+    //       </button>
+    //       <button className="bg-[#45F882] text-white px-3 py-1 rounded">Edit</button>
+    //       <button className="text-white">
+    //         <FaTrashAlt size={20} />
+    //       </button>
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   "S.No": 8,
+    //   "Tournament Name": 'Ultimate Battle League',
+    //   "Prize Pool": '$300,000',
+    //   "Tournament Fee": '$100',
+    //   "Winner": 'Team Kappa',
+    //   "Game History": 'View',
+    //   "Actions": (
+    //     <div className="flex space-x-2">
+    //       <button className="text-white">
+    //         <FaInfoCircle size={20} />
+    //       </button>
+    //       <button className="bg-[#45F882] text-white px-3 py-1 rounded">Edit</button>
+    //       <button className="text-white">
+    //         <FaTrashAlt size={20} />
+    //       </button>
+    //     </div>
+    //   ),
+    // },
+  ];
 
   // Search Handler (optional)
-  const handleSearch = (searchTerm: string) => {
+  const handleSearch = (searchTerm: string | undefined) => {
     console.log(`Search for: ${searchTerm}`);
     // Add search logic here if needed
   };
 
   return (
-    <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]': 'w-[94%]'} h-screen text-white flex overflow-auto`}>
+    <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen text-white flex overflow-auto`}>
 
       {/* Main Content */}
       <div className="flex-grow p-6">

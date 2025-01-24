@@ -84,6 +84,9 @@ const UpcomingTournaments: React.FC = () => {
 
     const handleSearch = (term: string | undefined) => {
         setSearch(term)
+        if (term?.trim() === '') {
+            setPage(1); // Optionally reset to the first page
+        }
     }
 
     // const [filteredData, setFilteredData] = useState(tableData);

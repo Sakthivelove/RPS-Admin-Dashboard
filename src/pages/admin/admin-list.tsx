@@ -16,7 +16,9 @@ const AdminList: React.FC = () => {
 
     const handleSearch = (term: string | undefined) => {
         setSearch(term)
-        setPage(1)
+        if (term?.trim() === '') {
+            setPage(1); // Optionally reset to the first page
+        }
     }
 
     // Data mapping to match table columns

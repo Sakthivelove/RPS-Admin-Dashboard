@@ -64,7 +64,7 @@ const TournamentList: React.FC = () => {
                     data={filteredData}
                     title='Tournament List'
                     showSearchBar={true}
-                    onSearch={handleSearch}
+                    // onSearch={handleSearch}
                     height='68vh'
                 />
             </div>

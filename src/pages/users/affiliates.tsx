@@ -13,6 +13,9 @@ const UserAffiliates: React.FC = () => {
 
   const handleSearch = (term: string | undefined) => {
     setSearch(term)
+    if (term?.trim() === '') {
+      setPage(1); // Optionally reset to the first page
+    }
   }
 
   // Handle page change

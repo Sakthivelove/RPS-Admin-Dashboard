@@ -3,6 +3,7 @@ import { api } from "../../api/api";
 export interface FetchTransactionsParams {
     page: number;
     limit: number;
+    search?: string
 }
 
 export interface Transaction {
@@ -22,9 +23,9 @@ export interface FetchTransactionsResponse {
     total: number;
 }
 
-export const fetchTransactions = async ({ page, limit }: FetchTransactionsParams): Promise<FetchTransactionsResponse> => {
+export const fetchTransactions = async ({ page, limit, search }: FetchTransactionsParams): Promise<FetchTransactionsResponse> => {
     const response = await api.get<FetchTransactionsResponse>('/users/transactions', {
-        params: { page, limit },
+        params: { page, limit, search },
     });
     return response.data;
 };
@@ -36,10 +37,10 @@ export interface UserTransactionDetails {
     status: string;
     transactionType: string; // e.g., 'deposit', 'withdrawal'
     transactionFee: number;
-  }
-  
-  export const fetchUserTransactionDetails = async (id: string): Promise<UserTransactionDetails> => {
+}
+
+export const fetchUserTransactionDetails = async (id: string): Promise<UserTransactionDetails> => {
     const response = await api.get(`/users/transaction/${id}`);
     return response.data;
-  };
-  
+};
+

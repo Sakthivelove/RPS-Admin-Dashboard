@@ -3,17 +3,19 @@ import { useTransactions } from '../../hooks/useTransactions';
 import Table from '../../components/common/Table';
 import { useSidebar } from '../../context/SidebarContext';
 import StatusMessage from '../../components/StatusMessage';
-import { InformationCircleIcon  } from '@heroicons/react/24/outline';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import { truncateAddress } from '../../utils';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const UserTransactions: React.FC = () => {
     const [page, setPage] = useState(1);
+
+    const [search, setSearch] = useState<string | undefined>()
     const limit = 10;
 
     const { sidebarActive } = useSidebar();
 
-    const { data, isLoading, isError, error } = useTransactions({ page, limit });
+    const { data, isLoading, isError, error } = useTransactions({ page, limit, search });
 
     // Function for expanding/collapsing row details
     const [expandedRows, setExpandedRows] = useState<number[]>([]);
@@ -48,7 +50,7 @@ const UserTransactions: React.FC = () => {
                     className="text-blue-500 hover:text-blue-700"
                     onClick={() => handleView(txn.id)}  // Pass transactionId to handleView
                 >
-                    <InformationCircleIcon  className="w-6 h-6" />
+                    <InformationCircleIcon className="w-6 h-6" />
                 </button>
             </div>
         ),
@@ -69,8 +71,12 @@ const UserTransactions: React.FC = () => {
     }));
 
     // Function to handle search (optional)
-    const handleSearch = (searchTerm: string) => {
+    const handleSearch = (searchTerm: string | undefined) => {
         // Implement your search logic here (you can update the `useQuery` hook to filter the data)
+        setSearch(searchTerm)
+        if (searchTerm?.trim() === '') {
+            setPage(1); // Optionally reset to the first page
+        }
     };
 
     return (

@@ -92,6 +92,9 @@ const TournamentTable: React.FC = () => {
     // Handle search functionality
     const handleSearch = (searchTerm: string | undefined) => {
         setSearchQuery(searchTerm); // Update search query state
+        if (searchTerm?.trim() === '') {
+            setPage(1); // Optionally reset to the first page
+        }
     };
 
     // Get current page data for pagination

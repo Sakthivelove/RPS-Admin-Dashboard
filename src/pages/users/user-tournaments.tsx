@@ -3,7 +3,7 @@ import { useUserTournaments } from '../../hooks/useUserTournaments';
 import Table from '../../components/common/Table';
 import { useSidebar } from '../../context/SidebarContext';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import { InformationCircleIcon  } from '@heroicons/react/24/outline';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import { truncateAddress } from '../../utils';
 
 const UserTournaments = () => {
@@ -25,7 +25,9 @@ const UserTournaments = () => {
     // Handle search input and trigger the search query
     const handleSearch = (term: string | undefined) => {
         setSearch(term); // Update the search state
-        setPage(1); // Reset to the first page when search changes
+        if (term?.trim() === '') {
+            setPage(1); // Optionally reset to the first page
+        }
     };
 
     // Columns for the table (using the fields from UserTournament interface)
@@ -79,7 +81,7 @@ const UserTournaments = () => {
                     onClick={() => handleView(item.id)}  // Pass tournamentId to handleView
                     className="text-blue-500 hover:text-blue-700"
                 >
-                    <InformationCircleIcon  className="w-6 h-6" />
+                    <InformationCircleIcon className="w-6 h-6" />
                 </button>
                 {/* <button
                     onClick={() => handleEdit(item.tournamentId)}

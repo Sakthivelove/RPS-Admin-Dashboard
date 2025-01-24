@@ -4,10 +4,11 @@ import Table from '../../components/common/Table';
 import SearchBar from '../../components/SearchBar';
 import { tableColumns, tableData } from '../../data/mockData';
 import { useSidebar } from '../../context/SidebarContext';
+
 const GameHistory: React.FC = () => {
-    const [searchTerm, setSearchTerm] = useState('');
-    const {sidebarActive} = useSidebar()
-    const handleSearch = (term: string) => {
+    const [searchTerm, setSearchTerm] = useState<string | undefined>('');
+    const { sidebarActive } = useSidebar()
+    const handleSearch = (term: string | undefined) => {
         setSearchTerm(term);
     };
 
@@ -37,14 +38,14 @@ const GameHistory: React.FC = () => {
 
 
     // Filter Table Data Based on Search Term
-    const filteredData = tableData.filter((row) =>
+    const filteredData = searchTerm ? tableData.filter((row) =>
         Object.values(row).some((value) =>
-            String(value).toLowerCase().includes(searchTerm.toLowerCase())
+            String(value).toLowerCase().includes(searchTerm?.toLowerCase())
         )
-    );
+    ) : [];
 
     return (
-        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]': 'w-[94%]'} h-screen flex overflow-auto`}>
+        <div className={`absolute right-0 ${sidebarActive ? 'w-[77%]' : 'w-[94%]'} h-screen flex overflow-auto`}>
             {/* Main Content */}
             <div className="flex-grow flex flex-col p-6 overflow-hidden">
                 {/* Gradient Cards */}
@@ -57,6 +58,7 @@ const GameHistory: React.FC = () => {
                             value={card.value}
                             imageSrc={card.imageSrc}
                             imageAlt={card.imageAlt}
+                            linkTo=''
                         />
                     ))}
                 </div>;

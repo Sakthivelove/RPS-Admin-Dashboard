@@ -27,7 +27,9 @@ const Dashboard: React.FC = () => {
 
   const handleSearch = (term: string | undefined) => {
     setSearch(term);
-    setPage(1); // Reset to the first page on search
+    if (term?.trim() === '') {
+      setPage(1); // Optionally reset to the first page
+    }
   };
 
   const columns = ['S.No', 'Telegram ID', 'More Info', 'IP', 'Status', 'Device', 'Reason', 'Date'];
@@ -56,8 +58,6 @@ const Dashboard: React.FC = () => {
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
-
-  console.log("onSearch userlist", handleSearch, search);
 
 
 

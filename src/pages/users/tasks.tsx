@@ -3,7 +3,7 @@ import Table from '../../components/common/Table';
 import { useUserTasks } from '../../hooks/useUserTasks';
 import { useSidebar } from '../../context/SidebarContext';
 import { useNavigate, useLocation } from 'react-router-dom'; // React Router hook
-import { InformationCircleIcon  } from '@heroicons/react/24/outline';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import { truncateAddress } from '../../utils';
 
 const UserTasks: React.FC = () => {
@@ -35,7 +35,9 @@ const UserTasks: React.FC = () => {
 
   const handleSearch = (term: string | undefined) => {
     setSearch(term)
-    setPage(1)
+    if (term?.trim() === '') {
+      setPage(1); // Optionally reset to the first page
+    }
   }
 
   const columns = [
@@ -64,7 +66,7 @@ const UserTasks: React.FC = () => {
           className="text-blue-500 hover:text-blue-700"
           onClick={() => navigate(`/users/tasks/${task.id}`)}
         >
-          <InformationCircleIcon  className="w-6 h-6" />
+          <InformationCircleIcon className="w-6 h-6" />
         </button>
       </div>
     ),

@@ -267,7 +267,7 @@ const TournamentInfo: React.FC = () => {
               columns={TournamentInfoColumns}
               data={filteredData}
               showSearchBar={true}
-              onSearch={handleSearch}
+              // onSearch={handleSearch}
               tableBgColor="bg-[#0C1016]"
             />
           </div>
