@@ -4,7 +4,7 @@ import { useReferrals } from '../../hooks/useReferrals';
 import { useSidebar } from '../../context/SidebarContext';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 import { truncateAddress } from '../../utils';
-import { InformationCircleIcon  } from '@heroicons/react/24/outline';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 
 const UserReferrals: React.FC = () => {
     const [page, setPage] = useState(1); // Track the current page
@@ -30,8 +30,12 @@ const UserReferrals: React.FC = () => {
         setPage(newPage);
     };
 
+
     const handleSearch = (term: string | undefined) => {
         setSearch(term)
+        if (term?.trim() === '') {
+            setPage(1); // Optionally reset to the first page
+        }
     }
 
     const columns = [
@@ -60,7 +64,7 @@ const UserReferrals: React.FC = () => {
                         onClick={() => navigate(`/users/referrals/${referral.id}`)} // Redirect to /users/referral/:id
                         className="text-blue-500 hover:text-blue-700"
                     >
-                        <InformationCircleIcon  className="w-6 h-6" />
+                        <InformationCircleIcon className="w-6 h-6" />
                     </button>
                 </div>
             ),

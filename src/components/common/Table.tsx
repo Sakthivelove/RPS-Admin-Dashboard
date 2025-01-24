@@ -11,7 +11,7 @@ interface TableProps {
   title?: string; // Optional title for the table
   headerTextColor?: string; // Optional customizable header text color
   showSearchBar?: boolean; // Whether to show the search bar
-  onSearch?: (searchTerm: string|undefined) => void; // Search functionality handler
+  onSearch?: (searchTerm: string | undefined) => void; // Search functionality handler
   onFetchData?: (params: { search?: string; page: number; limit: number }) => void; // Fetch handler for search and pagination
   customCellTextColor?: (row: any, col: string) => string; // Optional custom text color for cells
   alternateColumnTextColors?: (column: string) => string[]; // Optional logic for alternate column text colors
@@ -116,8 +116,7 @@ const Table: React.FC<TableProps> = ({
     return Array.from({ length: endPage - startPage + 1 }, (_, idx) => startPage + idx);
   };
 
-  console.log("onSearch in table",onSearch);
-  
+
 
   return (
     <div className={`${tableBgColor} h-full rounded-lg flex p-2 flex-col text-sm`}

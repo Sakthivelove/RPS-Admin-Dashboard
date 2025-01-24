@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Table from "../components/common/Table";
 import { useUsers } from '../hooks/useUsers';
 import { useSidebar } from '../context/SidebarContext';
-import { InformationCircleIcon  } from '@heroicons/react/24/outline';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 
 const UserList: React.FC = () => {
   const [page, setPage] = useState(1);  // Track the current page
@@ -53,7 +53,7 @@ const UserList: React.FC = () => {
     setLimit(newLimit);
   };
 
-  const userListData = data?.users.map((user, index) => ({
+  const userListData = Array.isArray(data?.users) ? data?.users.map((user, index) => ({
     'S.No': (page - 1) * limit + index + 1, // Calculate serial number based on page
     'User Name': user.userName || 'N/A',
     'Avatar Gender': user.avatarGender || 'N/A',
@@ -67,11 +67,11 @@ const UserList: React.FC = () => {
           onClick={() => navigate(`/users/${user.id}`)}
           className="text-blue-500 hover:text-blue-700"
         >
-          <InformationCircleIcon  className="w-6 h-6" />
+          <InformationCircleIcon className="w-6 h-6" />
         </button>
       </div>
     ),
-  }));
+  })) : [];
 
   // For pagination controls, check if there's a total number of pages or items:
   // Calculate total pages with a fallback if data or total is undefined
