@@ -117,8 +117,8 @@ export const sidebarMenuItems = [
   { label: "User Referrals", icon: <ShareIcon className="w-6 h-6" />, path: "/users/referrals" },
   { label: "User Tasks", icon: <BriefcaseIcon className="w-6 h-6" />, path: "/users/tasks" },
   // { label: "User Transactions", icon: <CurrencyDollarIcon className="w-6 h-6" />, path: "/users/transactions" },
-  { label: "User Tournaments", icon: <TrophyIcon className="w-6 h-6" />, path: "/users/usertournaments" },
-  { label: "User Registered Upcoming Tournaments", icon: <CalendarIcon className="w-6 h-6" />, path: "/users/registeredupcomingtournament" },
+  // { label: "User Tournaments", icon: <TrophyIcon className="w-6 h-6" />, path: "/users/usertournaments" },
+  // { label: "User Registered Upcoming Tournaments", icon: <CalendarIcon className="w-6 h-6" />, path: "/users/registeredupcomingtournament" },
   // { label: "User Win/Loss History", icon: <ChartBarIcon className="w-6 h-6" />, path: "/users/winlosshistory" },
 
   // New Routes for Settings

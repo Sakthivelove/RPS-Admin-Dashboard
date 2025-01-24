@@ -3,12 +3,18 @@ import useTournaments from '../hooks/useTournaments';
 import Table from '../components/common/Table';
 import { useSidebar } from '../context/SidebarContext';
 import { getContainerClass, truncateAddress } from '../utils';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import TournamentTabs from '../components/TournamentTabs';
 
 const TournamentTable: React.FC = () => {
     const [page, setPage] = useState(1);  // Track the current page
     const [limit] = useState(10);  // Number of items per page
     const [searchQuery, setSearchQuery] = useState<string | undefined>('');
     const [debouncedSearch, setDebouncedSearch] = useState<string | undefined>('');
+    const [showTournamentTabs, setShowTournamentTabs] = useState<boolean>(false); // State to toggle TournamentTabs visibility
+    const [selectedUserId, setSelectedUserId] = useState<string | null>(null); // Store selected userId
+    const [selectedId, setSelectedId] = useState<string | null>(null); // Store selected userId
+    const [selectedTournamentId, setSelectedTournamentId] = useState<string | null>(null); // Store selected tournamentId
     const { sidebarActive } = useSidebar();
 
     // If search exists, make page and limit undefined, else use default values
@@ -47,6 +53,7 @@ const TournamentTable: React.FC = () => {
         // 'Prize Pool',
         'Winner',
         'Status',
+        'More Info'
         // 'Payment Window',
         // 'No. of Players',
         // 'Date & Time'
@@ -76,6 +83,20 @@ const TournamentTable: React.FC = () => {
         'Winner': tournament.winner ? truncateAddress(tournament.winner, 6) : 'N/A',
         // 'Current Stage': tournament.currentStage || 'N/A',
         'Status': tournament.status || 'N/A',
+        'More Info': (
+            <div className="flex space-x-3 justify-center items-center">
+                <button
+                    onClick={() => {
+                        setSelectedUserId(tournament.id); // Set selected userId
+                        setSelectedTournamentId(tournament.tournamentId); // Set selected tournamentId
+                        setShowTournamentTabs(true); // Show TournamentTabs
+                    }}
+                    className="text-blue-500 hover:text-blue-700"
+                >
+                    <InformationCircleIcon className="w-6 h-6" />
+                </button>
+            </div>
+        ),
         // 'Payment Window': tournament.paymentWindow ? 'Open' : 'Closed',
         // 'No. of Players': tournament.noOfPlayersRegistered || '0',
         // 'Payment Start': tournament.paymentWindowStart ? new Date(tournament.paymentWindowStart).toLocaleString() : 'N/A',
@@ -111,7 +132,7 @@ const TournamentTable: React.FC = () => {
 
     return (
         <div className={`${getContainerClass(sidebarActive)} flex flex-col`}>
-            <div className="relative z-10 overflow-auto h-full p-[2%]">
+            {!showTournamentTabs && <div className="relative z-10 overflow-auto h-full p-[2%]">
                 <Table
                     columns={columns}
                     data={tableData?.map((row, index) => ({
@@ -130,7 +151,12 @@ const TournamentTable: React.FC = () => {
                     loadingMessage="Loading tournament data..."
                     errorMessage={error?.message}
                 />
-            </div>
+            </div>}
+
+            {/* Conditionally render TournamentTabs component */}
+            {showTournamentTabs && selectedUserId && selectedTournamentId && (
+                <TournamentTabs id={selectedUserId} tournamentId={selectedTournamentId} />
+            )}
 
             {/* Pagination Controls */}
             {/* Uncomment if needed for pagination */}

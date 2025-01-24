@@ -82,62 +82,62 @@ const App: React.FC = () => {
 
                 {/* Protected Routes */}
                 {/* <Route element={<ProtectedRoute />}> */}
-                  <Route path="/affiliate-tournaments" element={<AffiliateTournaments />} />
-                  <Route path="/create-new-rock-tournament" element={<CreateNewRockTournament />} />
-                  <Route path="/create-new-vip-tournament" element={<CreateVIPTournament />} />
-                  <Route path="/project-details" element={<Dashboards />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/admin-list" element={<AdminList />} />
-                  <Route path="/admin-screen" element={<AdminScreen />} />
-                  <Route path="/add-admin" element={<AddAdmin />} />
-                  <Route path="/edit-admin" element={<EditAdmin />} />
-                  <Route path="/tournament" element={<Tournament />} />
-                  <Route path="/admin-user-list" element={<AdminUserList />} />
-                  <Route path="/tournaments" element={<TournamentList />} />
-                  <Route path="/game-history" element={<GameHistory />} />
-                  <Route path="/game-info" element={<GameInfo />} />
-                  <Route path="/stake-info" element={<StakeInfo />} />
-                  <Route path="/stake-history" element={<StakeHistory />} />
-                  <Route path="/tournament-history" element={<TournamentHistory />} />
-                  <Route path="/user-info" element={<UserInfo />} />
-                  <Route path="/activity-list" element={<ActivityList />} />
-                  <Route path="/users" element={<UserList />} />
-                  <Route path="/tournament-info" element={<TournamentInfo />} />
-                  <Route path="/referrals" element={<Referrals />} />
-                  <Route path="/user-tournaments" element={<UserTournamentTable />} />
-                  <Route path="/tournament-list" element={<TournamentTable />} />
-                  <Route path="/prize-pool" element={<PrizePools />} />
-                  {/* <Route path="/image-uplaod" element={<ImageUpload  bannerImage={bannerImage} setBannerImage={setBannerImage} />} /> */}
+                <Route path="/affiliate-tournaments" element={<AffiliateTournaments />} />
+                <Route path="/create-new-rock-tournament" element={<CreateNewRockTournament />} />
+                <Route path="/create-new-vip-tournament" element={<CreateVIPTournament />} />
+                <Route path="/project-details" element={<Dashboards />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/admin-list" element={<AdminList />} />
+                <Route path="/admin-screen" element={<AdminScreen />} />
+                <Route path="/add-admin" element={<AddAdmin />} />
+                <Route path="/edit-admin" element={<EditAdmin />} />
+                <Route path="/tournament" element={<Tournament />} />
+                <Route path="/admin-user-list" element={<AdminUserList />} />
+                <Route path="/tournaments" element={<TournamentList />} />
+                <Route path="/game-history" element={<GameHistory />} />
+                <Route path="/game-info" element={<GameInfo />} />
+                <Route path="/stake-info" element={<StakeInfo />} />
+                <Route path="/stake-history" element={<StakeHistory />} />
+                <Route path="/tournament-history" element={<TournamentHistory />} />
+                <Route path="/user-info" element={<UserInfo />} />
+                <Route path="/activity-list" element={<ActivityList />} />
+                <Route path="/users" element={<UserList />} />
+                <Route path="/tournament-info1" element={<TournamentInfo />} />
+                <Route path="/referrals" element={<Referrals />} />
+                <Route path="/user-tournaments" element={<UserTournamentTable />} />
+                <Route path="/tournament-list" element={<TournamentTable />} />
+                <Route path="/prize-pool" element={<PrizePools />} />
+                {/* <Route path="/image-uplaod" element={<ImageUpload  bannerImage={bannerImage} setBannerImage={setBannerImage} />} /> */}
 
 
-                  {/* New Routes for Settings */}
-                  <Route path="/settings" element={<SettingsComponent />} />
-                  <Route path="/settings/dashboard" element={<DashboardSettings />} />
-                  <Route path="/settings/change-password" element={<ChangePasswordSettings />} />
-                  <Route path="/settings/modulesettings" element={<ModuleSettings />} />
-                  <Route path="/settings/projectsettings" element={<ProjectSettings />} />
+                {/* New Routes for Settings */}
+                <Route path="/settings" element={<SettingsComponent />} />
+                <Route path="/settings/dashboard" element={<DashboardSettings />} />
+                <Route path="/settings/change-password" element={<ChangePasswordSettings />} />
+                <Route path="/settings/modulesettings" element={<ModuleSettings />} />
+                <Route path="/settings/projectsettings" element={<ProjectSettings />} />
 
-                  {/* New Routes for Activities */}
-                  <Route path="/activities" element={<Activities />} />
+                {/* New Routes for Activities */}
+                <Route path="/activities" element={<Activities />} />
 
-                  {/* New Routes for Users */}
-                  <Route path="/users" element={<Users />} />
-                  <Route path="/users/affiliates" element={<UserAffiliates />} />
-                  <Route path="/users/referrals" element={<UserReferrals />} />
-                  <Route path="/users/tasks" element={<UserTasks />} />
-                  <Route path="/users/transactions" element={<UserTransactions />} />
-                  <Route path="/users/usertournaments" element={<UserTournaments />} />
-                  <Route path="/users/registeredupcomingtournament" element={<UpcomingTournaments />} />
-                  <Route path="/users/winlosshistory" element={<WinLossHistory />} />
-                  <Route path="/users/:id" element={<UserDetails />} />
-                  <Route path="/users/tasks/:id" element={<UserTaskDetails />} />
-                  <Route path="/users/referrals/:id" element={<UserReferralDetails />} />
-                  <Route path="/users/transactions/:id" element={<UserTransactionDetails />} />
-                  <Route path="/users/usertournaments/:id" element={<UserTournamentDetails />} />
+                {/* New Routes for Users */}
+                <Route path="/users" element={<Users />} />
+                <Route path="/users/affiliates" element={<UserAffiliates />} />
+                <Route path="/users/referrals" element={<UserReferrals />} />
+                <Route path="/users/tasks" element={<UserTasks />} />
+                <Route path="/users/transactions" element={<UserTransactions />} />
+                <Route path="/users/usertournaments" element={<UserTournaments />} />
+                <Route path="/users/registeredupcomingtournament" element={<UpcomingTournaments />} />
+                <Route path="/users/winlosshistory" element={<WinLossHistory />} />
+                <Route path="/users/:id" element={<UserDetails />} />
+                <Route path="/users/tasks/:id" element={<UserTaskDetails />} />
+                <Route path="/users/referrals/:id" element={<UserReferralDetails />} />
+                <Route path="/users/transactions/:id" element={<UserTransactionDetails />} />
+                <Route path="/users/usertournaments/:id" element={<UserTournamentDetails />} />
 
-                  {/* Catch-all route for non-existing paths */}
-                  <Route path="/404" element={<NotFound />} />
-                  <Route path="*" element={<Navigate to="/404" />} /> {/* Redirect invalid paths to 404 page */}
+                {/* Catch-all route for non-existing paths */}
+                <Route path="/404" element={<NotFound />} />
+                <Route path="*" element={<Navigate to="/404" />} /> {/* Redirect invalid paths to 404 page */}
                 {/* </Route> */}
               </Routes>
             </Layout>

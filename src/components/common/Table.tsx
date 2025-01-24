@@ -119,9 +119,9 @@ const Table: React.FC<TableProps> = ({
 
 
   return (
-    <div className={`${tableBgColor} h-full rounded-lg flex p-2 flex-col text-sm`}
+    <div className={`${tableBgColor} h-full rounded-lg flex p-2 flex-col text-sm w-full`}
     >
-      <div>
+      <div className={`flex ${showSearchBar ? "justify-between" : "justify-center"} items-center mb-4 border-b border-[#969EB2]`}>
         {title && (
           <h1 className={`text-2xl font-semibold text-[#45F882] sticky top-0 z-10 bg-[#1A1D26] p-2 ${columns.length === 2 || 3 ? 'text-center' : ""} ${!showSearchBar && "mb-5"}`}>
             {title}
@@ -130,7 +130,7 @@ const Table: React.FC<TableProps> = ({
 
         {showSearchBar && (
           <div className='flex justify-center'>
-            <div className={`sticky top-16 z-10 bg-[#1A1D26] p-2 ${(columns.length <= 4) ? "w-1/2" : "w-full"}`}>
+            <div className={`sticky top-16 z-10 bg-[#1A1D26] p-2 ${(columns.length <= 4) ? "w-full" : "w-full"}`}>
               <SearchBar placeholder={searchPlaceholder} onSearch={onSearch} />
             </div>
           </div>
@@ -147,7 +147,7 @@ const Table: React.FC<TableProps> = ({
         )}
 
         {(!isLoading && !error && data?.length !== 0) && (
-          <table className={`${columns.length === 2 ? "w-1/2" : columns.length === 3 ? "w-1/2" : "w-full"} table-auto ${tableBgColor} table-layout-auto`}
+          <table className={`${columns.length === 2 ? "w-full" : columns.length === 3 ? "w-full" : "w-full"} table-auto ${tableBgColor} table-layout-auto`}
             style={{ width }} // Apply dynamic width
           >
             <thead className="sticky top-0 bg-[#1A1D26]">
