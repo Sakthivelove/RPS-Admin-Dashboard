@@ -82,28 +82,28 @@ const UpcomingTournaments: React.FC = () => {
         [data]
     );
 
-    const handleSearch = (term: string | undefined) => {
-        setSearch(term)
-        if (term?.trim() === '') {
-            setPage(1); // Optionally reset to the first page
-        }
-    }
+    // const handleSearch = (term: string | undefined) => {
+    //     setSearch(term)
+    //     if (term?.trim() === '') {
+    //         setPage(1); // Optionally reset to the first page
+    //     }
+    // }
 
-    // const [filteredData, setFilteredData] = useState(tableData);
+    const [filteredData, setFilteredData] = useState(tableData);
 
     // useEffect(() => {
     //     setFilteredData(tableData); // Sync filteredData with tableData when tableData changes
     // }, [tableData]);
 
-    // const handleSearch = (searchTerm: string) => {
-    //     const filtered = tableData.filter((row) =>
-    //         Object.values(row)
-    //             .join(' ')
-    //             .toLowerCase()
-    //             .includes(searchTerm.toLowerCase())
-    //     );
-    //     setFilteredData(filtered);
-    // };
+    const handleSearch = (searchTerm: string | undefined) => {
+        const filtered = searchTerm ? tableData.filter((row) =>
+            Object.values(row)
+                .join(' ')
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase())
+        ) : tableData;
+        setFilteredData(filtered);
+    };
 
     const handleView = (id: string) => {
         console.log(`Viewing tournament with ID: ${id}`);
@@ -132,7 +132,7 @@ const UpcomingTournaments: React.FC = () => {
             <div className="relative z-10 h-full p-[2%]">
                 <Table
                     columns={columns}
-                    data={tableData}
+                    data={filteredData}
                     rowColor="bg-gray-800"
                     title="Registered Upcoming Tournaments"
                     headerTextColor="text-[#45F882]"
