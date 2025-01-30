@@ -137,7 +137,9 @@ const Table: React.FC<TableProps> = ({
         )}
       </div>
 
-      <div className={`overflow-x-${scrollX} overflow-y-${scrollY} flex-grow scrollbar-thin ${className} ${(columns.length <= 4) ? "flex justify-center items-start" : ""}`} style={{ height }}>
+      <div className={`overflow-x-${scrollX} overflow-y-${scrollY} flex-grow scrollbar-thin ${className} ${(columns.length <= 4) ? "flex justify-center items-start" : ""}`}
+        style={{ height, maxHeight: "80vh" }} // Apply dynamic height
+      >
         {isLoading && <div className="text-center text-white flex justify-center items-center h-full">{loadingMessage}</div>}
         {error && <div className="text-center text-red-500 flex justify-center items-center h-full">{errorMessage}</div>}
         {(!isLoading && !error && data?.length === 0) && (

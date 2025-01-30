@@ -161,7 +161,7 @@ const TournamentTabs: React.FC<{ tournamentId: string, id: string }> = ({ tourna
 
     return (
         <div
-            className={`h-screen ml-2`}
+            className={`h-screen ml-3`}
         >
             {/* Tabs Header */}
             <div className="w-full bg-[#0D191F] my-4 shadow-md">
@@ -194,7 +194,7 @@ const TournamentTabs: React.FC<{ tournamentId: string, id: string }> = ({ tourna
 
             {/* Tab 1: User Tournament Info */}
             {activeTab === 'tab2' && (
-                <div className="rounded-lg shadow-lg m-5 max-w-full overflow-auto bg-[#1A1D26] p-6">
+                <div className="rounded-lg shadow-lg mr-2 max-w-full overflow-auto bg-[#1A1D26] p-6">
                     {isLoadingTab1 ? (
                         <div className="flex items-center justify-center text-xl text-white font-semibold py-12">
                             <FaSpinner className="animate-spin text-3xl mr-3" /> Loading...
