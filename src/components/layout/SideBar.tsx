@@ -150,7 +150,7 @@ const SidebarMenuList: React.FC<SidebarMenuListProps> = ({
             itemsToRender.push(
               <li
                 key={index}
-                className={`flex items-center gap-[1rem] mb-[1rem] cursor-pointer ${selectedMenu === item.label ? "text-[#45F882]" : "text-white"
+                className={`flex items-center ${sidebarActive ? "justify-start": "justify-center"} gap-[1rem] mb-[1rem] cursor-pointer ${selectedMenu === item.label ? "text-[#45F882]" : "text-white"
                   }`}
                 onClick={() => handleItemClick(item)}
               >
@@ -294,7 +294,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         ) : (
           <div className="w-full flex justify-center">
             <button
-              className="bg-[#45F882] rounded-[5px] w-fit p-[0.5rem] my-[1rem] flex items-center gap-[0.5rem]"
+              className="bg-[#45F882] rounded-[5px] w-fit p-[0.5rem] my-[1rem] flex justify-center items-center gap-[0.5rem]"
               onClick={() => navigate(actionPath)}
             >
               <img
