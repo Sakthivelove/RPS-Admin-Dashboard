@@ -200,64 +200,54 @@ const TournamentTabs: React.FC<{ tournamentId: string, id: string }> = ({ tourna
                             <FaSpinner className="animate-spin text-3xl mr-3" /> Loading...
                         </div>
                     ) : (
-                        <div className="text-gray-100 rounded-lg p-6 shadow-lg space-y-4 max-h-[80vh] overflow-auto bg-[#1A1D26]">
-                            {tournamentData && (
-                                <div className="bg-[#1A1D26] p-4 rounded-lg shadow-lg">
-                                      {/* Display Banner Image with fallback to alt text */}
-                                    {tournamentData.bannerImage ? (
-                                        <div className="mb-6 flex justify-center">
-                                            <img
-                                                src={tournamentData.bannerImage}
-                                                alt="Tournament Banner"
-                                                className="w-full max-w-md rounded-lg shadow-lg"
-                                                onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-                                                    const img = e.target as HTMLImageElement;
-                                                    img.onerror = null; // Prevent infinite loop
-                                                    img.src = ''; // Set source to empty string
-                                                }}
-                                            />
-                                        </div>
-                                    ) : (
-                                        <Typography variant="body1" color="white" align="center">
-                                            No Banner Available
-                                        </Typography>
-                                    )}
+                        tournamentData ? (
+                            <div className="text-gray-100 max-h-[80vh] overflow-auto">
+                                {/* Display Banner Image */}
+                                {tournamentData.bannerImage ? (
+                                    <div className="mb-6 flex justify-center">
+                                        <img
+                                            src={tournamentData.bannerImage}
+                                            alt="Tournament Banner"
+                                            className="w-full max-w-md rounded-lg shadow-lg"
+                                            onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                                                const img = e.target as HTMLImageElement;
+                                                img.onerror = null; // Prevent infinite loop
+                                                img.src = ''; // Set source to empty string
+                                            }}
+                                        />
+                                    </div>
+                                ) : (
+                                    <Typography variant="body1" color="white" align="center">
+                                        No Banner Available
+                                    </Typography>
+                                )}
 
-                                    {/* Display Tournament Details */}
-                                    {Object.entries(tournamentData).map(([key, value]) => (
-                                        key !== "bannerImage" && ( // Exclude the bannerImage key from the table
-                                            <Grid
-                                                container
-                                                spacing={2}
-                                                key={key}
-                                                className="py-2 bg-[#1A1D26]"
-                                            >
-                                                <Grid item xs={4} sm={3} className="bg-[#1A1D26]">
-                                                    <Typography
-                                                        variant="body1"
-                                                        color="white"
-                                                        fontWeight={600}
-                                                    >
-                                                        {key.replace(/([A-Z])/g, ' $1') + ' :'}
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid item xs={8} sm={9} className="bg-[#1A1D26]">
-                                                    <Typography variant="body2" color="white">
-                                                        {/* Display 'null' if value is an empty string */}
-                                                        {value === "" ? "null" : String(value)}
-                                                    </Typography>
-                                                </Grid>
+                                {/* Display Tournament Details */}
+                                {Object.entries(tournamentData).map(([key, value]) =>
+                                    key !== "bannerImage" && (
+                                        <Grid container spacing={2} key={key} className="py-1">
+                                            <Grid item xs={4} sm={3}>
+                                                <Typography variant="body1" color="white" fontWeight={600}>
+                                                    {key.replace(/([A-Z])/g, ' $1') + ' :'}
+                                                </Typography>
                                             </Grid>
-                                        )
-                                    ))}
-                                </div>
-                            )}
-                        </div>
+                                            <Grid item xs={8} sm={9}>
+                                                <Typography variant="body2" color="white">
+                                                    {value === "" ? "null" : String(value)}
+                                                </Typography>
+                                            </Grid>
+                                        </Grid>
+                                    )
+                                )}
+                            </div>
+                        ) : (
+                            <Typography variant="body1" color="white" align="center">
+                                No Tournament Data Available
+                            </Typography>
+                        )
                     )}
                 </div>
             )}
-
-
 
             {/* Tab 2: User Tournaments */}
             {activeTab === 'tab1' && (
